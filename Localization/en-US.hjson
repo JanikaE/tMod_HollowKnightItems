@@ -1,0 +1,33 @@
+
+Mods: {
+	HollowKnightItems: {
+		Buffs: {
+			GrimmchildBuff: {
+				DisplayName: Grimmchild
+				Description: Meow~
+			}
+		}
+
+		Items: {
+			CarefreeMelody: {
+				DisplayName: Carefree Melody
+				Tooltip:
+					'''
+					Token commemorating the start of a friendship.
+					Contains a song of protection that may defend the bearer from damage.
+					'''
+			}
+
+			Grimmchild: {
+				DisplayName: Grimmchild
+				Tooltip: Symbol of a completed ritual. Contains a living, scarlet flame.
+			}
+		}
+
+		Projectiles: {
+			CarefreeMelodyFire.DisplayName: Carefree Melody Fire
+			GrimmchildShoot.DisplayName: Grimmchild Shoot
+			GrimmchildSummon.DisplayName: Grimmchild Summon
+		}
+	}
+}
