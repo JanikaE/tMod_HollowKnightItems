@@ -1,4 +1,4 @@
-﻿using HollowKnightItems.Projectiles;
+﻿using HollowKnightItems.Content.Projectiles;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -7,7 +7,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Players
+namespace HollowKnightItems.Common.Players
 {
     internal class CharmsPlayer : ModPlayer
     {
@@ -17,7 +17,7 @@ namespace HollowKnightItems.Players
 
         public int CarefreeOdds = 0;  // 无忧旋律生效概率
 
-        SoundStyle CarefreeMelodySound = new SoundStyle("HollowKnightItems/Audio/CarefreeMelodySound") with
+        SoundStyle CarefreeMelodySound = new SoundStyle("HollowKnightItems/Assets/Audio/CarefreeMelodySound") with
         {
             Volume = 0.8f,  // 音量
             Pitch = 0,  // 音调
@@ -44,15 +44,15 @@ namespace HollowKnightItems.Players
                 if (CarefreeHit < CarefreeOdds)
                 {
                     for (float r = 0f; r < MathHelper.TwoPi; r += MathHelper.TwoPi / 3f)
-                    {                        
-                        Vector2 position = new(Player.Center.X + (float)Math.Cos(r) * 30 -40,
+                    {
+                        Vector2 position = new(Player.Center.X + (float)Math.Cos(r) * 30 - 40,
                                             Player.Center.Y + (float)Math.Sin(r) * 30 - 60);
-                        Projectile.NewProjectile(Player.GetSource_NaturalSpawn(),
+                        Projectile.NewProjectile(Terraria.Entity.GetSource_NaturalSpawn(),
                             position,
                             new Vector2(0, 0),
                             ModContent.ProjectileType<CarefreeMelodyFire>(),
                             0,
-                            0);                        
+                            0);
                     }
                     SoundEngine.PlaySound(CarefreeMelodySound);
                     Player.immune = true;
@@ -78,7 +78,7 @@ namespace HollowKnightItems.Players
         {
             if (vendor.type == NPCID.Guide)
             {
-                shopInventory.Initialize();                
+                shopInventory.Initialize();
             }
         }
     }

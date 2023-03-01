@@ -1,8 +1,7 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria;
+﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Projectiles
+namespace HollowKnightItems.Content.Projectiles
 {
     internal class CarefreeMelodyFire : ModProjectile
     {

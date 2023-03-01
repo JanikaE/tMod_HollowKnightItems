@@ -2,7 +2,7 @@
 using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Buffs
+namespace HollowKnightItems.Content.Buffs
 {
     internal class GrimmchildBuff : ModBuff
     {

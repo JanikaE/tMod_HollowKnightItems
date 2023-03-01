@@ -1,7 +1,7 @@
 ﻿using Terraria;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Projectiles
+namespace HollowKnightItems.Content.Projectiles
 {
     internal class GrimmchildShoot : ModProjectile
     {

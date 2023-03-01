@@ -1,14 +1,13 @@
-﻿using HollowKnightItems.Buffs;
-using HollowKnightItems.Players;
-using HollowKnightItems.Projectiles;
-using HollowKnightItems.Rarities;
+﻿using HollowKnightItems.Common.Players;
+using HollowKnightItems.Content.Buffs;
+using HollowKnightItems.Content.Projectiles;
+using HollowKnightItems.Content.Rarities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Charms
+namespace HollowKnightItems.Content.Items.Charms
 {
     internal class Grimmchild : ModItem
     {
@@ -69,7 +68,7 @@ namespace HollowKnightItems.Charms
             Player player = Main.player[Main.myPlayer];
             if (player.GetModPlayer<CharmsPlayer>().HasGrimmchild)
             {
-                TooltipLine tooltipLine = new(Mod, "GrimmchildDamage", $"{new GrimmchildSummon().GetDamage()}");
+                TooltipLine tooltipLine = new(Mod, "GrimmchildDamage", $"{GetGrimmchildAttack()}");
                 tooltips.Add(tooltipLine);
 
                 /*bool[] bools = new GrimmchildSummon().bossDown;

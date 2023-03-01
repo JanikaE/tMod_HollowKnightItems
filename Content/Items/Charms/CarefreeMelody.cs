@@ -1,12 +1,10 @@
-﻿using HollowKnightItems.Players;
-using HollowKnightItems.Rarities;
+﻿using HollowKnightItems.Common.Players;
+using HollowKnightItems.Content.Rarities;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.ID;
-using Terraria.Localization;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Charms
+namespace HollowKnightItems.Content.Items.Charms
 {
     internal class CarefreeMelody : ModItem
     {

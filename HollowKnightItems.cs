@@ -1,14 +1,15 @@
+global using static HollowKnightItems.Common.Utils.MyUtils;
+using HollowKnightItems.Content.Items.Charms;
+using Microsoft.Xna.Framework;
 using ReLogic.Graphics;
 using Terraria;
-using Terraria.ModLoader;
-using Terraria.ID;
 using Terraria.Audio;
-using Microsoft.Xna.Framework;
-using Terraria.UI.Chat;
 using Terraria.GameContent;
 using Terraria.GameInput;
+using Terraria.ID;
 using Terraria.Localization;
-using HollowKnightItems.Charms;
+using Terraria.ModLoader;
+using Terraria.UI.Chat;
 
 namespace HollowKnightItems
 {

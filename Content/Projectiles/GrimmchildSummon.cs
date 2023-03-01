@@ -1,5 +1,5 @@
-﻿using HollowKnightItems.Buffs;
-using HollowKnightItems.Players;
+﻿using HollowKnightItems.Common.Players;
+using HollowKnightItems.Content.Buffs;
 using Microsoft.Xna.Framework;
 using System;
 using System.Linq;
@@ -8,7 +8,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Projectiles
+namespace HollowKnightItems.Content.Projectiles
 {
     internal class GrimmchildSummon : ModProjectile
     {
@@ -32,7 +32,7 @@ namespace HollowKnightItems.Projectiles
         private int soundTimer;
 
         // 设置声音
-        SoundStyle attack = new SoundStyle("HollowKnightItems/Audio/GrimmchildAttack_", 2) with
+        SoundStyle attack = new SoundStyle("HollowKnightItems/Assets/Audio/GrimmchildAttack_", 2) with
         {
             Volume = 1f,  // 音量
             Pitch = 0,  // 音调
@@ -41,7 +41,7 @@ namespace HollowKnightItems.Projectiles
             SoundLimitBehavior = SoundLimitBehavior.IgnoreNew,  // 到达上限后的操作
             Type = SoundType.Sound,   // 声音类型（音乐/音效/环境）
         };
-        SoundStyle routine = new SoundStyle("HollowKnightItems/Audio/GrimmchildRoutine_", 6) with
+        SoundStyle routine = new SoundStyle("HollowKnightItems/Assets/Audio/GrimmchildRoutine_", 6) with
         {
             Volume = 1f,
             Pitch = 0,
@@ -49,71 +49,7 @@ namespace HollowKnightItems.Projectiles
             MaxInstances = 1,
             SoundLimitBehavior = SoundLimitBehavior.IgnoreNew,
             Type = SoundType.Sound,
-        };
-
-        /*public int[] bossList = {
-            NPCID.KingSlime,  // 史莱姆王
-            NPCID.EyeofCthulhu,  // 克苏鲁之眼
-            NPCID.BrainofCthulhu,  // 克苏鲁之脑
-            NPCID.EaterofWorldsHead,  // 世界吞噬怪
-            NPCID.QueenBee,  // 蜂王
-            NPCID.Skeleton,  // 骷髅王
-            NPCID.Deerclops,  // 独眼巨鹿
-            NPCID.WallofFlesh,  // 血肉墙
-
-            NPCID.QueenSlimeBoss,  // 史莱姆皇后
-            NPCID.Retinazer,  // 激光眼
-            NPCID.Spazmatism,  // 魔焰眼
-            NPCID.TheDestroyer,  // 毁灭者
-            NPCID.SkeletronPrime,  // 机械骷髅王
-            NPCID.Plantera,  // 世纪之花
-            NPCID.Golem,  // 石巨人
-            NPCID.DukeFishron,  // 猪龙鱼公爵
-            NPCID.HallowBoss,  // 光之女皇
-            NPCID.CultistBoss,  // 拜月教邪教徒
-            NPCID.MoonLordCore,  // 月亮领主
-
-            NPCID.DD2DarkMageT1,  // 黑暗魔法师
-            NPCID.DD2OgreT2,  // 食人魔
-            NPCID.DD2Betsy,  // 双足飞龙
-            NPCID.PirateShip,  // 荷兰飞盗船
-            NPCID.MourningWood,  // 哀木
-            NPCID.Pumpking,  // 南瓜王
-            NPCID.Everscream,  // 常绿尖叫怪
-            NPCID.SantaNK1,  // 圣诞坦克
-            NPCID.IceQueen,  // 冰雪女王
-            NPCID.MartianSaucer  // 火星飞碟
-        };*/
-
-        public bool[] bossDown = {
-            NPC.downedSlimeKing,
-            NPC.downedBoss1,
-            NPC.downedBoss2,
-            NPC.downedBoss3,
-            NPC.downedQueenBee,
-            NPC.downedDeerclops,
-            Main.hardMode,
-
-            NPC.downedQueenSlime,
-            NPC.downedMechBoss1,
-            NPC.downedMechBoss2,
-            NPC.downedMechBoss3,
-            NPC.downedPlantBoss,
-            NPC.downedGolemBoss,
-            NPC.downedFishron,
-            NPC.downedEmpressOfLight,
-            NPC.downedAncientCultist,
-            NPC.downedMoonlord,
-
-            NPC.downedGoblins,
-            NPC.downedPirates,
-            NPC.downedHalloweenTree,
-            NPC.downedHalloweenKing,
-            NPC.downedChristmasTree,
-            NPC.downedChristmasSantank,
-            NPC.downedChristmasIceQueen,
-            NPC.downedMartians
-        };
+        };        
 
         public override void SetStaticDefaults()
         {
@@ -279,7 +215,7 @@ namespace HollowKnightItems.Projectiles
         public void ShootAround(Vector2 tar, Player player)
         {
             Vector2 dirProj = tar - Projectile.Center;  // NPC相对位置
-            Vector2 offset = (dirProj.X >= 0 ? new Vector2(47, 10) : new Vector2(-47, 10));  // 朝向不同时，射弹生成的位置也不同
+            Vector2 offset = dirProj.X >= 0 ? new Vector2(47, 10) : new Vector2(-47, 10);  // 朝向不同时，射弹生成的位置也不同
             Vector2 vel = dirProj - offset;  // 射弹方向。由于射弹生成位置的偏移，使射弹方向也产生相应的偏移
             vel.Normalize();
 
@@ -294,7 +230,7 @@ namespace HollowKnightItems.Projectiles
                     Projectile.Center + offset,  // 生成位置
                     vel * 13f,  // 速度
                     ModContent.ProjectileType<GrimmchildShoot>(),
-                    Projectile.damage + GetDamage(),
+                    Projectile.damage + GetGrimmchildAttack(),
                     Projectile.knockBack + 1,
                     Projectile.owner);
                 shootCount = 1;  // 限制在一张图的多帧内只生成一次射弹
@@ -311,7 +247,7 @@ namespace HollowKnightItems.Projectiles
             Vector2 dirPlayer = tar - player.Center;  // NPC相对玩家位置
             float distance = dirPlayer.Length();  // NPC与玩家距离
             dirPlayer.Normalize();
-            Vector2 moveTar = player.Center + dirPlayer * (distance > 125 ? 100 : (distance * 0.8f));  // 移动目标位置
+            Vector2 moveTar = player.Center + dirPlayer * (distance > 125 ? 100 : distance * 0.8f);  // 移动目标位置
             Vector2 moveDir = moveTar - Projectile.Center;  // 移动方向
             moveDir.Normalize();
             Projectile.velocity = (Projectile.velocity * 20f + moveDir * 5) / 21f;
@@ -425,19 +361,6 @@ namespace HollowKnightItems.Projectiles
                     soundTimer = 0;
                 }
             }
-        }
-
-        public int GetDamage()
-        {
-            int damage = 5;
-            for(int i = 0; i < bossDown.Length; i++)
-            {
-                if (bossDown[i])
-                {
-                    damage += 4;
-                }
-            }
-            return damage;
         }
     }
 }
