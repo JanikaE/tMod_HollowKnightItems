@@ -1,5 +1,8 @@
-﻿using Terraria;
+﻿using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using Terraria;
 using Terraria.ID;
+using Terraria.ModLoader;
 
 namespace HollowKnightItems.Common.Utils
 {
@@ -83,6 +86,11 @@ namespace HollowKnightItems.Common.Utils
                 }
             }
             return damage;
+        }
+
+        public static Asset<Effect> GetEffect(string fileName)
+        {
+            return ModContent.Request<Effect>($"HollowKnightItems/Assets/Effects/Content/{fileName}", AssetRequestMode.ImmediateLoad);
         }
     }
 }

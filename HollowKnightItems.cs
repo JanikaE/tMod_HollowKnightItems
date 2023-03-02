@@ -1,6 +1,7 @@
 global using static HollowKnightItems.Common.Utils.MyUtils;
 using HollowKnightItems.Content.Items.Charms;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria;
 using Terraria.Audio;
@@ -14,10 +15,14 @@ using Terraria.UI.Chat;
 namespace HollowKnightItems
 {
     public class HollowKnightItems : Mod
-	{        
+	{
+        public static Effect Fireball;
+
         public override void Load()
         {
             On.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
+
+            Fireball = GetEffect("Fireball").Value;
         }
         public override void Unload()
         {
