@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Runtime.CompilerServices;
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.Projectiles
@@ -39,6 +40,10 @@ namespace HollowKnightItems.Content.Projectiles
             //        Projectile.frame = 0;
             //    }
             //}
+            for (int i = 0; i< 5; i++)
+            {
+                Dust.NewDust(Projectile.position - Projectile.velocity, 30, 30, DustID.TintableDustLighted, newColor: new Color(255, 0, 0));
+            }            
         }
 
         // 图像就直接用shader来画，原图给个形状就行
