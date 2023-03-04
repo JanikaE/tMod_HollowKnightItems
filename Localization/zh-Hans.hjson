@@ -16,18 +16,20 @@ Mods: {
 					纪念一份友谊建立的信物。
 					包含一首可能使持有者免受伤害的守护之歌。
 					'''
+				Probability: 当前闪避概率：
 			}
 
 			Grimmchild: {
 				DisplayName: 格林之子
 				Tooltip: 一场完成的仪式的标志。包含着一团跳动的猩红之火。
+				Damage: 当前伤害
 			}
 		}
 
 		Projectiles: {
-			/* CarefreeMelodyFire.DisplayName: Carefree Melody Fire */
-			/* GrimmchildShoot.DisplayName: Grimmchild Shoot */
-			/* GrimmchildSummon.DisplayName: Grimmchild Summon */
+			CarefreeMelodyFire.DisplayName: Carefree Melody Fire
+			GrimmchildShoot.DisplayName: Grimmchild Shoot
+			GrimmchildSummon.DisplayName: Grimmchild Summon
 		}
 	}
 }

@@ -16,11 +16,13 @@ Mods: {
 					Token commemorating the start of a friendship.
 					Contains a song of protection that may defend the bearer from damage.
 					'''
+				Probability: Current Dodge Probability:
 			}
 
 			Grimmchild: {
 				DisplayName: Grimmchild
 				Tooltip: Symbol of a completed ritual. Contains a living, scarlet flame.
+				Damage: Current Damage
 			}
 		}
 
