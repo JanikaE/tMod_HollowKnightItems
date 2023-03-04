@@ -18,10 +18,11 @@ namespace HollowKnightItems.Content.Projectiles
             Projectile.width = 34;
             Projectile.height = 34;
 
-            Projectile.maxPenetrate = 1;
+            Projectile.penetrate = 1;
+            Projectile.timeLeft = 200;
             Projectile.friendly = true;
             Projectile.ignoreWater = true;
-            Projectile.tileCollide = false;
+            Projectile.tileCollide = true;
             Projectile.netImportant = true;
 
             Projectile.light = 0.2f;
@@ -39,10 +40,39 @@ namespace HollowKnightItems.Content.Projectiles
             //        Projectile.frame = 0;
             //    }
             //}
+
+            // 弹幕拖尾的Dust
             for (int i = 0; i< 3; i++)
             {
                 Dust.NewDust(Projectile.position - Projectile.velocity, 30, 30, DustID.TintableDustLighted, newColor: new Color(255, 0, 0));
             }            
+        }
+
+        public override bool OnTileCollide(Vector2 oldVelocity)
+        {
+            Projectile.penetrate--;
+            if (Projectile.penetrate <= 0)
+            {
+                Projectile.Kill();
+            }
+
+            // 弹幕碰撞的Dust
+            for (int i = 0; i < 12; i++)
+            {
+                Vector2 rotation = (i * MathHelper.Pi / 60).ToRotationVector2();
+                Dust.NewDust(Projectile.position, 1, 1, DustID.TintableDustLighted, rotation.X, rotation.Y, newColor: new Color(255, 0, 0));
+            }
+            return false;
+        }
+
+        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        {
+            // 弹幕碰撞的Dust
+            for (int i = 0; i < 12; i++)
+            {
+                Vector2 rotation = (i * MathHelper.Pi / 60).ToRotationVector2();
+                Dust.NewDust(Projectile.position, 1, 1, DustID.TintableDustLighted, rotation.X, rotation.Y, newColor: new Color(255, 0, 0));
+            }
         }
 
         // 图像就直接用shader来画，原图给个形状就行

@@ -54,6 +54,7 @@ namespace HollowKnightItems.Content.Projectiles
         public override void AIBefore()
         {
             Player player = Main.player[Projectile.owner];
+            // 玩家不再持有buff（卸除护符）时，让召唤物消失
             if (player.HasBuff(ModContent.BuffType<GrimmchildBuff>()))
             {
                 Projectile.timeLeft = 2;
@@ -93,7 +94,7 @@ namespace HollowKnightItems.Content.Projectiles
                 {
                     Projectile.frameCounter = 0;
                     Projectile.frame++;
-                    if (Projectile.frame == 6 || Projectile.frame == 13)  // 走完一轮动画后判断下一步状态
+                    if (Projectile.frame == 6 || Projectile.frame == 13)  // 有可能在进入移动状态后处于攻击动画中
                     {
                         Projectile.frame = 0;                        
                     }
@@ -101,12 +102,9 @@ namespace HollowKnightItems.Content.Projectiles
                 proj.Timer = 1;
 
                 // 播放声音
-                if (Main.LocalPlayer == player)
+                if (new Random().Next(0, SoundFrequency) == 0)
                 {
-                    if (new Random().Next(0, SoundFrequency) == 0)
-                    {
-                        SoundEngine.PlaySound(GrimmchildSound_Routine);
-                    }
+                    SoundEngine.PlaySound(GrimmchildSound_Routine);
                 }
 
                 SwitchState_Grimmchild(proj);
@@ -139,10 +137,7 @@ namespace HollowKnightItems.Content.Projectiles
                     proj.Timer++;
 
                     //播放声音
-                    if (Main.LocalPlayer == player)
-                    {
-                        SoundEngine.PlaySound(GrimmchildSound_Attack);
-                    }
+                    SoundEngine.PlaySound(GrimmchildSound_Attack, Projectile.position);
                 }
 
                 // 运动逻辑，保持位置在玩家附近
@@ -205,6 +200,7 @@ namespace HollowKnightItems.Content.Projectiles
                     if (Projectile.frame == 20)  // 播放完瞬移动画
                     {
                         Projectile.frame = 0;
+                        // 在瞬移动画播放完后再考虑切换状态，保证瞬移不被打断
                         SwitchState_Grimmchild(proj);
                     }
                 }
@@ -219,6 +215,7 @@ namespace HollowKnightItems.Content.Projectiles
                 var Projectile = proj.Projectile;
                 Player player = Main.player[Projectile.owner];
 
+                // 把目标位置定在玩家脚下
                 Vector2 dir = player.Bottom - Projectile.Bottom - new Vector2(0, 30);
                 float distance = dir.Length();
                 dir.Normalize();
@@ -266,14 +263,11 @@ namespace HollowKnightItems.Content.Projectiles
                     }
                 }
 
-                // 播放声音
-                if (Main.LocalPlayer == player)
-                {                    
-                    if (new Random().Next(0, SoundFrequency) == 0)
-                    {
-                        SoundEngine.PlaySound(GrimmchildSound_Routine);
-                    }
-                }
+                // 播放声音                 
+                if (new Random().Next(0, SoundFrequency) == 0)
+                {
+                    SoundEngine.PlaySound(GrimmchildSound_Routine, Projectile.position);
+                }                        
 
                 SwitchState_Grimmchild(proj);
             }

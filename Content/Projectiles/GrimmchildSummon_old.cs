@@ -125,6 +125,7 @@ namespace HollowKnightItems.Content.Projectiles
                 State = ProjectileState.MoveAround;  // 移动状态
             }
 
+            // 联机同步
             if (prevState != State)
             {
                 Projectile.netUpdate = true;

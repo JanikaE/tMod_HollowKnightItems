@@ -116,6 +116,10 @@ namespace HollowKnightItems.Common.Utils
             return res;
         }
 
+        /// <summary>
+        /// 切换状态：格林之子
+        /// </summary>
+        /// <param name="proj"></param>
         public static void SwitchState_Grimmchild(SMProjectile proj)
         {
             var Projectile = proj.Projectile;
@@ -142,7 +146,10 @@ namespace HollowKnightItems.Common.Utils
             else
             {
                 proj.SetState<MoveState>();  // 移动状态
-            }          
+            }
+            
+            // 联机同步
+            Projectile.netUpdate = true;
         }
 
         public static Asset<Effect> GetEffect(string fileName)

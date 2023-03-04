@@ -1,6 +1,9 @@
 displayName = 空洞骑士-格林之子
 author = 米更米
-version = 1.0.0.4
+version = 1.0.0.5
 
-hideResources = true
-includeSource = false
+hideCode = false
+hideResources = false
+includeSource = true
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
+includePDB = true
