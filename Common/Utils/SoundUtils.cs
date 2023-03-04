@@ -23,5 +23,15 @@ namespace HollowKnightItems.Common.Utils
             SoundLimitBehavior = SoundLimitBehavior.IgnoreNew,
             Type = SoundType.Sound,
         };
+
+        public static SoundStyle CarefreeMelodySound = new SoundStyle("HollowKnightItems/Assets/Audio/CarefreeMelodySound") with
+        {
+            Volume = 0.8f,
+            Pitch = 0,
+            PitchVariance = 0,
+            MaxInstances = 1,
+            SoundLimitBehavior = SoundLimitBehavior.IgnoreNew,
+            Type = SoundType.Sound,
+        };
     }
 }

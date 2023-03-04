@@ -1,6 +1,4 @@
-﻿using HollowKnightItems.Common.Players;
-using HollowKnightItems.Content.Projectiles.StateMachine;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -8,7 +6,6 @@ using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static HollowKnightItems.Content.Projectiles.GrimmchildSummon;
 
 namespace HollowKnightItems.Common.Utils
 {
@@ -95,13 +92,12 @@ namespace HollowKnightItems.Common.Utils
         }
 
         /// <summary>
-        /// 索敌
+        /// 友方单位索敌
         /// </summary>
         /// <param name="position">索敌中心</param>
         /// <param name="maxDistance">最大距离</param>
         /// <param name="predicate">额外条件</param>
-        /// <returns></returns>
-        public static NPC FindCloestEnemy(Vector2 position, float maxDistance, Func<NPC, bool> predicate)
+        public static NPC FindClosestEnemy(Vector2 position, float maxDistance, Func<NPC, bool> predicate)
         {
             NPC res = null;
             foreach (var npc in Main.npc.Where(n => n.active && !n.friendly && predicate(n)))
@@ -117,40 +113,24 @@ namespace HollowKnightItems.Common.Utils
         }
 
         /// <summary>
-        /// 切换状态：格林之子
+        /// 敌方单位索敌
         /// </summary>
-        /// <param name="proj"></param>
-        public static void SwitchState_Grimmchild(SMProjectile proj)
+        /// <param name="position">索敌中心</param>
+        /// <param name="maxDistance">最大距离</param>
+        public static Player FindClosestPlayer(Vector2 position, float maxDistance)
         {
-            var Projectile = proj.Projectile;
-            Player player = Main.player[Projectile.owner];
-            NPC npc = FindCloestEnemy(Projectile.Center, 500f, (n) =>
+            Player res = null;
+            foreach (var player in Main.player)
             {
-                return n.CanBeChasedBy() &&
-                !n.dontTakeDamage && Collision.CanHitLine(Projectile.Center, 1, 1, n.Center, 1, 1);
-            });
-
-            if (Vector2.Distance(Projectile.Center, player.Center) > 800)
-            {
-                proj.SetState<TeleportState>();  // 传送状态                  
+                float dis = Vector2.Distance(position, player.Center);
+                if (dis < maxDistance)
+                {
+                    maxDistance = dis;
+                    res = player;
+                }
             }
-            else if (npc != null & player.GetModPlayer<CharmsPlayer>().GrimmchildType)
-            {                
-                proj.SetState<ShootState>();  // 射击状态
-                proj.Target = npc.Center;
-            }
-            else if (player.sitting.isSitting || player.sleeping.isSleeping)
-            {
-                proj.SetState<RestState>();  // 休息状态
-            }
-            else
-            {
-                proj.SetState<MoveState>();  // 移动状态
-            }
-            
-            // 联机同步
-            Projectile.netUpdate = true;
-        }
+            return res;
+        }        
 
         public static Asset<Effect> GetEffect(string fileName)
         {

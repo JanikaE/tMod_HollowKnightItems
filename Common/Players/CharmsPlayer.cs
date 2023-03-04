@@ -15,17 +15,7 @@ namespace HollowKnightItems.Common.Players
         public bool HasGrimmchild;
         public bool GrimmchildType;  // 格林之子类型，true为饰品栏，false为时装栏
 
-        public int CarefreeOdds = 0;  // 无忧旋律生效概率
-
-        SoundStyle CarefreeMelodySound = new SoundStyle("HollowKnightItems/Assets/Audio/CarefreeMelodySound") with
-        {
-            Volume = 0.8f,  // 音量
-            Pitch = 0,  // 音调
-            PitchVariance = 0,  // 音调随机浮动
-            MaxInstances = 1,  // 叠加播放上限
-            SoundLimitBehavior = SoundLimitBehavior.IgnoreNew,  // 到达上限后的操作
-            Type = SoundType.Sound,   // 声音类型（音乐/音效/环境）
-        };
+        public int CarefreeOdds = 0;  // 无忧旋律生效概率        
 
         public override void ResetEffects()
         {
