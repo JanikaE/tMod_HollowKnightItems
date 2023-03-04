@@ -1,4 +1,5 @@
 global using static HollowKnightItems.Common.Utils.MyUtils;
+global using static HollowKnightItems.Common.Utils.SoundUtils;
 using HollowKnightItems.Content.Items.Charms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -103,8 +104,11 @@ namespace HollowKnightItems
                             {
                                 shop.item[nextSlot].SetDefaults(ModContent.ItemType<Grimmchild>());
                                 nextSlot++;
-                                shop.item[nextSlot].SetDefaults(ModContent.ItemType<CarefreeMelody>());
-                                nextSlot++;
+                                if (NPC.downedBoss2)
+                                {
+                                    shop.item[nextSlot].SetDefaults(ModContent.ItemType<CarefreeMelody>());
+                                    nextSlot++;
+                                }                                
                             }
                         }
                         MouseLeft = false;

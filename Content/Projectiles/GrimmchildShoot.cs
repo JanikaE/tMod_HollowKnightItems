@@ -24,7 +24,7 @@ namespace HollowKnightItems.Content.Projectiles
             Projectile.tileCollide = false;
             Projectile.netImportant = true;
 
-            Projectile.light = 0.5f;
+            Projectile.light = 0.2f;
 
             Projectile.ArmorPenetration = 9999;
         }
@@ -39,7 +39,7 @@ namespace HollowKnightItems.Content.Projectiles
             //        Projectile.frame = 0;
             //    }
             //}
-            for (int i = 0; i< 5; i++)
+            for (int i = 0; i< 3; i++)
             {
                 Dust.NewDust(Projectile.position - Projectile.velocity, 30, 30, DustID.TintableDustLighted, newColor: new Color(255, 0, 0));
             }            

@@ -5,7 +5,8 @@ using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.NPCs
 {
-    [AutoloadBossHead]
+    //[AutoloadBossHead]
+    [Autoload(false)]
     internal class Grimm : ModNPC
     {
         public enum ProjectileState
