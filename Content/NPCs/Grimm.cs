@@ -1,4 +1,6 @@
-﻿using HollowKnightItems.Content.NPCs.StateMachine;
+﻿using HollowKnightItems.Common.Systems;
+using HollowKnightItems.Content.NPCs.StateMachine;
+using HollowKnightItems.Content.Projectiles.Grimm;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -9,24 +11,13 @@ using static HollowKnightItems.Content.NPCs.Utils;
 
 namespace HollowKnightItems.Content.NPCs
 {
-    //[AutoloadBossHead]
-    [Autoload(false)]
+    [AutoloadBossHead]
     internal class Grimm : SMNPC
-    {
-        // 各状态持续的时间
-        public const int StartTime = 120;
-        public const int AngryTime = 120;
-        public const int TeleportTime = 60;
-        public const int BlowfishTime = 600;
-        public const int FlyTime = 300;
-        public const int FirebirdTime = 180;
-        public const int ThornTime = 180;
-        public const int SwoopTime = 180;
-        public const int ShoryukenTime = 180;
-
+    {        
         public const int NormalDefence = 20;
 
-        public const int AttackDistance = 600;
+        public const int AttackDistance = 400;
+        public const int SprintSpeed = 20;
 
         public override void SetStaticDefaults()
         {
@@ -34,20 +25,13 @@ namespace HollowKnightItems.Content.NPCs
             DisplayName.SetDefault("Grimm");
             DisplayName.AddTranslation(7, "格林团长");
             //Main.npcFrameCount[NPC.type] = 3;
-
-            // 免疫的buff
-            //NPCDebuffImmunityData debuffData = new NPCDebuffImmunityData
-            //{
-            //    SpecificallyImmuneTo = new int[] {
-            //        BuffID.Poisoned,
-            //    }
-            //};
         }
 
         public override void SetDefaults()
         {
-            NPC.width = 0;
-            NPC.height = 0;  // 这两个代表这个NPC的碰撞箱宽高，以及tr会从你的贴图里扣多大的图
+            NPC.width = 120;
+            NPC.height = 120;  // 这两个代表这个NPC的碰撞箱宽高，以及tr会从你的贴图里扣多大的图
+            NPC.aiStyle = -1;
             NPC.damage = 100;
             NPC.lifeMax = 8000;
             NPC.defense = 0;  // 在每个状态里再分别写防御
@@ -79,6 +63,41 @@ namespace HollowKnightItems.Content.NPCs
             RegisterState(new ShoryukenState());
         }
 
+        public override bool CheckDead()
+        {
+            return false;
+        }
+
+        public override void OnKill()
+        {
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
+            base.OnKill();
+        }
+
+        public override bool CanHitPlayer(Player target, ref int cooldownSlot)
+        {
+            // 使用BOSS免疫冷却时间计数器，防止通过从其他来源受到伤害来忽略BOSS攻击
+            cooldownSlot = ImmunityCooldownID.Bosses;  
+            return true;
+        }
+
+        public override void AIBefore()
+        {
+            // 索敌
+            if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
+            {
+                NPC.TargetClosest();
+            }
+
+            Player player = Main.player[NPC.target];
+            if (player.dead)
+            {
+                // 如果玩家寄了就让Boss消失
+                NPC.EncourageDespawn(10);
+                return;
+            }
+        }
+
         public class StartState : NPCState
         {
             public override void AI(SMNPC n)
@@ -97,25 +116,24 @@ namespace HollowKnightItems.Content.NPCs
                 // 正常的状态
                 else
                 {
-                    if (n.Timer < StartTime * 0.25)
+                    // 根据计时器切换帧图
+                    switch (n.Timer)
                     {
-                        // frame
+                        case 1 || 60:
+                            // frame
+                            break;
+                        case 30:
+                            // frame
+                            break;
+                        case 90:
+                            // 切换至Teleport状态
+                            n.SetState<TeleportState>();
+                            n.Timer = 0;
+                            npc.netUpdate = true;
+                            break;
                     }
-                    else if (n.Timer < StartTime * 0.75)
-                    {
-                        // frame
-                    }
-                    else if (n.Timer < StartTime)
-                    {
-                        // frame
-                    }
-                    else if (n.Timer == StartTime)
-                    {
-                        n.SetState<TeleportState>();                        
-                        n.Timer = 0;
-                        npc.netUpdate = true;
-                    }
-                }                
+                }
+
                 n.Timer++;
             }
         }
@@ -127,22 +145,23 @@ namespace HollowKnightItems.Content.NPCs
                 NPC npc = n.NPC;
                 npc.defense = 9999;
 
-                if (n.Timer < AngryTime)
+                switch (n.Timer) 
                 {
-                    // frame
+                    case 1:
+                        // angry frame
+                        break;
+                    case 60:
+                        // teleport frame
+                        break;
+                    case 120:
+                        // 切换至Blowfish状态
+                        n.SetState<BlowfishState>();
+                        n.Stage++;
+                        n.Timer = 0;
+                        npc.netUpdate = true;
+                        break;
                 }
-                // 把传送的动画也一并放这里了
-                else if (n.Timer < AngryTime + TeleportTime)
-                {
-                    // frame
-                }
-                else if (n.Timer == AngryTime + TeleportTime)
-                {
-                    n.SetState<BlowfishState>();
-                    n.Stage++;
-                    n.Timer = 0;
-                    npc.netUpdate = true;
-                }
+
                 n.Timer++;
             }
         }
@@ -156,12 +175,12 @@ namespace HollowKnightItems.Content.NPCs
 
                 // frame
 
-                if (n.Timer == TeleportTime)
+                if (n.Timer == 60)
                 {
-                    // 在血量下降到一定程度时变为Blowfish状态
-                    if (npc.life < npc.lifeMax * 0.8 && n.Stage == 0 ||
-                        npc.life < npc.lifeMax * 0.5 && n.Stage == 1 ||
-                        npc.life < npc.lifeMax * 0.2 && n.Stage == 2)
+                    // 在血量下降到一定程度时切换至Blowfish状态
+                    if (npc.life < npc.lifeMax * 0.8 && n.Stage % 10 == 0 ||
+                        npc.life < npc.lifeMax * 0.5 && n.Stage % 10 == 1 ||
+                        npc.life < npc.lifeMax * 0.2 && n.Stage % 10 == 2)
                     {
                         n.SetState<BlowfishState>();
                         n.Stage++;
@@ -202,12 +221,12 @@ namespace HollowKnightItems.Content.NPCs
                 NPC npc = n.NPC;
                 npc.defense = 9999;
 
-                Player player = Main.player[npc.FindClosestPlayer()];
+                Player player = Main.player[npc.target];
 
                 if (n.Timer == 1)
                 {
                     // 传送至目标玩家上方
-                    npc.Teleport(new Vector2(player.position.X, player.position.Y - AttackDistance));
+                    npc.position = new Vector2(player.position.X, player.position.Y - AttackDistance);
                 }
 
                 // frame
@@ -215,9 +234,9 @@ namespace HollowKnightItems.Content.NPCs
                 // 弹幕
                 //
 
-                if (n.Timer == BlowfishTime)
+                if (n.Timer == 600)
                 {
-                    // 切换状态
+                    // 切换至Teleport状态
                     n.SetState<TeleportState>();
                     n.Timer = 0;
                     npc.netUpdate = true;
@@ -234,21 +253,26 @@ namespace HollowKnightItems.Content.NPCs
                 NPC npc = n.NPC;
                 npc.defense = 0;
 
-                // 行为
-                // 乱飞
+                // frame
 
-                if (n.Timer < FlyTime)
+                // 乱飞
+                // 将当前速度方向转换为角度
+                float dir = (float)Math.Atan2(npc.velocity.Y, npc.velocity.X);
+                // 随机转向
+                int turn = new Random().Next(-60, 60);
+                // 新速度方向的弧度
+                float dir_new = (float)((dir + turn) * Math.PI / 180);
+                npc.velocity = 60 * dir_new.ToRotationVector2();
+                                
+                if (n.Timer == 300)
                 {
-                    // frame
-                }
-                if (n.Timer == FlyTime)
-                {
-                    // 切换状态
+                    // 切换至Teleport状态
                     n.SetState<TeleportState>();
                     n.Timer = 0;
                     npc.netUpdate = true;
                 }
 
+                npc.spriteDirection = npc.direction;
                 n.Timer++;
             }
         }
@@ -259,29 +283,37 @@ namespace HollowKnightItems.Content.NPCs
             {
                 NPC npc = n.NPC;
                 npc.defense = NormalDefence;
+                Player player = Main.player[npc.target];
 
-                Player player = Main.player[npc.FindClosestPlayer()];
-                if (n.Timer == 1)
+                // 根据计时器切换子状态
+                switch (n.Timer)
                 {
-                    // 传送至目标玩家面朝的方向
-                    Vector2 place = player.direction > 0 ? new Vector2(AttackDistance, 0) : new Vector2(-AttackDistance, 0);                    
-                    npc.Teleport(player.position + place);
-                    // 让npc面朝玩家
-                    npc.spriteDirection = player.direction * (-1);
+                    case 1:
+                        // 传送至目标玩家面朝的方向
+                        Vector2 place = player.direction > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
+                        npc.position = player.position + place * AttackDistance;
+                        // 让npc面朝玩家
+                        npc.spriteDirection = -(int)place.X;
+                        break;
+                    case 20 || 50 || 80:
+                        // frame
+                        // 弹幕                        
+                        Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                npc.position + new Vector2(npc.spriteDirection * 60, 0),
+                                                new Vector2(npc.spriteDirection * 20, 0),
+                                                ModContent.ProjectileType<GrimmFirebird>(),
+                                                npc.damage,
+                                                0.2f,
+                                                npc.whoAmI);
+                        break;
+                    case 110:
+                        n.SetState<TeleportState>();
+                        n.Timer = 0;
+                        npc.netUpdate = true;
+                        break;
                 }
-
-                // frame
-
-                // 弹幕
 
                 SwitchStateToFly(n);
-                if (n.Timer == FirebirdTime)
-                {
-                    n.SetState<TeleportState>();
-                    n.Timer = 0;
-                    npc.netUpdate = true;
-                }
-
                 n.Timer++;
             }
         }
@@ -292,29 +324,35 @@ namespace HollowKnightItems.Content.NPCs
             {
                 NPC npc = n.NPC;
                 npc.defense = NormalDefence;
+                Player player = Main.player[npc.target];
 
-                Player player = Main.player[npc.FindClosestPlayer()];
-                if (n.Timer == 1)
+                // 根据计时器切换子状态
+                switch (n.Timer)
                 {
-                    // 传送至目标玩家面前一段距离
-                    Vector2 place = player.direction > 0 ? new Vector2(AttackDistance, 0) : new Vector2(-AttackDistance, 0);
-                    npc.Teleport(player.position + place);
-                    // 让npc面朝玩家
-                    npc.spriteDirection = player.direction * (-1);
+                    case 1:
+                        // 传送至目标玩家面朝的方向
+                        Vector2 place = player.direction > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
+                        npc.position = player.position + place * AttackDistance;
+                        // 让npc面朝玩家
+                        npc.spriteDirection = -(int)place.X;
+                        break;
+                    case 10:
+                        // frame
+                        // 地刺预备
+                        break;
+                    case 50:
+                        // frame
+                        // 地刺
+                        break;
+                    case 120:
+                        // 切换至Teleport状态
+                        n.SetState<TeleportState>();
+                        n.Timer = 0;
+                        npc.netUpdate = true;
+                        break;
                 }
-
-                // frame
-
-                // 地刺
 
                 SwitchStateToFly(n);
-                if (n.Timer == ThornTime)
-                {
-                    n.SetState<TeleportState>();
-                    n.Timer = 0;
-                    npc.netUpdate = true;
-                }
-
                 n.Timer++;
             }
         }
@@ -325,36 +363,48 @@ namespace HollowKnightItems.Content.NPCs
             {
                 NPC npc = n.NPC;
                 npc.defense = NormalDefence;
+                Player player = Main.player[npc.target];
 
-                Player player = Main.player[npc.FindClosestPlayer()];
-                if (n.Timer == 1)
+                // 根据计时器切换子状态
+                switch (n.Timer) 
                 {
-                    // 传送至目标玩家面前斜上方一段距离
-                    Vector2 place = player.direction > 0 ? new Vector2(AttackDistance, -AttackDistance) : new Vector2(-AttackDistance, -AttackDistance);
-                    npc.Teleport(player.position + place);
-                    // 让npc面朝玩家
-                    npc.spriteDirection = player.direction * (-1);
+                    case 1:
+                        // 传送至目标玩家面前斜上方一段距离
+                        Vector2 place = player.direction > 0 ? new Vector2(1, -1) : new Vector2(-1, -1);
+                        npc.position = player.position + place * AttackDistance;
+                        npc.velocity = -place;
+                        break;
+                    case 10:                    
+                        // frame
+                        // 俯冲
+                        npc.velocity *= SprintSpeed;
+                        break;                    
+                    case 70:                    
+                        // frame
+                        // 停顿
+                        Vector2 tar = player.position - npc.position;
+                        npc.velocity = tar.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
+                        break;
+                    case 80:
+                        // frame
+                        // 横冲
+                        npc.velocity *= SprintSpeed;
+                        break;
+                    case 140:
+                        // frame
+                        // 停顿
+                        npc.velocity *= 1 / SprintSpeed;
+                        break;
+                    case 150:
+                        // 切换至Teleport状态
+                        n.SetState<TeleportState>();
+                        n.Timer = 0;
+                        npc.netUpdate = true;
+                        break;
                 }
 
-                if (n.Timer < SwoopTime * 0.5)
-                {
-                    // frame
-                    // 俯冲
-                }
-                else
-                {
-                    // frame
-                    // 横冲
-                }
-
+                npc.spriteDirection = npc.direction;
                 SwitchStateToFly(n);
-                if (n.Timer == SwoopTime)
-                {
-                    n.SetState<TeleportState>();
-                    n.Timer = 0;
-                    npc.netUpdate = true;
-                }
-
                 n.Timer++;
             }
         }
@@ -365,36 +415,48 @@ namespace HollowKnightItems.Content.NPCs
             {
                 NPC npc = n.NPC;
                 npc.defense = NormalDefence;
+                Player player = Main.player[npc.target];
 
-                Player player = Main.player[npc.FindClosestPlayer()];
-                if (n.Timer == 1)
+                // 根据计时器切换子状态
+                switch (n.Timer)
                 {
-                    // 传送至目标玩家面前一段距离
-                    Vector2 place = player.direction > 0 ? new Vector2(AttackDistance, 0) : new Vector2(-AttackDistance, 0);
-                    npc.Teleport(player.position + place);
-                    // 让npc面朝玩家
-                    npc.spriteDirection = player.direction * (-1);
+                    case 1:
+                        // 传送至目标玩家面前一段距离
+                        Vector2 place = player.direction > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
+                        npc.position = player.position + place * AttackDistance;
+                        npc.velocity = -place;
+                        break;
+                    case 10:
+                        // frame
+                        // 横冲
+                        npc.velocity *= SprintSpeed;
+                        break;
+                    case 70:
+                        // frame
+                        // 停顿
+                        npc.velocity = npc.velocity.X > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
+                        break;
+                    case 80:
+                        // frame
+                        // 升龙拳
+                        npc.velocity *= SprintSpeed;
+                        break;
+                    case 140:
+                        // frame
+                        // 停顿
+                        npc.velocity *= 1 / SprintSpeed;
+                        // 弹幕
+                        break;
+                    case 150:
+                        // 切换至Teleport状态
+                        n.SetState<TeleportState>();
+                        n.Timer = 0;
+                        npc.netUpdate = true;
+                        break;
                 }
 
-                if (n.Timer < ShoryukenTime * 0.5)
-                {
-                    // frame
-                    // 横冲
-                }
-                else
-                {
-                    // frame
-                    // 升龙拳
-                }
-
+                npc.spriteDirection = npc.direction;
                 SwitchStateToFly(n);
-                if (n.Timer == ShoryukenTime)
-                {
-                    n.SetState<TeleportState>();
-                    n.Timer = 0;
-                    npc.netUpdate = true;
-                }
-
                 n.Timer++;
             }
         }
@@ -412,6 +474,7 @@ namespace HollowKnightItems.Content.NPCs
                 n.SetState<FlyState>();
                 n.Stage += 10;
                 n.Timer = 0;
+                npc.velocity = new Vector2(npc.spriteDirection * 60, 0);
                 npc.netUpdate = true;
             }
         }

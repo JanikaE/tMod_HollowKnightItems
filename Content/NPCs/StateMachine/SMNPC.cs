@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.NPCs.StateMachine
@@ -38,6 +39,7 @@ namespace HollowKnightItems.Content.NPCs.StateMachine
             var name = typeof(T).FullName;
             if (!StateDict.ContainsKey(name)) throw new ArgumentException("这个状态并不存在");
             State = StateDict[name];
+            Main.NewText(name);
         }
 
         /// <summary>

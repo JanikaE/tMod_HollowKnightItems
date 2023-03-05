@@ -1,6 +1,6 @@
 ﻿using HollowKnightItems.Common.Players;
 using HollowKnightItems.Content.Buffs;
-using HollowKnightItems.Content.Projectiles;
+using HollowKnightItems.Content.Projectiles.Grimmchild;
 using HollowKnightItems.Content.Rarities;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;

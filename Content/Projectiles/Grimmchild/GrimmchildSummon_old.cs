@@ -8,7 +8,7 @@ using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Content.Projectiles
+namespace HollowKnightItems.Content.Projectiles.Grimmchild
 {
     [Autoload(false)]
     internal class GrimmchildSummon_old : ModProjectile
@@ -30,7 +30,7 @@ namespace HollowKnightItems.Content.Projectiles
         public int ShootCtrl
         {
             get { return (int)Projectile.ai[1]; }
-            set { Projectile.ai[1] = (int)value; }
+            set { Projectile.ai[1] = value; }
         }
 
         // 一些标记变量
@@ -55,7 +55,7 @@ namespace HollowKnightItems.Content.Projectiles
             MaxInstances = 1,
             SoundLimitBehavior = SoundLimitBehavior.IgnoreNew,
             Type = SoundType.Sound,
-        };        
+        };
 
         public override void SetStaticDefaults()
         {
@@ -267,13 +267,13 @@ namespace HollowKnightItems.Content.Projectiles
                 if (Projectile.frame == 6)
                 {
                     if (ShootCtrl == 3)  // 循环两轮运动动画再进入攻击动画
-                    {                        
+                    {
                         ShootCtrl = 0;
                     }
                     else
                     {
                         Projectile.frame = 0;
-                        ShootCtrl++;                        
+                        ShootCtrl++;
                     }
                 }
                 if (Projectile.frame == 13)

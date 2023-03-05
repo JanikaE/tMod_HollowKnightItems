@@ -7,11 +7,11 @@ using Terraria;
 using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
-using static HollowKnightItems.Content.Projectiles.GrimmchildSummon;
-using static HollowKnightItems.Content.Projectiles.Utils;
+using static HollowKnightItems.Content.Projectiles.Grimmchild.GrimmchildSummon;
+using static HollowKnightItems.Content.Projectiles.Grimmchild.Utils;
 
 
-namespace HollowKnightItems.Content.Projectiles
+namespace HollowKnightItems.Content.Projectiles.Grimmchild
 {
     internal class GrimmchildSummon : SMProjectile
     {
@@ -100,7 +100,7 @@ namespace HollowKnightItems.Content.Projectiles
                     Projectile.frame++;
                     if (Projectile.frame == 6 || Projectile.frame == 13)  // 有可能在进入移动状态后处于攻击动画中
                     {
-                        Projectile.frame = 0;                        
+                        Projectile.frame = 0;
                     }
                 }
                 proj.Timer = 1;
@@ -116,7 +116,7 @@ namespace HollowKnightItems.Content.Projectiles
         }
 
         public class ShootState : ProjState
-        {            
+        {
             public override void AI(SMProjectile proj)
             {
                 var Projectile = proj.Projectile;
@@ -177,7 +177,7 @@ namespace HollowKnightItems.Content.Projectiles
                     }
                     if (Projectile.frame == 13)
                     {
-                        Projectile.frame = 0;                                               
+                        Projectile.frame = 0;
                     }
                 }
 
@@ -192,11 +192,12 @@ namespace HollowKnightItems.Content.Projectiles
                 var Projectile = proj.Projectile;
                 Player player = Main.player[Projectile.owner];
 
-                if (Vector2.Distance(Projectile.Center, player.Center) > 800){
+                if (Vector2.Distance(Projectile.Center, player.Center) > 800)
+                {
                     Projectile.position = player.Center + new Vector2(-15, -20);  // 传送至与玩家重合位置，尽量防止传送后被卡住
                     Projectile.frame = 13;
                 }
-                
+
                 if (++Projectile.frameCounter >= FrameCount)  // 每张帧图持续帧数
                 {
                     Projectile.frameCounter = 0;
@@ -271,7 +272,7 @@ namespace HollowKnightItems.Content.Projectiles
                 if (new Random().Next(0, SoundFrequency) == 0)
                 {
                     SoundEngine.PlaySound(GrimmchildSound_Routine, Projectile.position);
-                }                        
+                }
 
                 SwitchState_Grimmchild(proj);
             }

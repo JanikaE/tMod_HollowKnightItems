@@ -4,7 +4,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Content.Projectiles
+namespace HollowKnightItems.Content.Projectiles.Grimmchild
 {
     internal class GrimmchildShoot : ModProjectile
     {
@@ -42,10 +42,10 @@ namespace HollowKnightItems.Content.Projectiles
             //}
 
             // 弹幕拖尾的Dust
-            for (int i = 0; i< 3; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Dust.NewDust(Projectile.position - Projectile.velocity, 30, 30, DustID.TintableDustLighted, newColor: new Color(255, 0, 0));
-            }            
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
