@@ -18,9 +18,11 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             Projectile.penetrate = 10;
             Projectile.timeLeft = 200;
             Projectile.friendly = false;
+            Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.netImportant = true;
+            Projectile.aiStyle = -1;
 
             Projectile.light = 0.2f;
         }

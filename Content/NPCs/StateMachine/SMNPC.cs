@@ -29,6 +29,11 @@ namespace HollowKnightItems.Content.NPCs.StateMachine
             get { return (int)NPC.ai[2]; }
             set { NPC.ai[2] = value; }
         }
+        public int Any
+        {
+            get { return (int)NPC.ai[3]; }
+            set { NPC.ai[3] = value; }
+        }
 
         /// <summary>
         /// 把当前状态变为指定的NPC状态实例

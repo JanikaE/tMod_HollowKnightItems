@@ -3,6 +3,7 @@ using HollowKnightItems.Content.NPCs.StateMachine;
 using HollowKnightItems.Content.Projectiles.Grimm;
 using Microsoft.Xna.Framework;
 using System;
+using System.Drawing.Imaging;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -16,8 +17,8 @@ namespace HollowKnightItems.Content.NPCs
     {        
         public const int NormalDefence = 20;
 
-        public const int AttackDistance = 400;
-        public const int SprintSpeed = 20;
+        public const int AttackDistance = 500;
+        public const int SprintSpeed = 10;
 
         public override void SetStaticDefaults()
         {
@@ -119,7 +120,8 @@ namespace HollowKnightItems.Content.NPCs
                     // 根据计时器切换帧图
                     switch (n.Timer)
                     {
-                        case 1 || 60:
+                        case 1:
+                        case 60:
                             // frame
                             break;
                         case 30:
@@ -190,21 +192,7 @@ namespace HollowKnightItems.Content.NPCs
                     // 一般情况下在4个attack状态中随机选一个
                     else
                     {
-                        switch (new Random().Next(0, 4)) 
-                        {
-                            case 0:
-                                n.SetState<FirebirdState>();
-                                break;
-                            case 1:
-                                n.SetState<ThornState>();
-                                break;
-                            case 2:
-                                n.SetState<SwoopState>();
-                                break;
-                            case 3:
-                                n.SetState<ShoryukenState>();
-                                break;
-                        }                        
+                        SwitchStateToAttack(n);
                     }
                     n.Timer = 0;
                     npc.netUpdate = true;
@@ -292,19 +280,20 @@ namespace HollowKnightItems.Content.NPCs
                         // 传送至目标玩家面朝的方向
                         Vector2 place = player.direction > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         npc.position = player.position + place * AttackDistance;
-                        // 让npc面朝玩家
-                        npc.spriteDirection = -(int)place.X;
                         break;
-                    case 20 || 50 || 80:
+                    case 20:
+                    case 50:
+                    case 80:
                         // frame
                         // 弹幕                        
                         Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                npc.position + new Vector2(npc.spriteDirection * 60, 0),
-                                                new Vector2(npc.spriteDirection * 20, 0),
+                                                npc.position + new Vector2(-npc.spriteDirection * 60, 0),
+                                                new Vector2(-npc.spriteDirection * 20, 0),
                                                 ModContent.ProjectileType<GrimmFirebird>(),
                                                 npc.damage,
                                                 0.2f,
                                                 npc.whoAmI);
+                        Main.NewText($"弹幕呢弹幕?");
                         break;
                     case 110:
                         n.SetState<TeleportState>();
@@ -313,6 +302,9 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
+                // 让npc面朝玩家
+                // spriteDirection = 1意为翻转
+                npc.spriteDirection = player.position.X - npc.position.X > 0 ? -1 : 1;
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -332,9 +324,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 1:
                         // 传送至目标玩家面朝的方向
                         Vector2 place = player.direction > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
-                        npc.position = player.position + place * AttackDistance;
-                        // 让npc面朝玩家
-                        npc.spriteDirection = -(int)place.X;
+                        npc.position = player.position + place * AttackDistance;                        
                         break;
                     case 10:
                         // frame
@@ -352,6 +342,8 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
+                // 让npc面朝玩家
+                npc.spriteDirection = player.position.X - npc.position.X > 0 ? -1 : 1;
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -379,23 +371,23 @@ namespace HollowKnightItems.Content.NPCs
                         // 俯冲
                         npc.velocity *= SprintSpeed;
                         break;                    
-                    case 70:                    
+                    case 60:                    
                         // frame
                         // 停顿
                         Vector2 tar = player.position - npc.position;
                         npc.velocity = tar.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         break;
-                    case 80:
+                    case 70:
                         // frame
                         // 横冲
                         npc.velocity *= SprintSpeed;
                         break;
-                    case 140:
+                    case 120:
                         // frame
                         // 停顿
                         npc.velocity *= 1 / SprintSpeed;
                         break;
-                    case 150:
+                    case 130:
                         // 切换至Teleport状态
                         n.SetState<TeleportState>();
                         n.Timer = 0;
@@ -403,7 +395,8 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
-                npc.spriteDirection = npc.direction;
+                // npc.direction貌似有点问题，先这么写着
+                npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -431,23 +424,23 @@ namespace HollowKnightItems.Content.NPCs
                         // 横冲
                         npc.velocity *= SprintSpeed;
                         break;
-                    case 70:
+                    case 60:
                         // frame
                         // 停顿
-                        npc.velocity = npc.velocity.X > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
+                        npc.velocity = npc.velocity.X > 0 ? new Vector2(1, -1) : new Vector2(-1, -1);
                         break;
-                    case 80:
+                    case 70:
                         // frame
                         // 升龙拳
                         npc.velocity *= SprintSpeed;
                         break;
-                    case 140:
+                    case 120:
                         // frame
                         // 停顿
                         npc.velocity *= 1 / SprintSpeed;
                         // 弹幕
                         break;
-                    case 150:
+                    case 130:
                         // 切换至Teleport状态
                         n.SetState<TeleportState>();
                         n.Timer = 0;
@@ -455,7 +448,8 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
-                npc.spriteDirection = npc.direction;
+                // npc.direction貌似有点问题，先这么写着
+                npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -478,6 +472,32 @@ namespace HollowKnightItems.Content.NPCs
                 npc.netUpdate = true;
             }
         }
-    }
 
+        public static void SwitchStateToAttack(SMNPC n)
+        {
+            int State = new Random().Next(1, 5);
+            // 避免连续切换至同一状态
+            while(State == n.Any)
+            {
+                State = new Random().Next(1, 5);
+            }
+
+            switch (State)
+            {
+                case 1:
+                    n.SetState<FirebirdState>();
+                    break;
+                case 2:
+                    n.SetState<ThornState>();
+                    break;
+                case 3:
+                    n.SetState<SwoopState>();
+                    break;
+                case 4:
+                    n.SetState<ShoryukenState>();
+                    break;
+            }
+            n.Any = State;
+        }
+    }
 }
