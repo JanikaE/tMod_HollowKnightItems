@@ -14,21 +14,33 @@ namespace HollowKnightItems.Content.NPCs.StateMachine
         public List<NPCState> NPCStates = new();
         public Dictionary<string, int> StateDict = new();
 
+        /// <summary>
+        /// 状态
+        /// </summary>
         public int State
         {
             get { return (int)NPC.ai[0]; }
             set { NPC.ai[0] = (int)value; }
         }
+        /// <summary>
+        /// 计时器
+        /// </summary>
         public int Timer
         {
             get { return (int)NPC.ai[1]; }
             set { NPC.ai[1] = value; }
         }
+        /// <summary>
+        /// 阶段
+        /// </summary>
         public int Stage
         {
             get { return (int)NPC.ai[2]; }
             set { NPC.ai[2] = value; }
         }
+        /// <summary>
+        /// 自定义
+        /// </summary>
         public int Any
         {
             get { return (int)NPC.ai[3]; }
