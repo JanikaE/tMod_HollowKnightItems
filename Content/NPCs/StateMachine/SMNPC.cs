@@ -107,5 +107,7 @@ namespace HollowKnightItems.Content.NPCs.StateMachine
     {
         // AI函数接受一个SMNPC类型的mod NPC对象
         public abstract void AI(SMNPC n);
+
+        //public abstract void FindFrame(SMNPC n, int frameHeight);
     }
 }
