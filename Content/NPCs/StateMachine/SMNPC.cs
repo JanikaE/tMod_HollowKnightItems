@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
@@ -101,6 +102,12 @@ namespace HollowKnightItems.Content.NPCs.StateMachine
         /// 在状态机执行之后要执行的代码，可以重写
         /// </summary>
         public virtual void AIBefore() { }
+
+        public void GetFrame(int y)
+        {
+            NPC npc = this.NPC;
+            npc.frame = new Rectangle(0, npc.height * y, npc.width, npc.height);
+        }
     }
 
     public abstract class NPCState

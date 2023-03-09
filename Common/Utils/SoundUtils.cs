@@ -4,7 +4,7 @@ namespace HollowKnightItems.Common.Utils
 {
     internal static class SoundUtils
     {
-        public static SoundStyle GrimmchildSound_Attack = new SoundStyle("HollowKnightItems/Assets/Audio/GrimmchildAttack_", 2) with
+        public static SoundStyle GrimmchildSound_Attack = new SoundStyle("HollowKnightItems/Assets/Music/GrimmchildAttack_", 2) with
         {
             Volume = 0.8f,  // 音量
             Pitch = 0,  // 音调
@@ -14,7 +14,7 @@ namespace HollowKnightItems.Common.Utils
             Type = SoundType.Sound,   // 声音类型（音乐/音效/环境）
         };
 
-        public static SoundStyle GrimmchildSound_Routine = new SoundStyle("HollowKnightItems/Assets/Audio/GrimmchildRoutine_", 6) with
+        public static SoundStyle GrimmchildSound_Routine = new SoundStyle("HollowKnightItems/Assets/Music/GrimmchildRoutine_", 6) with
         {
             Volume = 1f,
             Pitch = 0,
@@ -24,9 +24,9 @@ namespace HollowKnightItems.Common.Utils
             Type = SoundType.Sound,
         };
 
-        public static SoundStyle CarefreeMelodySound = new SoundStyle("HollowKnightItems/Assets/Audio/CarefreeMelodySound") with
+        public static SoundStyle CarefreeMelodySound = new SoundStyle("HollowKnightItems/Assets/Music/CarefreeMelodySound") with
         {
-            Volume = 0.8f,
+            Volume = 0.5f,
             Pitch = 0,
             PitchVariance = 0,
             MaxInstances = 1,

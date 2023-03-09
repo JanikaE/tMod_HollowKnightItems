@@ -1,6 +1,6 @@
 ﻿using HollowKnightItems.Common.Systems;
 using HollowKnightItems.Content.NPCs.StateMachine;
-using HollowKnightItems.Content.Projectiles.Grimm;
+using HollowKnightItems.Content.Projectiles.GrimmBoss;
 using Microsoft.Xna.Framework;
 using System;
 using Terraria;
@@ -16,15 +16,15 @@ namespace HollowKnightItems.Content.NPCs
     {        
         public const int NormalDefence = 20;
 
-        public const int AttackDistance = 400;
-        public const int DashSpeed = 10;
+        public const int AttackDistance = 280;
+        public const int DashSpeed = 7;
 
         public override void SetStaticDefaults()
         {
             // 这里以后写到Localization里去
             DisplayName.SetDefault("Grimm");
             DisplayName.AddTranslation(7, "格林团长");
-            Main.npcFrameCount[NPC.type] = 3;
+            Main.npcFrameCount[NPC.type] = 15;
         }
 
         public override void SetDefaults()
@@ -49,7 +49,11 @@ namespace HollowKnightItems.Content.NPCs
             NPC.boss = true;  // 将npc设为boss。会掉弱治药水和心，会显示xxx已被击败，会有血条
             NPC.dontTakeDamage = false;  // 为true则为无敌。弹幕不会打到npc，并且不显示npc的血条
             NPC.netAlways = true;
-            Music = MusicLoader.GetMusicSlot("HollowKnightItems/Assets/Audio/TheGrimmTroupe");
+
+            if (!Main.dedServ)
+            {
+                Music = MusicLoader.GetMusicSlot(Mod, "Assets/Music/TheGrimmTroupe");
+            }
         }
 
         public override void Initialize()
@@ -130,10 +134,10 @@ namespace HollowKnightItems.Content.NPCs
                     {
                         case 1:
                         case 60:
-                            GetFrame(n, 0);
+                            n.GetFrame((int)Frame.Start);
                             break;
                         case 30:
-                            GetFrame(n, 0);
+                            n.GetFrame((int)Frame.Bow);
                             break;
                         case 90:
                             // 切换至Teleport状态
@@ -158,13 +162,13 @@ namespace HollowKnightItems.Content.NPCs
                 switch (n.Timer) 
                 {
                     case 1:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Angry);
                         break;
                     case 60:
-                        GetFrame(n, 1);
+                        n.GetFrame((int)Frame.Teleport);
                         break;
                     case 70:
-                        GetFrame(n, 2);
+                        n.GetFrame((int)Frame.None);
                         break;
                     case 120:
                         // 切换至Blowfish状态
@@ -187,12 +191,19 @@ namespace HollowKnightItems.Content.NPCs
                 npc.defense = 9999;
                 npc.velocity = Vector2.Zero;
                 Player player = Main.player[npc.target];
+                Vector2 pos;
 
                 switch (n.Timer) 
                 {
                     case 1:
-                        GetFrame(n, 1);
-                        // Dust
+                        n.GetFrame((int)Frame.Teleport);
+
+                        // Teleport的Dust
+                        pos = new(npc.position.X, npc.position.Y + npc.height);
+                        for (int i = 0; i < 200; i++)
+                        {
+                            Dust.NewDust(pos, npc.width, 0, DustID.TintableDustLighted, SpeedY: -4, newColor: new Color(255, 0, 0));
+                        }
                         
                         // 在血量下降到一定程度时，切换至Blowfish状态
                         // 用n.Stage的个位标记Blowfish次数
@@ -215,11 +226,10 @@ namespace HollowKnightItems.Content.NPCs
                         }                        
                         break;
                     case 10:
-                        GetFrame(n, 2);
+                        n.GetFrame((int)Frame.None);
                         break;
                     case 60:
-                        GetFrame(n, 1);
-                        // Dust
+                        n.GetFrame((int)Frame.Teleport);                        
 
                         // 瞬移
                         float x, y;
@@ -246,6 +256,14 @@ namespace HollowKnightItems.Content.NPCs
                                 npc.position = new Vector2(x, y);
                                 break;
                         }
+
+                        // Teleport的Dust
+                        pos = new(npc.position.X, npc.position.Y + npc.height);
+                        for (int i = 0; i < 200; i++)
+                        {
+                            Dust.NewDust(pos, npc.width, 0, DustID.TintableDustLighted, SpeedY: -4, newColor: new Color(255, 0, 0));
+                        }
+
                         break;
                     case 70:
                         // 切换状态
@@ -284,7 +302,7 @@ namespace HollowKnightItems.Content.NPCs
                 NPC npc = n.NPC;
                 npc.defense = 9999;
                 npc.velocity = Vector2.Zero;
-                GetFrame(n, 0);
+                n.GetFrame((int)Frame.Blowfish);
                 
                 // 弹幕
                 //
@@ -308,7 +326,7 @@ namespace HollowKnightItems.Content.NPCs
                 NPC npc = n.NPC;
                 npc.defense = 0;
                 Player player = Main.player[npc.target];
-                GetFrame(n, 0);
+                n.GetFrame((int)Frame.Fly);
 
                 // 乱飞
                 // 把移动目标定在玩家头顶
@@ -329,7 +347,7 @@ namespace HollowKnightItems.Content.NPCs
                                                     ModContent.ProjectileType<GrimmFly>(),
                                                     0,
                                                     0,
-                                                    npc.whoAmI);
+                                                    Main.myPlayer);
                         }
                         break;
                     case 300:
@@ -358,20 +376,22 @@ namespace HollowKnightItems.Content.NPCs
                 switch (n.Timer)
                 {
                     case 1:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Flybird);
                         break;
                     case 20:
                     case 50:
                     case 80:
-                        // 弹幕                        
-                        Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                npc.position + new Vector2(-npc.spriteDirection * 60, 0),
-                                                new Vector2(-npc.spriteDirection * 20, 0),
-                                                ModContent.ProjectileType<GrimmFirebird>(),
-                                                npc.damage,
-                                                0.2f,
-                                                npc.whoAmI);
-                        Main.NewText($"弹幕呢弹幕?");
+                        // 弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                    npc.Center,
+                                                    new Vector2(-npc.spriteDirection * 20, 0),
+                                                    ModContent.ProjectileType<GrimmFirebird>(),
+                                                    npc.damage,
+                                                    0.2f,
+                                                    Main.myPlayer);
+                        }                        
                         break;
                     case 110:
                         n.SetState<TeleportState>();
@@ -400,14 +420,11 @@ namespace HollowKnightItems.Content.NPCs
                 switch (n.Timer)
                 {
                     case 1:
-                        GetFrame(n, 0);
-                        break;
-                    case 10:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Thorn1);
                         // 地刺预备
                         break;
-                    case 50:
-                        GetFrame(n, 0);
+                    case 40:
+                        n.GetFrame((int)Frame.Thorn2);
                         // 地刺
                         break;
                     case 120:
@@ -437,7 +454,7 @@ namespace HollowKnightItems.Content.NPCs
                 switch (n.Timer) 
                 {
                     case 1:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Swoop1);
                         // 给一个小的初速度
                         npc.velocity = player.direction > 0 ? new Vector2(-1, 1) : new Vector2(1, 1);
                         break;
@@ -450,14 +467,13 @@ namespace HollowKnightItems.Content.NPCs
                         npc.velocity = player.position.X - npc.position.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         break;
                     case 55:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Swoop2);
                         break;
                     case 60:
                         // 横冲
                         npc.velocity *= DashSpeed;
                         break;
                     case 100:
-                        GetFrame(n, 0);
                         // 停顿
                         npc.velocity *= 1 / DashSpeed;
                         break;
@@ -488,12 +504,12 @@ namespace HollowKnightItems.Content.NPCs
                 switch (n.Timer)
                 {
                     case 1:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Sho1);
                         // 给一个小的初速度
                         npc.velocity = player.direction > 0 ? new Vector2(-1, 0) : new Vector2(1, 0);
                         break;
                     case 10:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Sho2);
                         // 横冲
                         npc.velocity *= DashSpeed;
                         break;
@@ -502,7 +518,7 @@ namespace HollowKnightItems.Content.NPCs
                         npc.velocity = npc.velocity.X > 0 ? new Vector2(1, -1) : new Vector2(-1, -1);
                         break;
                     case 55:
-                        GetFrame(n, 0);
+                        n.GetFrame((int)Frame.Sho3);
                         break;
                     case 60:                        
                         // 升龙拳
@@ -529,8 +545,27 @@ namespace HollowKnightItems.Content.NPCs
         }
     }
 
-    internal static class Utils 
+    internal static class Utils
     {
+        // 用枚举给每张帧图命名
+        public enum Frame {
+            Start,
+            Bow,
+            Teleport,
+            None,
+            Angry,
+            Blowfish,
+            Fly,
+            Flybird,
+            Thorn1,
+            Thorn2,
+            Swoop1,
+            Swoop2,
+            Sho1,
+            Sho2,
+            Sho3
+        }
+
         public static void SwitchStateToFly(SMNPC n)
         {
             NPC npc = n.NPC;
@@ -546,12 +581,6 @@ namespace HollowKnightItems.Content.NPCs
                 n.Timer = 0;
                 npc.netUpdate = true;
             }
-        }
-
-        public static void GetFrame(SMNPC n, int y)
-        {
-            NPC npc = n.NPC;
-            npc.frame = new Rectangle(0, npc.height * y, npc.width, npc.height);
         }
     }
 }
