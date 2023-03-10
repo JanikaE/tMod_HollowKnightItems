@@ -1,10 +1,9 @@
-﻿using HollowKnightItems.Content.NPCs;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Content.Projectiles.GrimmBoss
+namespace HollowKnightItems.Content.Projectiles.Grimm
 {
     internal class GrimmFly : ModProjectile
     {
@@ -13,13 +12,14 @@ namespace HollowKnightItems.Content.Projectiles.GrimmBoss
             Projectile.width = 60;
             Projectile.height = 40;
 
-            Projectile.timeLeft = 300;
             Projectile.penetrate = -1;
+            Projectile.timeLeft = 300;
+            Projectile.friendly = false;
+            Projectile.hostile = true;            
             Projectile.ignoreWater = true;
             Projectile.tileCollide = true;
             Projectile.netImportant = true;
-            Projectile.minionSlots = 0;  // 占用召唤物位置
-            Projectile.minion = true;  // 防止召唤物离玩家太远而被刷掉
+            Projectile.aiStyle = -1;
             ProjectileID.Sets.MinionSacrificable[Type] = true;
             ProjectileID.Sets.CultistIsResistantTo[Type] = true;
 
@@ -31,7 +31,7 @@ namespace HollowKnightItems.Content.Projectiles.GrimmBoss
             NPC npc = null;
             foreach (NPC n in Main.npc)
             {
-                if (n.type == ModContent.NPCType<Grimm>())
+                if (n.type == ModContent.NPCType<NPCs.GrimmBoss>())
                 {
                     npc = n;
                 }
@@ -42,11 +42,10 @@ namespace HollowKnightItems.Content.Projectiles.GrimmBoss
                 Projectile.timeLeft = 1;
                 return;
             }
-            Vector2 tar = npc.Center;
+            Vector2 dir = npc.Center - Projectile.Center;
 
-            float Vx = Projectile.position.X - tar.X > 0 ? -30 : 30;
-            float Vy = Projectile.position.Y - tar.Y > 0 ? -10 : 10;
-            Projectile.velocity += new Vector2(Vx, Vy);
+            Projectile.velocity = (Projectile.velocity * 20f + dir * 5) / 21f;  // 渐进方式运动
+            Projectile.spriteDirection = Projectile.direction;
         }    
     }
 }

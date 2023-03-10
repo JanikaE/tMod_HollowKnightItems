@@ -2,7 +2,7 @@
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace HollowKnightItems.Content.Projectiles.GrimmBoss
+namespace HollowKnightItems.Content.Projectiles.Grimm
 {
     internal class GrimmFirebird : ModProjectile
     {
