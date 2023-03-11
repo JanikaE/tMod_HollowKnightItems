@@ -117,7 +117,7 @@ namespace HollowKnightItems.Content.NPCs
                 npc.velocity = Vector2.Zero;
 
                 // 受到攻击时切换至Angry状态
-                if (npc.life != npc.lifeMax && n.Timer < 60)
+                if (npc.life != npc.lifeMax && n.Timer < 120)
                 {                    
                     n.SetState<AngryState>();
                     n.Timer = 0;
@@ -133,13 +133,13 @@ namespace HollowKnightItems.Content.NPCs
                             TeleportDust(npc);
                             n.GetFrame((int)Frame.Start);
                             break;
-                        case 30:
+                        case 60:
                             n.GetFrame((int)Frame.Bow);
                             break;
-                        case 60:
+                        case 120:
                             n.GetFrame((int)Frame.Start);
                             break;                        
-                        case 90:
+                        case 150:
                             // 切换至Teleport状态
                             n.SetState<TeleportState>();
                             n.Timer = 0;
@@ -235,7 +235,7 @@ namespace HollowKnightItems.Content.NPCs
                             // Blowfish
                             case 0:
                                 // 传送至目标玩家上方
-                                npc.position = player.Center + new Vector2(-npc.width / 2, Distance.Blowfish);
+                                npc.position = player.Center + new Vector2(-npc.width / 2, -Distance.Blowfish);
                                 break;
                             // Firebird
                             case 1:
@@ -277,9 +277,11 @@ namespace HollowKnightItems.Content.NPCs
                                 break;
                             case 3:
                                 n.SetState<SwoopState>();
+
                                 break;
                             case 4:
                                 n.SetState<ShoryukenState>();
+
                                 break;
                         }
                         n.Timer = 0;
@@ -303,7 +305,32 @@ namespace HollowKnightItems.Content.NPCs
                 // 从第50帧到第490帧，每隔40帧发射一轮弹幕，共计12轮
                 if ((n.Timer - 50) % 40 == 0 && n.Timer < 500)
                 {
-                    // projectile
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    {
+                        for (int i = -4; i < 6; i++)
+                        {
+                            if (new Random().Next(2) > 0)
+                            {
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center,
+                                                        new Vector2(1, i),
+                                                        ModContent.ProjectileType<GrimmFireball_S>(),
+                                                        npc.damage,
+                                                        0.2f,
+                                                        Main.myPlayer);
+                            }
+                            if (new Random().Next(2) > 0)
+                            {
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center,
+                                                        new Vector2(-1, i),
+                                                        ModContent.ProjectileType<GrimmFireball_S>(),
+                                                        npc.damage,
+                                                        0.2f,
+                                                        Main.myPlayer);
+                            }                                
+                        }
+                    }
                 }
 
                 if (n.Timer == 550)
@@ -471,7 +498,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 1:
                         n.GetFrame((int)Frame.Swoop1);
                         // 给一个小的初速度
-                        npc.velocity = player.direction > 0 ? new Vector2(-1, 1) : new Vector2(1, 1);
+                        npc.velocity = player.Center.X - npc.Center.X > 0 ? new Vector2(1, 1) : new Vector2(-1, 1);
                         break;
                     case 15:
                         // 俯冲
@@ -479,7 +506,7 @@ namespace HollowKnightItems.Content.NPCs
                         break;                    
                     case 25:                        
                         // 停顿
-                        npc.velocity = player.position.X - npc.position.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
+                        npc.velocity = player.Center.X - npc.Center.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         n.GetFrame((int)Frame.Swoop2);  // ready
                         break;
                     case 55:
@@ -520,7 +547,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 1:
                         n.GetFrame((int)Frame.Sho1);
                         // 给一个小的初速度
-                        npc.velocity = player.direction > 0 ? new Vector2(-1, 0) : new Vector2(1, 0);
+                        npc.velocity = player.Center.X - npc.Center.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         break;
                     case 24:
                         n.GetFrame((int)Frame.Sho2);
@@ -540,6 +567,19 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.Start);
                         npc.velocity = Vector2.Zero;
                         // 弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = -2; i < 3; i++)
+                            {
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center,
+                                                        new Vector2(i * 8, 0),
+                                                        ModContent.ProjectileType<GrimmFireball_L>(),
+                                                        npc.damage,
+                                                        0.2f,
+                                                        Main.myPlayer);
+                            }                            
+                        }
                         break;
                     case 120:
                         // 切换至Teleport状态
