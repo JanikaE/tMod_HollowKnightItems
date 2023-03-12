@@ -25,14 +25,11 @@ Mods: {
 				Damage: Current Damage
 			}
 
-			NightmareLantern_ON: {
-				DisplayName: Nightmare Lantern
-				Tooltips: on
-			}
-
-			NightmareLantern_OFF: {
-				DisplayName: Nightmare Lantern
-				Tooltips: off
+			NightmareLantern: {
+				DisplayName: NightmareLantern
+				Default: Was used to open a ritual
+				OFF: "[c/FF9696:To be ignited]"
+				ON: "[c/FF9696:Ignited]"
 			}
 		}
 

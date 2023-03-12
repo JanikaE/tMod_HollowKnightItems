@@ -1,8 +1,10 @@
 ﻿using HollowKnightItems.Content.NPCs;
 using HollowKnightItems.Content.Rarities;
 using Microsoft.Xna.Framework;
+using System.Collections.Generic;
 using Terraria;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.Items
@@ -27,6 +29,12 @@ namespace HollowKnightItems.Content.Items
             Item.useTime = 20;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = false;
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            TooltipLine line = new(Mod, "NightmareLantern", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.Default"));
+            tooltips.Add(line);
         }
     }
 
@@ -57,7 +65,6 @@ namespace HollowKnightItems.Content.Items
                     NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
                 }
             }
-
             return true;
         }
 
@@ -69,10 +76,19 @@ namespace HollowKnightItems.Content.Items
                 {
                     if (player.inventory[i].type == Item.type)
                     {
-                        player.inventory[i].type = ModContent.ItemType<NightmareLantern_ON>();
+                        bool flag = player.inventory[i].favorited;
+                        player.inventory[i].SetDefaults(ModContent.ItemType<NightmareLantern_ON>());
+                        player.inventory[i].favorited = flag;
                     }
                 }
             }
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+            TooltipLine line = new(Mod, "NightmareLanternOFF", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.OFF"));
+            tooltips.Add(line);
         }
     }
 
@@ -87,10 +103,19 @@ namespace HollowKnightItems.Content.Items
                 {
                     if (player.inventory[i].type == Item.type)
                     {
-                        player.inventory[i].type = ModContent.ItemType<NightmareLantern_OFF>();
+                        bool flag = player.inventory[i].favorited;
+                        player.inventory[i].SetDefaults(ModContent.ItemType<NightmareLantern_OFF>());
+                        player.inventory[i].favorited = flag;
                     }
                 }
             }
+        }
+
+        public override void ModifyTooltips(List<TooltipLine> tooltips)
+        {
+            base.ModifyTooltips(tooltips);
+            TooltipLine line = new(Mod, "NightmareLanternON", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.ON"));
+            tooltips.Add(line);
         }
     }
 }

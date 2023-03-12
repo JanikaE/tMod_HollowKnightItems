@@ -25,14 +25,11 @@ Mods: {
 				Damage: 当前伤害
 			}
 
-			NightmareLantern_ON: {
+			NightmareLantern: {
 				DisplayName: 梦魇之灯
-				Tooltips: 已点燃
-			}
-
-			NightmareLantern_OFF: {
-				DisplayName: 梦魇之灯
-				Tooltips: 未点燃
+				Default: 曾用于开启某场仪式
+				OFF: "[c/FF9696:待点燃]"
+				ON: "[c/FF9696:已点燃]"
 			}
 		}
 
