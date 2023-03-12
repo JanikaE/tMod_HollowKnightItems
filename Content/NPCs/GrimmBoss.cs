@@ -117,7 +117,7 @@ namespace HollowKnightItems.Content.NPCs
                 npc.velocity = Vector2.Zero;
 
                 // 受到攻击时切换至Angry状态
-                if (npc.life != npc.lifeMax && n.Timer < 120)
+                if (npc.life != npc.lifeMax && n.Timer < 180)
                 {                    
                     n.SetState<AngryState>();
                     n.Timer = 0;
@@ -133,13 +133,13 @@ namespace HollowKnightItems.Content.NPCs
                             TeleportDust(npc);
                             n.GetFrame((int)Frame.Start);
                             break;
-                        case 60:
+                        case 120:
                             n.GetFrame((int)Frame.Bow);
                             break;
-                        case 120:
+                        case 180:
                             n.GetFrame((int)Frame.Start);
                             break;                        
-                        case 150:
+                        case 210:
                             // 切换至Teleport状态
                             n.SetState<TeleportState>();
                             n.Timer = 0;
@@ -176,7 +176,7 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 160:
                         // 传送至目标玩家上方                        
-                        npc.position = player.Center + new Vector2(-npc.width / 2, Distance.Blowfish);
+                        npc.position = player.Center + new Vector2(-npc.width / 2, -Distance.Blowfish);
                         // 切换至Blowfish状态
                         n.SetState<BlowfishState>();
                         n.Stage++;
@@ -314,7 +314,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         new Vector2(1, i),
-                                                        ModContent.ProjectileType<GrimmFireball_S>(),
+                                                        ModContent.ProjectileType<GrimmShoot_Sides>(),
                                                         npc.damage,
                                                         0.2f,
                                                         Main.myPlayer);
@@ -324,7 +324,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         new Vector2(-1, i),
-                                                        ModContent.ProjectileType<GrimmFireball_S>(),
+                                                        ModContent.ProjectileType<GrimmShoot_Sides>(),
                                                         npc.damage,
                                                         0.2f,
                                                         Main.myPlayer);
@@ -461,10 +461,19 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 20:
                         n.GetFrame((int)Frame.Thorn2);
-                        // 地刺动作, 预警
+                        // 地刺动作
+
+                        // 预警线
+                        for (int i = -12; i < 13; i++)
+                        {
+                            Line.NewLine(npc.Center.X + i * 90, new Color(255, 150, 150));
+                        }                        
                         break;
                     case 60:
                         // 地刺
+
+                        // 清除预警线
+                        Line.ClearLine();
                         break;
                     case 90:
                         // 收刺，后摇
@@ -574,7 +583,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         new Vector2(i * 8, 0),
-                                                        ModContent.ProjectileType<GrimmFireball_L>(),
+                                                        ModContent.ProjectileType<GrimmFireball>(),
                                                         npc.damage,
                                                         0.2f,
                                                         Main.myPlayer);

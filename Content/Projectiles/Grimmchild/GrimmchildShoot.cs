@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HollowKnightItems.Assets;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.ID;
@@ -74,19 +75,21 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 Dust.NewDust(Projectile.position, 1, 1, DustID.TintableDustLighted, rotation.X, rotation.Y, newColor: new Color(255, 0, 0));
             }
         }
-
-        // 图像就直接用shader来画，原图给个形状就行
+                
         public override void PostDraw(Color lightColor)
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
 
+        // 图像就直接用shader来画，原图给个形状就行
         public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            HollowKnightItems.Fireball.CurrentTechnique.Passes["Test"].Apply();
+            EffectsLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, (float)0.61, (float)0.62, 1));  // 设置中心颜色
+            EffectsLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.34, (float)0.37, 1));  // 设置边缘颜色
+            EffectsLoader.Fireball.CurrentTechnique.Passes["Test"].Apply();
             return true;
         }
     }

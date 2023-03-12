@@ -28,3 +28,6 @@ Message at 2023/3/2 14:50:41: Compiling Content\Fireball.xnb
 Message at 2023/3/2 14:51:59: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
 Message at 2023/3/2 14:51:59: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
 Message at 2023/3/2 14:51:59: Compiling Content\Fireball.xnb
+Message at 2023/3/12 12:22:23: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/3/12 12:22:23: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/3/12 12:22:23: Compiling Content\Fireball.xnb

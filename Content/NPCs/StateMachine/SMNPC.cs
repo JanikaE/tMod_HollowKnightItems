@@ -57,7 +57,7 @@ namespace HollowKnightItems.Content.NPCs.StateMachine
             var name = typeof(T).FullName;
             if (!StateDict.ContainsKey(name)) throw new ArgumentException("这个状态并不存在");
             State = StateDict[name];
-            Main.NewText(name);
+            //Main.NewText(name);
         }
 
         /// <summary>
