@@ -7,6 +7,7 @@ using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.Items
 {
+    [Autoload(false)]
     internal class NightmareLantern : ModItem
     {
         public override void SetStaticDefaults()
@@ -17,17 +18,21 @@ namespace HollowKnightItems.Content.Items
 
         public override void SetDefaults()
         {
-            Item.width = 20;
-            Item.height = 20;
+            Item.width = 54;
+            Item.height = 100;
             Item.maxStack = 1;
             Item.value = 100;
             Item.rare = ModContent.RarityType<CharmRarity>();
-            Item.useAnimation = 30;
-            Item.useTime = 30;
+            Item.useAnimation = 20;
+            Item.useTime = 20;
             Item.useStyle = ItemUseStyleID.HoldUp;
             Item.consumable = false;
         }
+    }
 
+    [Autoload(true)]
+    internal class NightmareLantern_OFF : NightmareLantern
+    {
         public override bool CanUseItem(Player player)
         {
             // If you decide to use the below UseItem code, you have to include !NPC.AnyNPCs(id), as this is also the check the server does when receiving MessageID.SpawnBoss.
@@ -56,5 +61,36 @@ namespace HollowKnightItems.Content.Items
             return true;
         }
 
+        public override void UpdateInventory(Player player)
+        {
+            if (NPC.AnyNPCs(ModContent.NPCType<GrimmBoss>()))
+            {
+                for (int i = 0; i < player.inventory.Length; i++)
+                {
+                    if (player.inventory[i].type == Item.type)
+                    {
+                        player.inventory[i].type = ModContent.ItemType<NightmareLantern_ON>();
+                    }
+                }
+            }
+        }
+    }
+
+    [Autoload(true)]
+    internal class NightmareLantern_ON : NightmareLantern
+    {
+        public override void UpdateInventory(Player player)
+        {
+            if (!NPC.AnyNPCs(ModContent.NPCType<GrimmBoss>()))
+            {
+                for (int i = 0; i < player.inventory.Length; i++)
+                {
+                    if (player.inventory[i].type == Item.type)
+                    {
+                        player.inventory[i].type = ModContent.ItemType<NightmareLantern_OFF>();
+                    }
+                }
+            }
+        }
     }
 }

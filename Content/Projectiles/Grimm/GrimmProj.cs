@@ -88,18 +88,19 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 90;
-            Projectile.height = 90;
+            Projectile.width = 100;
+            Projectile.height = 100;
             Projectile.timeLeft = 120;
         }
 
         public override void AI()
         {
             base.AI();
-            if (Projectile.velocity.Y < 12)
+            if (Projectile.ai[0] % 3 == 0) 
             {
                 Projectile.velocity.Y += 1;
             }
+            Projectile.ai[0]++;
         }
 
         public override void PostDraw(Color lightColor)
@@ -159,43 +160,40 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             {
                 if (Projectile.velocity.X > 0)
                 {
-                    Projectile.ai[0] = Projectile.position.X + 90;
+                    Projectile.ai[0] = Projectile.position.X + 120;
                 }
                 else
                 {
-                    Projectile.ai[0] = Projectile.position.X - 90;
+                    Projectile.ai[0] = Projectile.position.X - 120;
                 }
-                Projectile.ai[1] = Projectile.position.Y + Projectile.velocity.Y * 45;
+                Projectile.ai[1] = Projectile.position.Y + Projectile.velocity.Y * 60;
             }
 
             Vector2 pos = new(Projectile.ai[0], Projectile.ai[1]);
             Vector2 dir = pos - Projectile.position;
-            dir.Normalize();
-            Vector2 newVel;
             if (Projectile.velocity.X > 0)
             {
+                Projectile.velocity.X = 6;
                 if (Projectile.position.X < pos.X)
                 {
-                    newVel = dir + Projectile.velocity * 5;
-                    newVel.Normalize();
-                    Projectile.velocity = newVel * 5;
+                    Projectile.velocity.Y = 12 * dir.Y / dir.X;
                 }
                 else
                 {
-                    Projectile.velocity = new Vector2(5, 0);
+                    Projectile.velocity.Y = 0;
                 }
+                
             }
             else
             {
+                Projectile.velocity.X = -6;
                 if (Projectile.position.X > pos.X)
                 {
-                    newVel = dir + Projectile.velocity * 5;
-                    newVel.Normalize();
-                    Projectile.velocity = newVel * 5;
+                    Projectile.velocity.Y = - 12 * dir.Y / dir.X;
                 }
                 else
                 {
-                    Projectile.velocity = new Vector2(-5, 0);
+                    Projectile.velocity.Y = 0;
                 }
             }
         }
@@ -207,7 +205,9 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void AI()
         {
             base.AI();
-
+            Vector2 vel = Projectile.velocity;
+            vel.Normalize();
+            Projectile.velocity = vel * 6;
         }
     }
 }

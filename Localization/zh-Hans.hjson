@@ -24,6 +24,16 @@ Mods: {
 				Tooltip: 一场完成的仪式的标志。包含着一团跳动的猩红之火。
 				Damage: 当前伤害
 			}
+
+			NightmareLantern_ON: {
+				DisplayName: 梦魇之灯
+				Tooltips: 已点燃
+			}
+
+			NightmareLantern_OFF: {
+				DisplayName: 梦魇之灯
+				Tooltips: 未点燃
+			}
 		}
 
 		Projectiles: {

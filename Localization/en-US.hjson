@@ -24,6 +24,16 @@ Mods: {
 				Tooltip: Symbol of a completed ritual. Contains a living, scarlet flame.
 				Damage: Current Damage
 			}
+
+			NightmareLantern_ON: {
+				DisplayName: Nightmare Lantern
+				Tooltips: on
+			}
+
+			NightmareLantern_OFF: {
+				DisplayName: Nightmare Lantern
+				Tooltips: off
+			}
 		}
 
 		Projectiles: {

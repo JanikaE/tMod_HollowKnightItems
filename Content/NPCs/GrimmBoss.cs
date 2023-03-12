@@ -307,7 +307,7 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        for (int i = -4; i < 6; i++)
+                        for (int i = -3; i < 8; i++)
                         {
                             if (new Random().Next(2) > 0)
                             {
@@ -329,6 +329,16 @@ namespace HollowKnightItems.Content.NPCs
                                                         0.2f,
                                                         Main.myPlayer);
                             }                                
+                        }
+                        for (int i = -1; i < 2; i++)
+                        {
+                            Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center,
+                                                        new Vector2(i, 6),
+                                                        ModContent.ProjectileType<GrimmShoot_Below>(),
+                                                        npc.damage,
+                                                        0.2f,
+                                                        Main.myPlayer);
                         }
                     }
                 }
@@ -466,7 +476,7 @@ namespace HollowKnightItems.Content.NPCs
                         // 预警线
                         for (int i = -12; i < 13; i++)
                         {
-                            Line.NewLine(npc.Center.X + i * 90, new Color(255, 150, 150));
+                            Line.NewLine(npc.Center.X + i * 120, new Color(255, 150, 150));
                         }                        
                         break;
                     case 60:
@@ -582,7 +592,7 @@ namespace HollowKnightItems.Content.NPCs
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
-                                                        new Vector2(i * 8, 0),
+                                                        new Vector2(i * 7, 0),
                                                         ModContent.ProjectileType<GrimmFireball>(),
                                                         npc.damage,
                                                         0.2f,
