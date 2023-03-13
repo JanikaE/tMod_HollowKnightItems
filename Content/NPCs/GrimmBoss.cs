@@ -471,27 +471,39 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.Thorn2);
                         // 地刺动作
 
-                        // 预警线
+                        // 预警
                         for (int i = -12; i < 13; i++)
                         {
-                            Line.NewLine(npc.Center.X + i * 120, new Color(255, 153, 153));
+                            Rect.NewRect(new Vector2(npc.Center.X + i * 120, npc.Bottom.Y), 3, 3, new Color(255, 153, 153));
                         }                        
                         break;
                     case 60:
                         // 地刺
-                        for (int i = -12; i < 13; i++)
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
-                            Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                    npc.Center + new Vector2(i * 120 - 15, 600),
-                                                    new Vector2(0, -30),
-                                                    ModContent.ProjectileType<GrimmThorn>(),
-                                                    npc.damage,
-                                                    0.2f,
-                                                    Main.myPlayer);
+                            for (int i = -12; i < 13; i++)
+                            {
+                                // 向上
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center + new Vector2(i * 120 - 12, 120),
+                                                        new Vector2(0, -20),
+                                                        ModContent.ProjectileType<GrimmThorn>(),
+                                                        npc.damage,
+                                                        0.2f,
+                                                        Main.myPlayer);
+                                // 向下
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center + new Vector2(i * 120 - 12, 0),
+                                                        new Vector2(0, 20),
+                                                        ModContent.ProjectileType<GrimmThorn>(),
+                                                        npc.damage,
+                                                        0.2f,
+                                                        Main.myPlayer);
+                            }
                         }
 
-                        // 清除预警线
-                        Line.ClearLine();
+                        // 清除预警
+                        Rect.ClearRect();
                         break;
                     case 120:
                         // 切换至Teleport状态

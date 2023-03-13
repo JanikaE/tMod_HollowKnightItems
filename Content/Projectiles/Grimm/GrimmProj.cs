@@ -3,6 +3,7 @@ using HollowKnightItems.Content.Dusts;
 using HollowKnightItems.Content.NPCs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -59,9 +60,21 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 30;
-            Projectile.height = 300;
+            Projectile.width = 24;
+            Projectile.height = 120;
             Projectile.timeLeft = 180;
+        }
+
+        public override void AI()
+        {
+            if (Projectile.ai[0] == 0)
+            {
+                int offset = Math.Abs((int)Projectile.velocity.Y / 10);
+                Projectile.velocity.X = new Random().Next(- offset, offset);
+                Projectile.ai[0] = 1;
+            }
+
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
         }
     }
 

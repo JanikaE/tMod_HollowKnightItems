@@ -8,13 +8,13 @@ using Terraria.UI;
 
 namespace HollowKnightItems.Common.Systems
 {
-    internal class LineSystem : ModSystem
+    internal class RectSystem : ModSystem
     {
-        public static Line[] lines = new Line[50];
+        public static Rect[] rects = new Rect[50];
 
         public override void OnWorldLoad()
         {
-            Line.ClearLine();
+            Rect.ClearRect();
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -26,11 +26,11 @@ namespace HollowKnightItems.Common.Systems
                 // 往绘制层集合插入一个成员，第一个参数是插入的地方的索引，第二个参数是绘制层
                 layers.Insert(Index, new LegacyGameInterfaceLayer(
                     // 绘制层的名字
-                    "Test : Preview",
+                    "Test : Boss",
                     // 匿名方法
                     delegate
                     {
-                        DrawLine();
+                        DrawRect();
                         return true;
                     },
                     // 绘制层的类型
@@ -39,60 +39,69 @@ namespace HollowKnightItems.Common.Systems
             }
         }
 
-        public void DrawLine()
+        public static void DrawRect()
         {
-            for (int i = 0; i < lines.Length; i++)
+            for (int i = 0; i < rects.Length; i++)
             {
-                if (lines[i] != null)
-                {
-                    lines[i].DrawLine();
-                }
+                rects[i]?.DrawRect();             
             }
         }
     }
 
-    internal class Line 
+    internal class Rect 
     {
-        public float x;
+        public Rectangle rectangle;
         public Color color;
 
-        public Line(float x, Color color)
+        public Rect(Rectangle rectangle, Color color)
         {
-            this.x = x;
+            this.rectangle = rectangle;
             this.color = color;
         }
 
-        public static void NewLine(float x, Color color)
+        public static void NewRect(int x, int y, int width, int height, Color color)
         {
-            Line line = new(x, color);
-            for (int i = 0; i < LineSystem.lines.Length; i++)
-            {
-                if (LineSystem.lines[i] == null)
-                {
-                    LineSystem.lines[i] = line;
-                    break;
-                }
-            }            
+            Rectangle rectangle = new(x, y, width, height);
+            NewRect(rectangle, color);
         }
 
-        public static void ClearLine()
+        public static void NewRect(Vector2 center, int halfWidth, int halfHeight, Color color)
         {
-            for (int i = 0; i < LineSystem.lines.Length; i++)
+            Rectangle rectangle = new((int)center.X - halfWidth, (int)center.Y - halfHeight, halfWidth * 2 + 1, halfHeight * 2 + 1);
+            NewRect(rectangle, color);
+        }
+
+        public static void NewRect(Rectangle rectangle, Color color)
+        {
+            Rect rect = new(rectangle, color);
+            for (int i = 0; i < RectSystem.rects.Length; i++)
             {
-                LineSystem.lines[i] = null;
+                if (RectSystem.rects[i] == null)
+                {
+                    RectSystem.rects[i] = rect;
+                    break;
+                }
             }
         }
 
-        public void DrawLine()
+        public static void ClearRect()
+        {
+            for (int i = 0; i < RectSystem.rects.Length; i++)
+            {
+                RectSystem.rects[i] = null;
+            }
+        }
+
+        public void DrawRect()
         {
             Texture2D texture = TextureAssets.MagicPixel.Value;
             Main.spriteBatch.Draw(texture,
-                                new Vector2(x - 1, 0) - Main.screenPosition,
-                                null,
+                                rectangle.TopLeft() - Main.screenPosition,
+                                new(0, 0, 1, 1),  // 填null会出问题
                                 color * 0.5f,
                                 0f,
                                 Vector2.Zero,
-                                new Vector2(3, Main.screenHeight),
+                                rectangle.Size(),
                                 SpriteEffects.None,
                                 0f);
         }
