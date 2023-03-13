@@ -170,13 +170,15 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 110:
                         n.GetFrame((int)Frame.None);
+                        TeleportDust(npc);
                         break;
                     case 140:
                         n.GetFrame((int)Frame.Teleport);
-                        break;
-                    case 160:
                         // 传送至目标玩家上方                        
                         npc.position = player.Center + new Vector2(-npc.width / 2, -Distance.Blowfish);
+                        TeleportDust(npc);
+                        break;
+                    case 160:                        
                         // 切换至Blowfish状态
                         n.SetState<BlowfishState>();
                         n.Stage++;
@@ -226,8 +228,7 @@ namespace HollowKnightItems.Content.NPCs
                         TeleportDust(npc);
                         break;
                     case 70:
-                        n.GetFrame((int)Frame.Teleport);                        
-
+                        n.GetFrame((int)Frame.Teleport);
                         // 瞬移
                         float x, y;
                         switch (n.Any)
@@ -258,7 +259,6 @@ namespace HollowKnightItems.Content.NPCs
                                 npc.position = new Vector2(x, y);
                                 break;
                         }
-
                         TeleportDust(npc);
                         break;
                     case 90:
@@ -277,11 +277,9 @@ namespace HollowKnightItems.Content.NPCs
                                 break;
                             case 3:
                                 n.SetState<SwoopState>();
-
                                 break;
                             case 4:
                                 n.SetState<ShoryukenState>();
-
                                 break;
                         }
                         n.Timer = 0;
@@ -476,17 +474,24 @@ namespace HollowKnightItems.Content.NPCs
                         // 预警线
                         for (int i = -12; i < 13; i++)
                         {
-                            Line.NewLine(npc.Center.X + i * 120, new Color(255, 150, 150));
+                            Line.NewLine(npc.Center.X + i * 120, new Color(255, 153, 153));
                         }                        
                         break;
                     case 60:
                         // 地刺
+                        for (int i = -12; i < 13; i++)
+                        {
+                            Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                    npc.Center + new Vector2(i * 120 - 15, 600),
+                                                    new Vector2(0, -30),
+                                                    ModContent.ProjectileType<GrimmThorn>(),
+                                                    npc.damage,
+                                                    0.2f,
+                                                    Main.myPlayer);
+                        }
 
                         // 清除预警线
                         Line.ClearLine();
-                        break;
-                    case 90:
-                        // 收刺，后摇
                         break;
                     case 120:
                         // 切换至Teleport状态
@@ -683,6 +688,9 @@ namespace HollowKnightItems.Content.NPCs
             npc.position = new Vector2(x, y);
         }
 
+        /// <summary>
+        /// 用于瞬移前后产生Dust
+        /// </summary>
         public static void TeleportDust(NPC npc)
         {
             Vector2 pos = npc.position;

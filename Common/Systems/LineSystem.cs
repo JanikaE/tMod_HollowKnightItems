@@ -89,7 +89,7 @@ namespace HollowKnightItems.Common.Systems
             Main.spriteBatch.Draw(texture,
                                 new Vector2(x - 1, 0) - Main.screenPosition,
                                 null,
-                                color,
+                                color * 0.5f,
                                 0f,
                                 Vector2.Zero,
                                 new Vector2(3, Main.screenHeight),

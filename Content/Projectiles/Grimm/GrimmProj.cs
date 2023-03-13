@@ -1,4 +1,5 @@
 ﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Content.Dusts;
 using HollowKnightItems.Content.NPCs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,6 +10,7 @@ using Terraria.ModLoader;
 namespace HollowKnightItems.Content.Projectiles.Grimm
 {
     /*  GrimmProj
+     *      -GrimmThorn
      *      -GrimmFirebird
      *      -GrimmFireball
      *      -GrimmShoot
@@ -37,10 +39,29 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
-        public override void AI()
+        /// <summary>
+        /// 弹幕拖尾的Dust
+        /// </summary>
+        /// <param name="projectile">弹幕实体</param>
+        /// <param name="num">Dust数量</param>
+        public static void TailDust(Projectile projectile,int num)
         {
-            // 弹幕拖尾的Dust
-            Dust.NewDust(Projectile.position - Projectile.velocity, Projectile.width, Projectile.height, DustID.TintableDustLighted, newColor: new Color(255, 0, 0));            
+            for (int i = 0; i < num; i++)
+            {
+                Dust.NewDust(projectile.position - projectile.velocity, projectile.width, projectile.height, ModContent.DustType<TailingFlame>(), newColor: new Color(255, 89, 89));
+            }
+        }
+    }
+
+    [Autoload(true)]
+    internal class GrimmThorn : GrimmProj
+    {
+        public override void SetDefaults()
+        {
+            base.SetDefaults();
+            Projectile.width = 30;
+            Projectile.height = 300;
+            Projectile.timeLeft = 180;
         }
     }
 
@@ -57,7 +78,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void AI()
         {
-            base.AI();
+            TailDust(Projectile, Projectile.height);
             Projectile.spriteDirection = Projectile.direction;
 
             Player player = null;
@@ -95,10 +116,15 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void AI()
         {
-            base.AI();
+            TailDust(Projectile, Projectile.height);
+            // 近似抛物线的运动
             if (Projectile.ai[0] % 3 == 0) 
             {
                 Projectile.velocity.Y += 1;
+            }
+            if (Projectile.ai[0] % 10 == 0)
+            {
+                Projectile.velocity.X *= 0.95f;
             }
             Projectile.ai[0]++;
         }
@@ -143,10 +169,15 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            EffectsLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, (float)0.61, (float)0.62, 1));  // 设置中心颜色
-            EffectsLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.34, (float)0.37, 1));  // 设置边缘颜色
+            EffectsLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, (float)0.6, (float)0.6, 1));  // 设置中心颜色
+            EffectsLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.35, (float)0.35, 1));  // 设置边缘颜色
             EffectsLoader.Fireball.CurrentTechnique.Passes["Test"].Apply();
             return true;
+        }
+
+        public override void AI()
+        {
+            TailDust(Projectile, Projectile.height / 10);
         }
     }
 
@@ -156,6 +187,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void AI()
         {
             base.AI();
+            // 初始速度决定了弹幕第一阶段的目标位置
             if (Projectile.ai[0] == 0)
             {
                 if (Projectile.velocity.X > 0)
@@ -176,10 +208,12 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                 Projectile.velocity.X = 6;
                 if (Projectile.position.X < pos.X)
                 {
+                    // 保证同一轮的弹幕在同一时间到达目标位置
                     Projectile.velocity.Y = 12 * dir.Y / dir.X;
                 }
                 else
                 {
+                    // 然后平行运动
                     Projectile.velocity.Y = 0;
                 }
                 

@@ -1,4 +1,5 @@
 ﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Content.Dusts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria;
@@ -43,9 +44,9 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             //}
 
             // 弹幕拖尾的Dust
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 9; i++)
             {
-                Dust.NewDust(Projectile.position - Projectile.velocity, 30, 30, DustID.TintableDustLighted, newColor: new Color(255, 0, 0));
+                Dust.NewDust(Projectile.position - Projectile.velocity, 30, 30, ModContent.DustType<TailingFlame>(), newColor: new Color(255, 89, 89));
             }
         }
 
@@ -87,8 +88,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            EffectsLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, (float)0.61, (float)0.62, 1));  // 设置中心颜色
-            EffectsLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.34, (float)0.37, 1));  // 设置边缘颜色
+            EffectsLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, (float)0.6, (float)0.6, 1));  // 设置中心颜色
+            EffectsLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.35, (float)0.35, 1));  // 设置边缘颜色
             EffectsLoader.Fireball.CurrentTechnique.Passes["Test"].Apply();
             return true;
         }
