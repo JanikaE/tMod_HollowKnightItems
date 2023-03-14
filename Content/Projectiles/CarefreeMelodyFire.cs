@@ -1,7 +1,4 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Content.Projectiles
+﻿namespace HollowKnightItems.Content.Projectiles
 {
     internal class CarefreeMelodyFire : ModProjectile
     {

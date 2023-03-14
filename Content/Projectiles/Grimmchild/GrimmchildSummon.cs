@@ -1,15 +1,8 @@
 ﻿using HollowKnightItems.Common.Players;
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.StateMachine;
-using Microsoft.Xna.Framework;
-using System;
-using Terraria;
-using Terraria.Audio;
-using Terraria.ID;
-using Terraria.ModLoader;
 using static HollowKnightItems.Content.Projectiles.Grimmchild.GrimmchildSummon;
 using static HollowKnightItems.Content.Projectiles.Grimmchild.Utils;
-
 
 namespace HollowKnightItems.Content.Projectiles.Grimmchild
 {

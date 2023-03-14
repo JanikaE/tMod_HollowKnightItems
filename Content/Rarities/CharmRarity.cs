@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Content.Rarities
+﻿namespace HollowKnightItems.Content.Rarities
 {
     internal class CharmRarity : ModRarity
     {

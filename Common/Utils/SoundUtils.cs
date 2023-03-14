@@ -1,6 +1,4 @@
-﻿using Terraria.Audio;
-
-namespace HollowKnightItems.Common.Utils
+﻿namespace HollowKnightItems.Common.Utils
 {
     internal static class SoundUtils
     {

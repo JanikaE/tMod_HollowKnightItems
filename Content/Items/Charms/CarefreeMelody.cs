@@ -1,9 +1,5 @@
 ﻿using HollowKnightItems.Common.Players;
 using HollowKnightItems.Content.Rarities;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.Items.Charms
 {

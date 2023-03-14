@@ -1,7 +1,4 @@
-﻿using Terraria;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Content.Dusts
+﻿namespace HollowKnightItems.Content.Dusts
 {
     internal class TailingFlame : ModDust
     {

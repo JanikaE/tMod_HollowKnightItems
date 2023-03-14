@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Linq;
-using Terraria;
-
-namespace HollowKnightItems.Common.Utils
+﻿namespace HollowKnightItems.Common.Utils
 {
     internal static class AIUtils
     {

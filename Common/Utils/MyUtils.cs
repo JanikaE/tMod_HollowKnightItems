@@ -1,13 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using System;
-using System.Linq;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Common.Utils
+﻿namespace HollowKnightItems.Common.Utils
 {
     internal static class MyUtils
     {

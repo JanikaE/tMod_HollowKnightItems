@@ -2,11 +2,6 @@
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.Grimmchild;
 using HollowKnightItems.Content.Rarities;
-using Microsoft.Xna.Framework;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.Localization;
-using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.Items.Charms
 {

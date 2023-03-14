@@ -1,9 +1,4 @@
-﻿using System.IO;
-using Terraria;
-using Terraria.ModLoader;
-using Terraria.ModLoader.IO;
-
-namespace HollowKnightItems.Common.Systems
+﻿namespace HollowKnightItems.Common.Systems
 {
     public class DownedBossSystem : ModSystem
     {

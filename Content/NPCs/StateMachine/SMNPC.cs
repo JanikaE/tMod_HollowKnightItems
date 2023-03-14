@@ -1,10 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using Terraria;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Content.NPCs.StateMachine
+﻿namespace HollowKnightItems.Content.NPCs.StateMachine
 {
     /// <summary>
     /// 基于状态机的ModNPC类，一定要先在Initialize里注册弹幕的状态才能使用

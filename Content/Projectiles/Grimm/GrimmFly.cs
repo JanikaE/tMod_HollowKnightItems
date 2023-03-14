@@ -1,10 +1,4 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.Xna.Framework;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Content.Projectiles.Grimm
+﻿namespace HollowKnightItems.Content.Projectiles.Grimm
 {
     internal class GrimmFly : ModProjectile
     {

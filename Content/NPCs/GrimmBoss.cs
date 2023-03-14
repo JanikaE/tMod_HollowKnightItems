@@ -1,11 +1,6 @@
 ﻿using HollowKnightItems.Common.Systems;
 using HollowKnightItems.Content.NPCs.StateMachine;
 using HollowKnightItems.Content.Projectiles.Grimm;
-using Microsoft.Xna.Framework;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 using static HollowKnightItems.Content.NPCs.GrimmBoss;
 using static HollowKnightItems.Content.NPCs.Utils;
 

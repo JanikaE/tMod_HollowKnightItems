@@ -1,14 +1,4 @@
 ﻿using HollowKnightItems.Content.Items.Charms;
-using Microsoft.Xna.Framework;
-using ReLogic.Graphics;
-using Terraria;
-using Terraria.Audio;
-using Terraria.GameContent;
-using Terraria.GameInput;
-using Terraria.ID;
-using Terraria.Localization;
-using Terraria.ModLoader;
-using Terraria.UI.Chat;
 
 namespace HollowKnightItems.Common.Systems
 {

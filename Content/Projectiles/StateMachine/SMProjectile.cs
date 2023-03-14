@@ -1,9 +1,4 @@
-﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Content.Projectiles.StateMachine
+﻿namespace HollowKnightItems.Content.Projectiles.StateMachine
 {
     /// <summary>
     /// 基于状态机的ModProjectile类，一定要先在Initialize里注册弹幕的状态才能使用

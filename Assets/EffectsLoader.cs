@@ -1,7 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using Terraria.ModLoader;
-
-namespace HollowKnightItems.Assets
+﻿namespace HollowKnightItems.Assets
 {
     internal class EffectsLoader : ModSystem
     {

@@ -1,12 +1,6 @@
 ﻿using HollowKnightItems.Assets;
 using HollowKnightItems.Content.Dusts;
 using HollowKnightItems.Content.NPCs;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System;
-using Terraria;
-using Terraria.ID;
-using Terraria.ModLoader;
 
 namespace HollowKnightItems.Content.Projectiles.Grimm
 {
