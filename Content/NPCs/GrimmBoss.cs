@@ -214,11 +214,11 @@ namespace HollowKnightItems.Content.NPCs
                         // 反之则在4个attack状态中随机
                         else
                         {
-                            int State = new Random().Next(1, 5);
+                            int State = random.Next(1, 5);
                             // 避免连续切换至同一状态
                             while (State == n.Any)
                             {
-                                State = new Random().Next(1, 5);
+                                State = random.Next(1, 5);
                             }                            
                             n.Any = State;
                         }                        
@@ -307,7 +307,7 @@ namespace HollowKnightItems.Content.NPCs
                     {
                         for (int i = -3; i < 8; i++)
                         {
-                            if (new Random().Next(2) > 0)
+                            if (random.Next(2) > 0)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
@@ -317,7 +317,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         0.2f,
                                                         Main.myPlayer);
                             }
-                            if (new Random().Next(2) > 0)
+                            if (random.Next(2) > 0)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
@@ -361,36 +361,24 @@ namespace HollowKnightItems.Content.NPCs
                 npc.defense = 0;
                 Player player = Main.player[npc.target];
                 n.GetFrame((int)Frame.Fly);
-
-                // 乱飞，x与y用不同的逻辑
-                // x轴
-                float tarX = player.Center.X;
-                int Vx = new Random().Next(5) > 0 ? 1 : -1;
-                npc.velocity.X = npc.velocity.X > 0 ? npc.velocity.X + Vx : npc.velocity.X - Vx;
-                if (Math.Abs(npc.Center.X - tarX) > Distance.Fly)
-                {
-                    npc.velocity.X *= -1;
-                }
-                // y轴
-                float tarY = player.position.Y - Distance.Fly;
-                float Vy = npc.position.Y - tarY > 0 ? -1 : 1;
-                npc.velocity.Y += Vy;
-
+                                
                 switch (n.Timer) 
                 {
                     case 1:
                         // 召唤分身
-                        for (int i = 0; i < 10; i++)
+                        for (int i = 0; i < 8; i++)
                         {
                             Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                     npc.position,
-                                                    new Vector2(0, 0),
+                                                    new Vector2(i, 0),  // 用来区分不同的分身，实际的速度在Projectile的AI里设定
                                                     ModContent.ProjectileType<GrimmFly>(),
                                                     0,
                                                     0,
                                                     Main.myPlayer);
                         }
-                        break;
+                        // 设定初速
+                        npc.velocity = new Vector2(8, 4);
+                        break;                       
                     case 300:
                         // 切换至Teleport状态
                         n.SetState<TeleportState>();
@@ -398,6 +386,11 @@ namespace HollowKnightItems.Content.NPCs
                         npc.netUpdate = true;
                         break;
                 }
+
+                // 乱飞
+                float tarX = player.Center.X;
+                float tarY = player.Center.Y - Distance.Fly;
+                MoveBetween(npc, new Vector2(tarX, tarY), Distance.Fly);
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;

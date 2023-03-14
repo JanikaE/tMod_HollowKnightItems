@@ -21,6 +21,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(false)]
     internal class GrimmProj : ModProjectile
     {
+        public static int TailType => ModContent.DustType<TailingFlame>();
+
         public override void SetStaticDefaults()
         {
             Main.projFrames[Projectile.type] = 1;
@@ -38,20 +40,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             Projectile.light = 0.2f;
 
             CooldownSlot = ImmunityCooldownID.Bosses;
-        }
-
-        /// <summary>
-        /// 弹幕拖尾的Dust
-        /// </summary>
-        /// <param name="projectile">弹幕实体</param>
-        /// <param name="num">Dust数量</param>
-        public static void TailDust(Projectile projectile,int num)
-        {
-            for (int i = 0; i < num; i++)
-            {
-                Dust.NewDust(projectile.position - projectile.velocity, projectile.width, projectile.height, ModContent.DustType<TailingFlame>(), newColor: new Color(255, 89, 89));
-            }
-        }
+        }        
     }
 
     [Autoload(true)]
@@ -70,7 +59,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             if (Projectile.ai[0] == 0)
             {
                 int offset = Math.Abs((int)Projectile.velocity.Y / 10);
-                Projectile.velocity.X = new Random().Next(- offset, offset);
+                Projectile.velocity.X = random.Next(- offset, offset);
                 Projectile.ai[0] = 1;
             }
 
@@ -91,7 +80,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void AI()
         {
-            TailDust(Projectile, Projectile.height);
+            TailDust(Projectile, TailType, Projectile.height);
             Projectile.spriteDirection = Projectile.direction;
 
             Player player = null;
@@ -129,7 +118,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void AI()
         {
-            TailDust(Projectile, Projectile.height);
+            TailDust(Projectile, TailType, Projectile.height);
             // 近似抛物线的运动
             if (Projectile.ai[0] % 3 == 0) 
             {
@@ -190,7 +179,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void AI()
         {
-            TailDust(Projectile, Projectile.height / 10);
+            TailDust(Projectile, TailType, Projectile.height / 10);
         }
     }
 

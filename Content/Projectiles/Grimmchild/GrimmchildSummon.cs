@@ -106,7 +106,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 proj.Timer = 1;
 
                 // 播放声音
-                if (new Random().Next(0, SoundFrequency) == 0)
+                if (random.Next(0, SoundFrequency) == 0)
                 {
                     SoundEngine.PlaySound(GrimmchildSound_Routine);
                 }
@@ -269,7 +269,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 }
 
                 // 播放声音                 
-                if (new Random().Next(0, SoundFrequency) == 0)
+                if (random.Next(0, SoundFrequency) == 0)
                 {
                     SoundEngine.PlaySound(GrimmchildSound_Routine, Projectile.position);
                 }

@@ -1,3 +1,4 @@
+global using static HollowKnightItems.Common.Utils.AIUtils;
 global using static HollowKnightItems.Common.Utils.MyUtils;
 global using static HollowKnightItems.Common.Utils.SoundUtils;
 using Terraria.ModLoader;

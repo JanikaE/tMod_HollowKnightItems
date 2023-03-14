@@ -11,6 +11,8 @@ namespace HollowKnightItems.Common.Utils
 {
     internal static class MyUtils
     {
+        public static Random random = new();
+
         public static int[] bossList = {
             NPCID.KingSlime,  // 史莱姆王
             NPCID.EyeofCthulhu,  // 克苏鲁之眼
@@ -89,47 +91,6 @@ namespace HollowKnightItems.Common.Utils
                 }
             }
             return damage;
-        }
-
-        /// <summary>
-        /// 友方单位索敌
-        /// </summary>
-        /// <param name="position">索敌中心</param>
-        /// <param name="maxDistance">最大距离</param>
-        /// <param name="predicate">额外条件</param>
-        public static NPC FindClosestEnemy(Vector2 position, float maxDistance, Func<NPC, bool> predicate)
-        {
-            NPC res = null;
-            foreach (var npc in Main.npc.Where(n => n.active && !n.friendly && predicate(n)))
-            {
-                float dis = Vector2.Distance(position, npc.Center);
-                if (dis < maxDistance)
-                {
-                    maxDistance = dis;
-                    res = npc;
-                }
-            }
-            return res;
-        }
-
-        /// <summary>
-        /// 敌方单位索敌
-        /// </summary>
-        /// <param name="position">索敌中心</param>
-        /// <param name="maxDistance">最大距离</param>
-        public static Player FindClosestPlayer(Vector2 position, float maxDistance)
-        {
-            Player res = null;
-            foreach (var player in Main.player)
-            {
-                float dis = Vector2.Distance(position, player.Center);
-                if (dis < maxDistance)
-                {
-                    maxDistance = dis;
-                    res = player;
-                }
-            }
-            return res;
         }        
 
         public static Asset<Effect> GetEffect(string fileName)

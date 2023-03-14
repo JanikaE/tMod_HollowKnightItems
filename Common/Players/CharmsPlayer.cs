@@ -29,7 +29,6 @@ namespace HollowKnightItems.Common.Players
             // 判定无忧旋律
             if (HasCarefreeMelody)
             {
-                Random random = new();
                 int CarefreeHit = random.Next(0, 99);
                 if (CarefreeHit < CarefreeOdds)
                 {

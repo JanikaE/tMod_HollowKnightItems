@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -13,11 +14,11 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             Projectile.height = 40;
 
             Projectile.penetrate = -1;
-            Projectile.timeLeft = 300;
+            Projectile.timeLeft = 380;
             Projectile.friendly = false;
             Projectile.hostile = true;            
             Projectile.ignoreWater = true;
-            Projectile.tileCollide = true;
+            Projectile.tileCollide = false;
             Projectile.netImportant = true;
             Projectile.aiStyle = -1;
             ProjectileID.Sets.MinionSacrificable[Type] = true;
@@ -35,17 +36,62 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                 {
                     npc = n;
                 }
-            }
-            
+            }            
             if (npc == null) 
             {
                 Projectile.timeLeft = 1;
                 return;
             }
-            Vector2 dir = npc.Center - Projectile.Center;
 
-            Projectile.velocity = (Projectile.velocity * 20f + dir * 5) / 21f;  // 渐进方式运动
+            if (Projectile.ai[0] == 0)
+            {
+                // 区分不同的分身
+                switch (Projectile.velocity.X)
+                {
+                    // 设定实际的初始速度
+                    case 0: 
+                        Projectile.velocity = new Vector2(16, 8);
+                        break;
+                    case 1:
+                        Projectile.velocity = new Vector2(-16, 8);
+                        break;
+                    case 2:
+                        Projectile.velocity = new Vector2(16, -8);
+                        break;
+                    case 3:
+                        Projectile.velocity = new Vector2(-16, -8);
+                        break;
+                    case 4:
+                        Projectile.velocity = new Vector2(8, 16);
+                        break;
+                    case 5:
+                        Projectile.velocity = new Vector2(-8, 16);
+                        break;
+                    case 6:
+                        Projectile.velocity = new Vector2(8, -16);
+                        break;
+                    case 7:
+                        Projectile.velocity = new Vector2(-8, -16);
+                        break;
+                }
+            }
+
+            if (Projectile.ai[0] < 250)
+            {
+                MoveBetween(Projectile, npc.Center, 150);
+            }
+            else
+            {
+                Vector2 dir = npc.Center - Projectile.Center;
+                if (dir.Length() < 30)
+                {
+                    Projectile.timeLeft = 2;
+                }
+                dir.Normalize();
+                Projectile.velocity = dir * 18;
+            }
             Projectile.spriteDirection = Projectile.direction;
+            Projectile.ai[0]++;
         }    
     }
 }
