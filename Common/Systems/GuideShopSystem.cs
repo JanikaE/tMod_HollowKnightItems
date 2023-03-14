@@ -100,4 +100,15 @@ namespace HollowKnightItems.Common.Systems
             }
         }
     }
+
+    internal class GuideShopPlayer : ModPlayer 
+    {
+        public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
+        {
+            if (vendor.type == NPCID.Guide)
+            {
+                shopInventory.Initialize();
+            }
+        }
+    }
 }

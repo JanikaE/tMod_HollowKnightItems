@@ -11,6 +11,7 @@ global using Terraria.Audio;
 global using Terraria.DataStructures;
 global using Terraria.GameContent;
 global using Terraria.GameInput;
+global using Terraria.Graphics.Shaders;
 global using Terraria.ID;
 global using Terraria.Localization;
 global using Terraria.ModLoader;

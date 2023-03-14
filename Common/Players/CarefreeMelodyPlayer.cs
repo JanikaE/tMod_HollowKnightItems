@@ -2,19 +2,14 @@
 
 namespace HollowKnightItems.Common.Players
 {
-    internal class CharmsPlayer : ModPlayer
+    internal class CarefreeMelodyPlayer : ModPlayer
     {
         public bool HasCarefreeMelody;
-        public bool HasGrimmchild;
-        public bool GrimmchildType;  // 格林之子类型，true为饰品栏，false为时装栏
-
         public int CarefreeOdds = 0;  // 无忧旋律生效概率        
 
         public override void ResetEffects()
         {
             HasCarefreeMelody = false;
-            HasGrimmchild = false;
-            GrimmchildType = false;
         }
 
         public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
@@ -52,16 +47,7 @@ namespace HollowKnightItems.Common.Players
                     return true;
                 }
             }
-
             return true;
-        }
-
-        public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
-        {
-            if (vendor.type == NPCID.Guide)
-            {
-                shopInventory.Initialize();
-            }
-        }
+        }        
     }
 }

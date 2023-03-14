@@ -1,4 +1,5 @@
 ﻿using HollowKnightItems.Common.Systems;
+using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.NPCs.StateMachine;
 using HollowKnightItems.Content.Projectiles.Grimm;
 using static HollowKnightItems.Content.NPCs.GrimmBoss;
@@ -69,7 +70,6 @@ namespace HollowKnightItems.Content.NPCs
         public override void OnKill()
         {
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
-            base.OnKill();
         }
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
@@ -80,7 +80,7 @@ namespace HollowKnightItems.Content.NPCs
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
-            // 使用BOSS免疫冷却时间计数器，防止通过从其他来源受到伤害来忽略BOSS攻击
+            // 使用Boss免疫冷却时间计数器，防止通过从其他来源受到伤害来忽略Boss攻击
             cooldownSlot = ImmunityCooldownID.Bosses;  
             return true;
         }
@@ -159,6 +159,15 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     case 1:
                         n.GetFrame((int)Frame.Angry);
+
+                        // 给所有玩家上debuff
+                        for (int i = 0; i < Main.player.Length; i++)
+                        {
+                            Main.player[i].AddBuff(ModContent.BuffType<RoarDebuff>(), 90);
+                        }
+
+                        // 屏幕shader
+                        // to do
                         break;
                     case 90:
                         n.GetFrame((int)Frame.Teleport);

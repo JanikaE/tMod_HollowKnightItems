@@ -292,7 +292,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             {
                 proj.SetState<TeleportState>();  // 传送状态                  
             }
-            else if (npc != null & player.GetModPlayer<CharmsPlayer>().GrimmchildType)
+            else if (npc != null & player.GetModPlayer<GrimmchidPlayer>().GrimmchildType)
             {
                 proj.SetState<ShootState>();  // 射击状态
                 proj.Target = npc.Center;

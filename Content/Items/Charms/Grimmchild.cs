@@ -1,5 +1,4 @@
-﻿using HollowKnightItems.Common.Players;
-using HollowKnightItems.Content.Buffs;
+﻿using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.Grimmchild;
 using HollowKnightItems.Content.Rarities;
 
@@ -24,27 +23,22 @@ namespace HollowKnightItems.Content.Items.Charms
             Item.value = 100;
         }
 
-        public override void AddRecipes()
-        {
-
-        }
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             Summon(player);
-            player.GetModPlayer<CharmsPlayer>().GrimmchildType = true;
+            player.GetModPlayer<GrimmchidPlayer>().GrimmchildType = true;
         }
 
         public override void UpdateVanity(Player player)
         {
             Summon(player);
-            player.GetModPlayer<CharmsPlayer>().GrimmchildType = false;
+            player.GetModPlayer<GrimmchidPlayer>().GrimmchildType = false;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player = Main.player[Main.myPlayer];
-            if (player.GetModPlayer<CharmsPlayer>().HasGrimmchild)
+            if (player.GetModPlayer<GrimmchidPlayer>().HasGrimmchild)
             {
                 TooltipLine Line = new(Mod, "GrimmchildDamage", Language.GetTextValue("Mods.HollowKnightItems.Items.Grimmchild.Damage") +
                                                                         ":" +
@@ -66,7 +60,7 @@ namespace HollowKnightItems.Content.Items.Charms
                     player.whoAmI);
             }
             player.AddBuff(ModContent.BuffType<GrimmchildBuff>(), 2);
-            player.GetModPlayer<CharmsPlayer>().HasGrimmchild = true;
+            player.GetModPlayer<GrimmchidPlayer>().HasGrimmchild = true;
         }
     }
 }

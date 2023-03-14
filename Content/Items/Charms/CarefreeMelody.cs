@@ -31,17 +31,17 @@ namespace HollowKnightItems.Content.Items.Charms
 
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
-            player.GetModPlayer<CharmsPlayer>().HasCarefreeMelody = true;
+            player.GetModPlayer<CarefreeMelodyPlayer>().HasCarefreeMelody = true;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             Player player = Main.player[Main.myPlayer];
-            if (player.GetModPlayer<CharmsPlayer>().HasCarefreeMelody)
+            if (player.GetModPlayer<CarefreeMelodyPlayer>().HasCarefreeMelody)
             {
                 TooltipLine Line = new(Mod, "CarefreeProbability", Language.GetTextValue("Mods.HollowKnightItems.Items.CarefreeMelody.Probability") +
                                                                     ":" +
-                                                                    player.GetModPlayer<CharmsPlayer>().CarefreeOdds.ToString() + 
+                                                                    player.GetModPlayer<CarefreeMelodyPlayer>().CarefreeOdds.ToString() + 
                                                                     "%");
                 tooltips.Add(Line);
             }
