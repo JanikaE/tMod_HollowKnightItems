@@ -5,7 +5,7 @@ namespace HollowKnightItems.Common.Players
     internal class CarefreeMelodyPlayer : ModPlayer
     {
         public bool HasCarefreeMelody;
-        public int CarefreeOdds = 0;  // 无忧旋律生效概率        
+        public int CarefreeOdds;  // 无忧旋律生效概率        
 
         public override void ResetEffects()
         {
@@ -48,6 +48,16 @@ namespace HollowKnightItems.Common.Players
                 }
             }
             return true;
-        }        
+        }
+
+        public override void SaveData(TagCompound tag)
+        {
+            tag["CarefreeOdds"] = CarefreeOdds;
+        }
+
+        public override void LoadData(TagCompound tag)
+        {
+            CarefreeOdds = (int)tag["CarefreeOdds"];
+        }
     }
 }

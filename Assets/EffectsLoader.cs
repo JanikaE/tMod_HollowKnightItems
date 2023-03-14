@@ -1,6 +1,4 @@
-﻿using Terraria.Graphics.Effects;
-
-namespace HollowKnightItems.Assets
+﻿namespace HollowKnightItems.Assets
 {
     internal class EffectsLoader : ModSystem
     {

@@ -82,8 +82,12 @@
                 }
             }
             return damage;
-        }        
+        }
 
+        /// <summary>
+        /// 获取Effect
+        /// </summary>
+        /// <param name="fileName">路径为Assets/Effects/Content/*</param>
         public static Asset<Effect> GetEffect(string fileName)
         {
             return ModContent.Request<Effect>($"HollowKnightItems/Assets/Effects/Content/{fileName}", AssetRequestMode.ImmediateLoad);
