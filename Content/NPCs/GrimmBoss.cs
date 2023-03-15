@@ -1,4 +1,5 @@
 ﻿using HollowKnightItems.Common.Systems;
+using HollowKnightItems.Common.Systems.DrawSystem;
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.NPCs.StateMachine;
 using HollowKnightItems.Content.Projectiles.Grimm;
@@ -155,19 +156,25 @@ namespace HollowKnightItems.Content.NPCs
                 npc.defense = 9999;
                 Player player = Main.player[npc.target];
 
+                // 开局吼的声浪
+                // 想来想去还是用Dust简单（5毛特效）
+                if (n.Timer < 90 && n.Timer % 10 == 0)
+                {
+                    RoarDust(npc.Center);
+                }
+
                 switch (n.Timer) 
                 {
                     case 1:
                         n.GetFrame((int)Frame.Angry);
-
                         // 给所有玩家上debuff
                         for (int i = 0; i < Main.player.Length; i++)
                         {
-                            Main.player[i].AddBuff(ModContent.BuffType<RoarDebuff>(), 90);
+                            if (Main.player[i].active)
+                            {
+                                Main.player[i].AddBuff(ModContent.BuffType<RoarDebuff>(), 90);
+                            }                            
                         }
-
-                        // 屏幕shader
-                        // to do
                         break;
                     case 90:
                         n.GetFrame((int)Frame.Teleport);

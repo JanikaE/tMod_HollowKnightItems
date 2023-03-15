@@ -1,4 +1,6 @@
-﻿namespace HollowKnightItems.Common.Utils
+﻿using HollowKnightItems.Content.Dusts;
+
+namespace HollowKnightItems.Common.Utils
 {
     internal static class AIUtils
     {
@@ -98,6 +100,19 @@
             for (int i = 0; i < num; i++)
             {
                 Dust.NewDust(projectile.position - projectile.velocity, projectile.width, projectile.height, type, newColor: new Color(255, 89, 89));
+            }
+        }
+
+        /// <summary>
+        /// Boss开局吼的Dust
+        /// </summary>
+        public static void RoarDust(Vector2 center)
+        {
+            for (int i = 0; i < 36; i++)
+            {
+                float r = (float)(i * Math.PI / 18);
+                Vector2 vel = r.ToRotationVector2() * 40;
+                Dust.NewDust(center, 0, 0, ModContent.DustType<RoarWave>(), vel.X, vel.Y, 128);
             }
         }
     }
