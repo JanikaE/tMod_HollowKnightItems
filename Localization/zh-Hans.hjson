@@ -33,6 +33,12 @@ Mods: {
 			}
 		}
 
+		NPC：{
+			Grimm：{
+				DisplayName: 剧团团长 格林
+			}
+		}
+
 		Projectiles: {
 			CarefreeMelodyFire.DisplayName: Carefree Melody Fire
 			GrimmchildShoot.DisplayName: Grimmchild Shoot

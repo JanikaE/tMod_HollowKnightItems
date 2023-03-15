@@ -97,10 +97,12 @@
         /// </summary>
         public virtual void AIBefore() { }
 
+        /// <summary>
+        /// 用于获取NPC的帧图(默认一列纵向排布)
+        /// </summary>
         public void GetFrame(int y)
         {
-            NPC npc = this.NPC;
-            npc.frame = new Rectangle(0, npc.height * y, npc.width, npc.height);
+            NPC.frame = new Rectangle(0, NPC.height * y, NPC.width, NPC.height);
         }
     }
 
@@ -108,7 +110,5 @@
     {
         // AI函数接受一个SMNPC类型的mod NPC对象
         public abstract void AI(SMNPC n);
-
-        //public abstract void FindFrame(SMNPC n, int frameHeight);
     }
 }

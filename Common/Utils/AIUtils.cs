@@ -2,6 +2,9 @@
 
 namespace HollowKnightItems.Common.Utils
 {
+    /// <summary>
+    /// 与NPC/Projectile的AI相关的工具
+    /// </summary>
     internal static class AIUtils
     {
         /// <summary>

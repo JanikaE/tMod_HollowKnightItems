@@ -1,5 +1,8 @@
 ﻿namespace HollowKnightItems.Common.Utils
 {
+    /// <summary>
+    /// 自用的一些工具
+    /// </summary>
     internal static class MyUtils
     {
         public static Random random = new();

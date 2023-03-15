@@ -33,6 +33,12 @@ Mods: {
 			}
 		}
 
+		NPC：{
+			Grimm：{
+				DisplayName: Troupe Master Grimm
+			}
+		}
+
 		Projectiles: {
 			CarefreeMelodyFire.DisplayName: Carefree Melody Fire
 			GrimmchildShoot.DisplayName: Grimmchild Shoot

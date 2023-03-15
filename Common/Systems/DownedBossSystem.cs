@@ -2,7 +2,7 @@
 {
     public class DownedBossSystem : ModSystem
     {
-        public static bool downedGrimm = false;
+        public static bool downedGrimm;
 
         public override void OnWorldLoad()
         {

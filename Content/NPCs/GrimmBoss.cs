@@ -16,8 +16,8 @@ namespace HollowKnightItems.Content.NPCs
         public override void SetStaticDefaults()
         {
             // 这里以后写到Localization里去
-            DisplayName.SetDefault("Grimm");
-            DisplayName.AddTranslation(7, "格林团长");
+            DisplayName.SetDefault("Troupe Master Grimm");
+            DisplayName.AddTranslation(7, "剧团团长 格林");
             Main.npcFrameCount[NPC.type] = 15;
             NPCID.Sets.MPAllowedEnemies[Type] = true;  // 有对应召唤物的boss
         }
@@ -251,15 +251,15 @@ namespace HollowKnightItems.Content.NPCs
                                 break;
                             // Firebird
                             case 1:
-                                TeleportToFront(n, player, Distance.Firebird);
+                                TeleportToFront(npc, player, Distance.Firebird);
                                 break;
                             // Thorn
                             case 2:
-                                TeleportToFront(n, player, Distance.Thorn);
+                                TeleportToFront(npc, player, Distance.Thorn);
                                 break;
                             // Shoryuken
                             case 4:
-                                TeleportToFront(n, player, Distance.Sho);
+                                TeleportToFront(npc, player, Distance.Sho);
                                 break;
                             // Swoop
                             case 3:
@@ -639,6 +639,9 @@ namespace HollowKnightItems.Content.NPCs
 
     internal static class Utils
     {
+        /// <summary>
+        /// GrimmBoss AI中的一些距离常量
+        /// </summary>
         internal static class Distance
         {
             public const int Blowfish = 300;
@@ -649,6 +652,9 @@ namespace HollowKnightItems.Content.NPCs
             public const int Fly = 200;
         }
 
+        /// <summary>
+        /// GrimmBoss AI中的一些速率常量
+        /// </summary>
         internal static class Speed
         {
             public const int Swoop = 30;
@@ -656,8 +662,9 @@ namespace HollowKnightItems.Content.NPCs
             public const int Sho = 25;
         }
 
-
-        // 用枚举给每张帧图命名
+        /// <summary>
+        /// 每张帧图的命名
+        /// </summary>
         public enum Frame {
             Start,
             Bow,
@@ -693,10 +700,9 @@ namespace HollowKnightItems.Content.NPCs
             }
         }
 
-        public static void TeleportToFront(SMNPC n, Player player, int distance) 
+        public static void TeleportToFront(NPC npc, Player player, int distance) 
         {
             float x, y;
-            NPC npc = n.NPC;
             // 传送至目标玩家面朝的方向
             x = player.direction > 0 ? player.Center.X + distance : player.Center.X - distance - npc.width;
             // 让玩家与NPC底部对齐

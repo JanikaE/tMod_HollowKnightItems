@@ -1,5 +1,8 @@
 ﻿namespace HollowKnightItems.Common.Utils
 {
+    /// <summary>
+    /// 加载音效
+    /// </summary>
     internal static class SoundUtils
     {
         public static SoundStyle GrimmchildSound_Attack = new SoundStyle("HollowKnightItems/Assets/Music/GrimmchildAttack_", 2) with

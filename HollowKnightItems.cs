@@ -10,6 +10,7 @@ global using Terraria;
 global using Terraria.Audio;
 global using Terraria.DataStructures;
 global using Terraria.GameContent;
+global using Terraria.GameContent.UI.Elements;
 global using Terraria.GameInput;
 global using Terraria.Graphics.Shaders;
 global using Terraria.ID;
