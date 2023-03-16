@@ -33,9 +33,11 @@ Mods: {
 			}
 		}
 
-		NPC：{
-			Grimm：{
+		NPCs: {
+			Grimm: {
 				DisplayName: Troupe Master Grimm
+				SpawnInfo1: Troupe Master
+				SpawnInfo2: Grimm
 			}
 		}
 

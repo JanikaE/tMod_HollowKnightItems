@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Content.NPCs;
+﻿using HollowKnightItems.Common.UIs;
+using HollowKnightItems.Content.NPCs;
 using HollowKnightItems.Content.Rarities;
 
 namespace HollowKnightItems.Content.Items
@@ -58,6 +59,9 @@ namespace HollowKnightItems.Content.Items
                     // If the player is in multiplayer, request a spawn
                     NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
                 }
+
+                ScreenText.NewScreenText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.SpawnInfo1"), 2, 200, 0.1f, 0.8f);
+                ScreenText.NewScreenText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.SpawnInfo2"), 5, 200, 0.1f, 0.9f);
             }
             return true;
         }

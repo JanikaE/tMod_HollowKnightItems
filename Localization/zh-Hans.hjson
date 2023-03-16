@@ -33,9 +33,11 @@ Mods: {
 			}
 		}
 
-		NPC：{
-			Grimm：{
+		NPCs: {
+			Grimm: {
 				DisplayName: 剧团团长 格林
+				SpawnInfo1: 剧团团长
+				SpawnInfo2: 格林
 			}
 		}
 
