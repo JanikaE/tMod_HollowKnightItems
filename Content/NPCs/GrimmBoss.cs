@@ -65,12 +65,8 @@ namespace HollowKnightItems.Content.NPCs
 
         public override bool CheckDead()
         {
+            // 阻止死亡，进入死亡动画。死亡后的操作都放进DieState里
             return false;
-        }
-
-        public override void OnKill()
-        {
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
         }
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
@@ -144,6 +140,7 @@ namespace HollowKnightItems.Content.NPCs
                     }
                 }
 
+                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -198,6 +195,7 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
+                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -298,6 +296,7 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
+                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -360,6 +359,7 @@ namespace HollowKnightItems.Content.NPCs
                     npc.netUpdate = true;
                 }
 
+                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -405,6 +405,7 @@ namespace HollowKnightItems.Content.NPCs
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
+                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -451,7 +452,8 @@ namespace HollowKnightItems.Content.NPCs
                 // 让npc面朝玩家
                 // spriteDirection = 1意为翻转
                 npc.spriteDirection = player.position.X - npc.position.X > 0 ? -1 : 1;
-                SwitchStateToFly(n);
+                SwitchStateToDie(n);
+                SwitchStateToFly(n);                
                 n.Timer++;
             }
         }
@@ -468,13 +470,9 @@ namespace HollowKnightItems.Content.NPCs
                 switch (n.Timer)
                 {
                     case 1:
-                        n.GetFrame((int)Frame.Thorn1);
-                        // 地刺预备
+                        n.GetFrame((int)Frame.Thorn);
                         break;
                     case 20:
-                        n.GetFrame((int)Frame.Thorn2);
-                        // 地刺动作
-
                         // 预警
                         for (int i = -12; i < 13; i++)
                         {
@@ -519,6 +517,7 @@ namespace HollowKnightItems.Content.NPCs
 
                 // 让npc面朝玩家
                 npc.spriteDirection = player.position.X - npc.position.X > 0 ? -1 : 1;
+                SwitchStateToDie(n);
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -547,10 +546,10 @@ namespace HollowKnightItems.Content.NPCs
                     case 25:                        
                         // 停顿
                         npc.velocity = player.Center.X - npc.Center.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
-                        n.GetFrame((int)Frame.Swoop2);  // ready
+                        n.GetFrame((int)Frame.Swoop2);
                         break;
                     case 55:
-                        n.GetFrame((int)Frame.Swoop2);
+                        n.GetFrame((int)Frame.Swoop3);
                         // 横冲
                         npc.velocity *= Speed.Swoop;
                         break;
@@ -568,6 +567,7 @@ namespace HollowKnightItems.Content.NPCs
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
+                SwitchStateToDie(n);
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -631,10 +631,31 @@ namespace HollowKnightItems.Content.NPCs
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
+                SwitchStateToDie(n);
                 SwitchStateToFly(n);
                 n.Timer++;
             }
         }
+
+        public class DieState : NPCState
+        {
+            public override void AI(SMNPC n)
+            {
+                NPC npc = n.NPC;
+                n.GetFrame((int)Frame.Die);
+
+                // Dust
+
+                if (n.Timer == 240)
+                {
+                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
+                    npc.active = false;
+                }
+
+                n.Timer++;
+            }
+        }
+
     }
 
     internal static class Utils
@@ -669,18 +690,19 @@ namespace HollowKnightItems.Content.NPCs
             Start,
             Bow,
             Teleport,
-            None,
             Angry,
             Blowfish,
             Fly,
             Flybird,
-            Thorn1,
-            Thorn2,
+            Thorn,
             Swoop1,
             Swoop2,
+            Swoop3,
             Sho1,
             Sho2,
-            Sho3
+            Sho3,
+            Die,
+            None
         }
 
         public static void SwitchStateToFly(SMNPC n)
@@ -695,6 +717,20 @@ namespace HollowKnightItems.Content.NPCs
             {
                 n.SetState<FlyState>();
                 n.Stage += 10;
+                n.Timer = 0;
+                npc.netUpdate = true;
+            }
+        }
+
+        /// <summary>
+        /// 因为阻止了原版的死亡，就要时刻检查npc的血量，归零时切换至<see cref="DieState"/>
+        /// </summary>
+        public static void SwitchStateToDie(SMNPC n)
+        {
+            NPC npc = n.NPC;            
+            if (npc.life <= 0)
+            {
+                n.SetState<DieState>();
                 n.Timer = 0;
                 npc.netUpdate = true;
             }

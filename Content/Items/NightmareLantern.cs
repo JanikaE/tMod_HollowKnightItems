@@ -109,6 +109,11 @@ namespace HollowKnightItems.Content.Items
             }
         }
 
+        public override bool CanUseItem(Player player)
+        {
+            return false;
+        }
+
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
