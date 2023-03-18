@@ -52,8 +52,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         {
             if (Projectile.ai[0] == 0)
             {
-                int offset = Math.Abs((int)Projectile.velocity.Y / 10);
-                Projectile.velocity.X = random.Next(- offset, offset);
+                int offset = Math.Abs((int)Projectile.velocity.Y / 20);
+                Projectile.velocity.X = random.Next(- offset, offset + 1);
                 Projectile.ai[0] = 1;
             }
 

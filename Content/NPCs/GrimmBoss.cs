@@ -10,31 +10,80 @@ namespace HollowKnightItems.Content.NPCs
 {
     [AutoloadBossHead]
     internal class GrimmBoss : SMNPC
-    {        
-        public const int NormalDefence = 20;
+    {
+        /// <summary>
+        /// GrimmBoss AI中的一些距离常量
+        /// </summary>
+        internal static class Distance
+        {
+            public const int Blowfish = 300;
+            public const int Firebird = 400;
+            public const int Thorn = 300;
+            public const int Sho = 200;
+            public const int Swoop = 300;
+            public const int Fly = 200;
+        }
+
+        /// <summary>
+        /// GrimmBoss AI中的一些速率常量
+        /// </summary>
+        internal static class Speed
+        {
+            public const int Swoop = 30;
+            public const int Scratch = 15;
+            public const int Sho = 25;
+        }
+
+        public const int Damage = 50;
+        public const int Defence = 10;
+
+        /// <summary>
+        /// 每张帧图的命名
+        /// </summary>
+        public enum Frame
+        {
+            Start,
+            Bow,
+            Teleport,
+            Angry,
+            Blowfish,
+            Fly,
+            Flybird,
+            Thorn,
+            Swoop1,
+            Swoop2,
+            Swoop3,
+            Sho1,
+            Sho2,
+            Sho3,
+            Die,
+            None
+        }
 
         public override void SetStaticDefaults()
         {
             // 这里以后写到Localization里去
             DisplayName.SetDefault("Troupe Master Grimm");
             DisplayName.AddTranslation(7, "剧团团长 格林");
-            Main.npcFrameCount[NPC.type] = 15;
+            Main.npcFrameCount[NPC.type] = 16;
             NPCID.Sets.MPAllowedEnemies[Type] = true;  // 有对应召唤物的boss
         }
 
         public override void SetDefaults()
         {
-            NPC.width = 120;
-            NPC.height = 120;  // 这两个代表这个NPC的碰撞箱宽高，以及tr会从你的贴图里扣多大的图
-
+            NPC.width = 240;
+            NPC.height = 240;
             NPC.aiStyle = -1;
-            NPC.damage = 100;
-            NPC.lifeMax = 8000;
-            NPC.defense = 0;  // 在每个状态里再分别写防御
+            NPC.lifeMax = 3000;            
             NPC.scale = 1f;  // npc的贴图和碰撞箱的放缩倍率
             NPC.knockBackResist = 0f;
-            NPC.HitSound = SoundID.NPCHit5;
-            NPC.DeathSound = SoundID.NPCDeath7;
+
+            NPC.damage = 0;
+            NPC.defense = 0;  // 在每个状态里再分别写攻击和防御
+
+            //NPC.HitSound = SoundID.NPCHit5;
+            //NPC.DeathSound = SoundID.NPCDeath7;
+
             NPC.value = Item.buyPrice(0, 4, 50, 0);  // NPC的爆出来的MONEY的数量，四个空从左到右是铂金，金，银，铜
             NPC.lavaImmune = true;  // 对岩浆免疫
             NPC.noGravity = true;  // 不受重力影响
@@ -42,6 +91,7 @@ namespace HollowKnightItems.Content.NPCs
             NPC.npcSlots = 20;  // NPC所占用的NPC数量
             NPC.boss = true;  // 将npc设为boss。会掉弱治药水和心，会显示xxx已被击败，会有血条
             NPC.dontTakeDamage = false;  // 为true则为无敌。弹幕不会打到npc，并且不显示npc的血条
+            NPC.friendly = false;
             NPC.netAlways = true;
 
             if (!Main.dedServ)
@@ -65,8 +115,17 @@ namespace HollowKnightItems.Content.NPCs
 
         public override bool CheckDead()
         {
-            // 阻止死亡，进入死亡动画。死亡后的操作都放进DieState里
+            NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
             return false;
+        }
+
+        public override void HitEffect(int hitDirection, double damage)
+        {
+            if (NPC.life <= 0)
+            {
+                Texture2D texture = GetTexture("GrimmDie").Value;
+                Graph.NewGraph(texture, NPC.position, 180);
+            }
         }
 
         public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
@@ -97,6 +156,9 @@ namespace HollowKnightItems.Content.NPCs
                 NPC.EncourageDespawn(10);
                 return;
             }
+
+            // 标记碰撞箱的四个角
+            RoundHitboxDust(NPC, new Color(255, 150, 150));
         }
 
         public class StartState : NPCState
@@ -104,7 +166,8 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.defense = NormalDefence;
+                npc.damage = 0;
+                npc.defense = Defence;
                 n.Stage = 0;
                 npc.velocity = Vector2.Zero;
 
@@ -139,8 +202,7 @@ namespace HollowKnightItems.Content.NPCs
                             break;
                     }
                 }
-
-                SwitchStateToDie(n);
+                
                 n.Timer++;
             }
         }
@@ -150,6 +212,7 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
+                npc.damage = Damage;
                 npc.defense = 9999;
                 Player player = Main.player[npc.target];
 
@@ -195,7 +258,6 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
-                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -204,14 +266,16 @@ namespace HollowKnightItems.Content.NPCs
         {
             public override void AI(SMNPC n)
             {
-                NPC npc = n.NPC;                
+                NPC npc = n.NPC;
+                npc.damage = 0;
                 npc.defense = 9999;
                 npc.velocity = Vector2.Zero;
                 Player player = Main.player[npc.target];
 
                 switch (n.Timer) 
                 {
-                    case 1:                        
+                    case 1:
+                        n.GetFrame((int)Frame.Teleport);
                         // 在血量下降到一定程度时，切换至Blowfish状态
                         // 用n.Stage的个位标记Blowfish次数
                         if (npc.life < npc.lifeMax * 0.8 && n.Stage % 10 == 0 ||
@@ -296,7 +360,6 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                 }
 
-                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -306,6 +369,7 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
+                npc.damage = Damage;
                 npc.defense = 9999;
                 npc.velocity = Vector2.Zero;
                 n.GetFrame((int)Frame.Blowfish);
@@ -323,7 +387,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         npc.Center,
                                                         new Vector2(1, i),
                                                         ModContent.ProjectileType<GrimmShoot_Sides>(),
-                                                        npc.damage,
+                                                        30,
                                                         0.2f,
                                                         Main.myPlayer);
                             }
@@ -333,7 +397,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         npc.Center,
                                                         new Vector2(-1, i),
                                                         ModContent.ProjectileType<GrimmShoot_Sides>(),
-                                                        npc.damage,
+                                                        30,
                                                         0.2f,
                                                         Main.myPlayer);
                             }                                
@@ -344,7 +408,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         npc.Center,
                                                         new Vector2(i, 6),
                                                         ModContent.ProjectileType<GrimmShoot_Below>(),
-                                                        npc.damage,
+                                                        30,
                                                         0.2f,
                                                         Main.myPlayer);
                         }
@@ -359,7 +423,6 @@ namespace HollowKnightItems.Content.NPCs
                     npc.netUpdate = true;
                 }
 
-                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -369,6 +432,7 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
+                npc.damage = 0;
                 npc.defense = 0;
                 Player player = Main.player[npc.target];
                 n.GetFrame((int)Frame.Fly);
@@ -405,7 +469,6 @@ namespace HollowKnightItems.Content.NPCs
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
-                SwitchStateToDie(n);
                 n.Timer++;
             }
         }
@@ -415,16 +478,14 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.defense = NormalDefence;
+                npc.damage = Damage;
+                npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
                 // 根据计时器切换子状态
                 switch (n.Timer)
                 {
                     case 1:
-                        n.GetFrame((int)Frame.Flybird); // ready
-                        break;
-                    case 12:
                         n.GetFrame((int)Frame.Flybird);
                         break;
                     case 32:
@@ -437,7 +498,7 @@ namespace HollowKnightItems.Content.NPCs
                                                     npc.Center,
                                                     new Vector2(-npc.spriteDirection * 20, 0),
                                                     ModContent.ProjectileType<GrimmFirebird>(),
-                                                    npc.damage,
+                                                    30,
                                                     0.2f,
                                                     Main.myPlayer);
                         }                        
@@ -452,7 +513,6 @@ namespace HollowKnightItems.Content.NPCs
                 // 让npc面朝玩家
                 // spriteDirection = 1意为翻转
                 npc.spriteDirection = player.position.X - npc.position.X > 0 ? -1 : 1;
-                SwitchStateToDie(n);
                 SwitchStateToFly(n);                
                 n.Timer++;
             }
@@ -463,7 +523,8 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.defense = NormalDefence;
+                npc.damage = Damage;
+                npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
                 // 根据计时器切换子状态
@@ -476,7 +537,7 @@ namespace HollowKnightItems.Content.NPCs
                         // 预警
                         for (int i = -12; i < 13; i++)
                         {
-                            Rect.NewRect(new Vector2(npc.Center.X + i * 120, npc.Bottom.Y), 3, 3, new Color(255, 153, 153));
+                            Rect.NewRect(new Vector2(npc.Center.X + i * 120, npc.Bottom.Y), 4, 4, new Color(255, 153, 153));
                         }                        
                         break;
                     case 60:
@@ -490,7 +551,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         npc.Center + new Vector2(i * 120 - 12, 120),
                                                         new Vector2(0, -20),
                                                         ModContent.ProjectileType<GrimmThorn>(),
-                                                        npc.damage,
+                                                        30,
                                                         0.2f,
                                                         Main.myPlayer);
                                 // 向下
@@ -498,7 +559,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         npc.Center + new Vector2(i * 120 - 12, 0),
                                                         new Vector2(0, 20),
                                                         ModContent.ProjectileType<GrimmThorn>(),
-                                                        npc.damage,
+                                                        30,
                                                         0.2f,
                                                         Main.myPlayer);
                             }
@@ -517,7 +578,6 @@ namespace HollowKnightItems.Content.NPCs
 
                 // 让npc面朝玩家
                 npc.spriteDirection = player.position.X - npc.position.X > 0 ? -1 : 1;
-                SwitchStateToDie(n);
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -528,7 +588,8 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.defense = NormalDefence;
+                npc.damage = Damage;
+                npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
                 // 根据计时器切换子状态
@@ -567,7 +628,6 @@ namespace HollowKnightItems.Content.NPCs
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
-                SwitchStateToDie(n);
                 SwitchStateToFly(n);
                 n.Timer++;
             }
@@ -578,7 +638,8 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.defense = NormalDefence;
+                npc.damage = Damage;
+                npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
                 // 根据计时器切换子状态
@@ -615,7 +676,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         npc.Center,
                                                         new Vector2(i * 7, 0),
                                                         ModContent.ProjectileType<GrimmFireball>(),
-                                                        npc.damage,
+                                                        30,
                                                         0.2f,
                                                         Main.myPlayer);
                             }                            
@@ -631,80 +692,14 @@ namespace HollowKnightItems.Content.NPCs
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
-                SwitchStateToDie(n);
                 SwitchStateToFly(n);
                 n.Timer++;
             }
         }
-
-        public class DieState : NPCState
-        {
-            public override void AI(SMNPC n)
-            {
-                NPC npc = n.NPC;
-                n.GetFrame((int)Frame.Die);
-
-                // Dust
-
-                if (n.Timer == 240)
-                {
-                    NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
-                    npc.active = false;
-                }
-
-                n.Timer++;
-            }
-        }
-
     }
 
     internal static class Utils
-    {
-        /// <summary>
-        /// GrimmBoss AI中的一些距离常量
-        /// </summary>
-        internal static class Distance
-        {
-            public const int Blowfish = 300;
-            public const int Firebird = 400;
-            public const int Thorn = 300;
-            public const int Sho = 200;
-            public const int Swoop = 300;
-            public const int Fly = 200;
-        }
-
-        /// <summary>
-        /// GrimmBoss AI中的一些速率常量
-        /// </summary>
-        internal static class Speed
-        {
-            public const int Swoop = 30;
-            public const int Scratch = 15;
-            public const int Sho = 25;
-        }
-
-        /// <summary>
-        /// 每张帧图的命名
-        /// </summary>
-        public enum Frame {
-            Start,
-            Bow,
-            Teleport,
-            Angry,
-            Blowfish,
-            Fly,
-            Flybird,
-            Thorn,
-            Swoop1,
-            Swoop2,
-            Swoop3,
-            Sho1,
-            Sho2,
-            Sho3,
-            Die,
-            None
-        }
-
+    {        
         public static void SwitchStateToFly(SMNPC n)
         {
             NPC npc = n.NPC;
@@ -717,20 +712,6 @@ namespace HollowKnightItems.Content.NPCs
             {
                 n.SetState<FlyState>();
                 n.Stage += 10;
-                n.Timer = 0;
-                npc.netUpdate = true;
-            }
-        }
-
-        /// <summary>
-        /// 因为阻止了原版的死亡，就要时刻检查npc的血量，归零时切换至<see cref="DieState"/>
-        /// </summary>
-        public static void SwitchStateToDie(SMNPC n)
-        {
-            NPC npc = n.NPC;            
-            if (npc.life <= 0)
-            {
-                n.SetState<DieState>();
                 n.Timer = 0;
                 npc.netUpdate = true;
             }

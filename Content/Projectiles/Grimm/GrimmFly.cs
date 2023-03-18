@@ -77,9 +77,9 @@
             else
             {
                 Vector2 dir = npc.Center - Projectile.Center;
-                if (dir.Length() < 30)
+                if (dir.Length() < 20)
                 {
-                    Projectile.timeLeft = 2;
+                    Projectile.active = false;
                 }
                 dir.Normalize();
                 Projectile.velocity = dir * 18;

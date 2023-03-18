@@ -115,8 +115,17 @@ namespace HollowKnightItems.Common.Utils
             {
                 float r = (float)(i * Math.PI / 18);
                 Vector2 vel = r.ToRotationVector2() * 40;
-                Dust.NewDust(center, 0, 0, ModContent.DustType<RoarWave>(), vel.X, vel.Y, 128);
+                Dust.NewDust(center, 0, 0, ModContent.DustType<RoarWave>(), vel.X, vel.Y);
             }
+        }
+
+        public static void RoundHitboxDust(NPC npc, Color color) 
+        {
+            int type = ModContent.DustType<StaticPoint>();
+            Dust.NewDust(npc.TopLeft, 0, 0, type, 10, 0, newColor: color);
+            Dust.NewDust(npc.TopRight, 0, 0, type, 0, 10, newColor: color);
+            Dust.NewDust(npc.BottomRight, 0, 0, type, -10, 0, newColor: color);
+            Dust.NewDust(npc.BottomLeft, 0, 0, type, 0, -10, newColor: color);
         }
     }
 }

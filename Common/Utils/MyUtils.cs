@@ -95,5 +95,14 @@
         {
             return ModContent.Request<Effect>($"HollowKnightItems/Assets/Effects/Content/{fileName}", AssetRequestMode.ImmediateLoad);
         }
+
+        /// <summary>
+        /// 获取Texture2D
+        /// </summary>
+        /// <param name="fileName">路径为Assets/Effects/Textures/*</param>
+        public static Asset<Texture2D> GetTexture(string fileName)
+        {
+            return ModContent.Request<Texture2D>($"HollowKnightItems/Assets/Textures/{fileName}", AssetRequestMode.ImmediateLoad);
+        }
     }
 }
