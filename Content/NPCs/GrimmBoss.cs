@@ -490,17 +490,33 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 32:
                     case 68:
-                    case 86:
                         // 弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                npc.Center,
+                                                new Vector2(-npc.spriteDirection * 20, 0),
+                                                ModContent.ProjectileType<GrimmFirebird>(),
+                                                30,
+                                                0.2f,
+                                                Main.myPlayer);
+                        }
+                        break;
+                    case 50:                    
+                    case 86:
+                        // 弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = -1; i < 2; i += 2)
+                            {
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                     npc.Center,
-                                                    new Vector2(-npc.spriteDirection * 20, 0),
+                                                    new Vector2(-npc.spriteDirection * 20, i * 10),
                                                     ModContent.ProjectileType<GrimmFirebird>(),
                                                     30,
                                                     0.2f,
                                                     Main.myPlayer);
+                            }                            
                         }                        
                         break;
                     case 126:
@@ -537,7 +553,7 @@ namespace HollowKnightItems.Content.NPCs
                         // 预警
                         for (int i = -12; i < 13; i++)
                         {
-                            Rect.NewRect(new Vector2(npc.Center.X + i * 120, npc.Bottom.Y), 4, 4, new Color(255, 153, 153));
+                            Rect.NewRect(new Vector2(npc.Center.X + i * 120, npc.Bottom.Y), 10, 10, new Color(255, 153, 153));
                         }                        
                         break;
                     case 60:
@@ -603,16 +619,19 @@ namespace HollowKnightItems.Content.NPCs
                     case 15:
                         // 俯冲
                         npc.velocity *= Speed.Swoop;
+                        // Dust to do
                         break;                    
                     case 25:                        
                         // 停顿
                         npc.velocity = player.Center.X - npc.Center.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         n.GetFrame((int)Frame.Swoop2);
+                        // Dust to do
                         break;
                     case 55:
                         n.GetFrame((int)Frame.Swoop3);
                         // 横冲
                         npc.velocity *= Speed.Swoop;
+                        // Dust to do
                         break;
                     case 65:
                         // 停顿

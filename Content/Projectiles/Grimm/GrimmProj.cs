@@ -67,14 +67,15 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 60;
-            Projectile.height = 30;
+            Projectile.width = 116;
+            Projectile.height = 60;
+            DrawOriginOffsetY = -20;
             Projectile.timeLeft = 180;
         }
 
         public override void AI()
         {
-            TailDust(Projectile, TailType, Projectile.height);
+            TailDust(Projectile, TailType, Projectile.height / 10);
             Projectile.spriteDirection = Projectile.direction;
 
             Player player = null;
@@ -87,13 +88,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             }
             if (player != null)
             {
-                if (player.Center.Y > Projectile.position.Y)
+                if (player.Center.Y > Projectile.position.Y && Projectile.velocity.Y < 8)
                 {
-                    Projectile.velocity.Y = 1;
+                    Projectile.velocity.Y++;
                 }
-                else if(player.Center.Y < Projectile.position.Y)
+                else if(player.Center.Y < Projectile.position.Y && Projectile.velocity.Y > -8)
                 {
-                    Projectile.velocity.Y = -1;
+                    Projectile.velocity.Y--;
                 }
             }
         }

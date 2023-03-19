@@ -119,13 +119,18 @@ namespace HollowKnightItems.Common.Utils
             }
         }
 
-        public static void RoundHitboxDust(NPC npc, Color color) 
+        /// <summary>
+        /// 给碰撞箱描框的Dust
+        /// </summary>
+        /// <param name="npc"></param>
+        /// <param name="color"></param>
+        public static void RoundHitboxDust(Entity entity, Color color) 
         {
             int type = ModContent.DustType<StaticPoint>();
-            Dust.NewDust(npc.TopLeft, 0, 0, type, 10, 0, newColor: color);
-            Dust.NewDust(npc.TopRight, 0, 0, type, 0, 10, newColor: color);
-            Dust.NewDust(npc.BottomRight, 0, 0, type, -10, 0, newColor: color);
-            Dust.NewDust(npc.BottomLeft, 0, 0, type, 0, -10, newColor: color);
+            Dust.NewDust(entity.TopLeft, 0, 0, type, 10, 0, newColor: color);
+            Dust.NewDust(entity.TopRight, 0, 0, type, 0, 10, newColor: color);
+            Dust.NewDust(entity.BottomRight, 0, 0, type, -10, 0, newColor: color);
+            Dust.NewDust(entity.BottomLeft, 0, 0, type, 0, -10, newColor: color);
         }
     }
 }
