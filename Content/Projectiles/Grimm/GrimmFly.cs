@@ -31,9 +31,9 @@
                     npc = n;
                 }
             }            
-            if (npc == null) 
+            if (npc == null || npc.life <= 0) 
             {
-                Projectile.timeLeft = 1;
+                Projectile.active = false;
                 return;
             }
 

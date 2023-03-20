@@ -87,6 +87,31 @@
             return damage;
         }
 
+        public static void ArrayToDefault(ref int[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = 0;
+            }
+        }
+
+        public static void ArrayToDefault(ref bool[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = false;
+            }
+        }
+
+        public static void ArrayToDefault(ref Vector2[] array)
+        {
+            for (int i = 0; i < array.Length; i++)
+            {
+                array[i] = Vector2.Zero;
+            }
+        }
+
+
         /// <summary>
         /// 获取Effect
         /// </summary>

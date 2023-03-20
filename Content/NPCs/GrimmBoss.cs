@@ -125,6 +125,7 @@ namespace HollowKnightItems.Content.NPCs
             {
                 Texture2D texture = GetTexture("GrimmDie").Value;
                 Graph.NewGraph(texture, NPC.position, 180);
+                AnimationSystem.StartPlay((int)AnimationSystem.MyAnimationID.GrimmDying, 180, NPC.Center);
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using HollowKnightItems.Common.Players;
-using HollowKnightItems.Content.Buffs;
+﻿using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.StateMachine;
 using static HollowKnightItems.Content.Projectiles.Grimmchild.GrimmchildSummon;
 using static HollowKnightItems.Content.Projectiles.Grimmchild.Utils;
