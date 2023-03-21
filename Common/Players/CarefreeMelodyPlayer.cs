@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Content.Projectiles;
+﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Content.Projectiles;
 
 namespace HollowKnightItems.Common.Players
 {
@@ -31,7 +32,7 @@ namespace HollowKnightItems.Common.Players
                             0,
                             0);
                     }
-                    SoundEngine.PlaySound(CarefreeMelodySound);
+                    SoundEngine.PlaySound(SoundLoader.CarefreeMelody);
                     Player.immune = true;
                     Player.immuneTime += 40;
                     for (int i = 0; i < Player.hurtCooldowns.Length; i++)

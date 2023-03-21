@@ -22,7 +22,6 @@ global using Terraria.UI.Chat;
 global using Terraria.Utilities;
 global using static HollowKnightItems.Common.Utils.AIUtils;
 global using static HollowKnightItems.Common.Utils.MyUtils;
-global using static HollowKnightItems.Common.Utils.SoundUtils;
 
 namespace HollowKnightItems
 {

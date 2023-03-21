@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Content.Items.Charms;
+﻿using HollowKnightItems.Content.Items;
+using HollowKnightItems.Content.Items.Charms;
 
 namespace HollowKnightItems.Common.Systems
 {
@@ -85,12 +86,11 @@ namespace HollowKnightItems.Common.Systems
 
                             if (sell)
                             {
-                                shop.item[nextSlot].SetDefaults(ModContent.ItemType<Grimmchild>());
-                                nextSlot++;
-                                if (NPC.downedBoss2)
+                                shop.item[0].SetDefaults(ModContent.ItemType<NightmareLantern_OFF>());
+                                if (DownedBossSystem.downedGrimm)
                                 {
-                                    shop.item[nextSlot].SetDefaults(ModContent.ItemType<CarefreeMelody>());
-                                    nextSlot++;
+                                    shop.item[10].SetDefaults(ModContent.ItemType<Grimmchild>());
+                                    shop.item[11].SetDefaults(ModContent.ItemType<CarefreeMelody>());
                                 }
                             }
                         }

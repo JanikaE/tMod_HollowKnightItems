@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Common.Systems;
+﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Common.Systems;
 using HollowKnightItems.Common.Systems.DrawSystem;
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.NPCs.StateMachine;
@@ -81,8 +82,8 @@ namespace HollowKnightItems.Content.NPCs
             NPC.damage = 0;
             NPC.defense = 0;  // 在每个状态里再分别写攻击和防御
 
-            //NPC.HitSound = SoundID.NPCHit5;
-            //NPC.DeathSound = SoundID.NPCDeath7;
+            NPC.HitSound = SoundLoader.Enemy_Hit;
+            NPC.DeathSound = SoundLoader.Grimm_Death;
 
             NPC.value = Item.buyPrice(0, 4, 50, 0);  // NPC的爆出来的MONEY的数量，四个空从左到右是铂金，金，银，铜
             NPC.lavaImmune = true;  // 对岩浆免疫
@@ -123,9 +124,9 @@ namespace HollowKnightItems.Content.NPCs
         {
             if (NPC.life <= 0)
             {
-                Texture2D texture = GetTexture("GrimmDie").Value;
+                Texture2D texture = TextureLoader.GrimmDeath.Value;
                 Graph.NewGraph(texture, NPC.position, 180);
-                AnimationSystem.StartPlay((int)AnimationSystem.MyAnimationID.GrimmDying, 180, NPC.Center);
+                AnimationSystem.StartPlay((int)AnimationSystem.MyAnimationID.GrimmDeath, 180, NPC.Center);
             }
         }
 
@@ -186,7 +187,7 @@ namespace HollowKnightItems.Content.NPCs
                     switch (n.Timer)
                     {
                         case 1:
-                            TeleportDust(npc);
+                            TeleportEffect(npc);
                             n.GetFrame((int)Frame.Start);
                             break;
                         case 120:
@@ -242,13 +243,13 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 110:
                         n.GetFrame((int)Frame.None);
-                        TeleportDust(npc);
+                        TeleportEffect(npc);
                         break;
                     case 140:
                         n.GetFrame((int)Frame.Teleport);
                         // 传送至目标玩家上方                        
                         npc.position = player.Center + new Vector2(-npc.width / 2, -Distance.Blowfish);
-                        TeleportDust(npc);
+                        TeleportEffect(npc);
                         break;
                     case 160:                        
                         // 切换至Blowfish状态
@@ -299,7 +300,7 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 20:
                         n.GetFrame((int)Frame.None);
-                        TeleportDust(npc);
+                        TeleportEffect(npc);
                         break;
                     case 70:
                         n.GetFrame((int)Frame.Teleport);
@@ -333,7 +334,7 @@ namespace HollowKnightItems.Content.NPCs
                                 npc.position = new Vector2(x, y);
                                 break;
                         }
-                        TeleportDust(npc);
+                        TeleportEffect(npc);
                         break;
                     case 90:
                         // 切换状态
@@ -454,7 +455,11 @@ namespace HollowKnightItems.Content.NPCs
                         }
                         // 设定初速
                         npc.velocity = new Vector2(8, 4);
-                        break;                       
+                        break;
+                    case 280:
+                        // 音效
+                        SoundEngine.PlaySound(SoundLoader.Grimm_FlyEnd, npc.Center);
+                        break;
                     case 300:
                         // 切换至Teleport状态
                         n.SetState<TeleportState>();
@@ -502,6 +507,8 @@ namespace HollowKnightItems.Content.NPCs
                                                 0.2f,
                                                 Main.myPlayer);
                         }
+                        // 音效
+                        SoundEngine.PlaySound(SoundLoader.Grimm_Firebird , npc.Center);
                         break;
                     case 50:                    
                     case 86:
@@ -518,7 +525,9 @@ namespace HollowKnightItems.Content.NPCs
                                                     0.2f,
                                                     Main.myPlayer);
                             }                            
-                        }                        
+                        }
+                        // 音效
+                        SoundEngine.PlaySound(SoundLoader.Grimm_Firebird, npc.Center);
                         break;
                     case 126:
                         n.SetState<TeleportState>();
@@ -581,7 +590,8 @@ namespace HollowKnightItems.Content.NPCs
                                                         Main.myPlayer);
                             }
                         }
-
+                        // 音效
+                        SoundEngine.PlaySound(SoundLoader.Grimm_Thorn, npc.Center);
                         // 清除预警
                         Rect.ClearRect();
                         break;
@@ -748,15 +758,16 @@ namespace HollowKnightItems.Content.NPCs
         }
 
         /// <summary>
-        /// 用于瞬移前后产生Dust
+        /// 用于瞬移时产生Dust和播放音效
         /// </summary>
-        public static void TeleportDust(NPC npc)
+        public static void TeleportEffect(NPC npc)
         {
             Vector2 pos = npc.position;
             for (int i = 0; i < 300; i++)
             {
                 Dust.NewDust(pos, npc.width, npc.height, DustID.TintableDustLighted, SpeedY: -4, newColor: new Color(255, 0, 0));
             }
+            SoundEngine.PlaySound(SoundLoader.Grimm_Teleport, pos);
         }
     }    
 }

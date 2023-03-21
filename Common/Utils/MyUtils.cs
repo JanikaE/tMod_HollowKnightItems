@@ -124,10 +124,33 @@
         /// <summary>
         /// 获取Texture2D
         /// </summary>
-        /// <param name="fileName">路径为Assets/Effects/Textures/*</param>
+        /// <param name="fileName">路径为Assets/Textures/*</param>
         public static Asset<Texture2D> GetTexture(string fileName)
         {
             return ModContent.Request<Texture2D>($"HollowKnightItems/Assets/Textures/{fileName}", AssetRequestMode.ImmediateLoad);
+        }
+
+        /// <summary>
+        /// 获取Sound
+        /// </summary>
+        /// <param name="fileName">路径为Assets/Sounds/*</param>
+        /// <param name="numVariants">随机选取的目标数量</param>
+        /// <param name="Volume">音量</param>
+        /// <param name="Pitch">音调</param>
+        /// <param name="PitchVariance">音调随机浮动</param>
+        /// <param name="MaxInstances">叠加播放上限</param>
+        /// <param name="SoundLimitBehavior">到达上限之后的操作</param>
+        /// <param name="Type">声音类型（音乐/音效/环境）</param>
+        public static SoundStyle GetSoundStyle(string fileName, int numVariants, float Volume, float Pitch = 0, float PitchVariance = 0, int MaxInstances = 1, SoundLimitBehavior SoundLimitBehavior = SoundLimitBehavior.IgnoreNew, SoundType Type = SoundType.Sound)
+        {
+            return new SoundStyle($"HollowKnightItems/Assets/Sounds/{fileName}", numVariants) with {
+                Volume = Volume,
+                Pitch = Pitch,
+                PitchVariance = PitchVariance,
+                MaxInstances = MaxInstances,
+                SoundLimitBehavior = SoundLimitBehavior,
+                Type = Type
+            };
         }
     }
 }

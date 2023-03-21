@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Content.Buffs;
+﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.StateMachine;
 using static HollowKnightItems.Content.Projectiles.Grimmchild.GrimmchildSummon;
 using static HollowKnightItems.Content.Projectiles.Grimmchild.Utils;
@@ -100,7 +101,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 // 播放声音
                 if (random.Next(0, SoundFrequency) == 0)
                 {
-                    SoundEngine.PlaySound(GrimmchildSound_Routine);
+                    SoundEngine.PlaySound(SoundLoader.Grimmchild_Routine, Projectile.position);
                 }
 
                 SwitchState_Grimmchild(proj);
@@ -133,7 +134,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                     proj.Timer++;
 
                     //播放声音
-                    SoundEngine.PlaySound(GrimmchildSound_Attack, Projectile.position);
+                    SoundEngine.PlaySound(SoundLoader.Grimmchild_Attack, Projectile.position);
                 }
 
                 // 运动逻辑，保持位置在玩家附近
@@ -263,7 +264,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 // 播放声音                 
                 if (random.Next(0, SoundFrequency) == 0)
                 {
-                    SoundEngine.PlaySound(GrimmchildSound_Routine, Projectile.position);
+                    SoundEngine.PlaySound(SoundLoader.Grimmchild_Routine, Projectile.position);
                 }
 
                 SwitchState_Grimmchild(proj);
