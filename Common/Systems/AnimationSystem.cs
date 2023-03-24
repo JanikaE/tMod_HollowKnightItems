@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Content.Dusts;
+﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Content.Dusts;
 
 namespace HollowKnightItems.Common.Systems
 {
@@ -59,6 +60,10 @@ namespace HollowKnightItems.Common.Systems
                 float rotation = (float)(random.Next(360) * Math.PI / 180);
                 Vector2 dir = rotation.ToRotationVector2() * 20;
                 Dust.NewDust(Animations[id].Position, 0, 0, ModContent.DustType<Explosion>(), dir.X, dir.Y, newColor: new Color(255, 150, 150));
+            }
+            if (Animations[id].Timer == 1)
+            {
+                SoundEngine.PlaySound(SoundLoader.Boss_Explode, Animations[id].Position);
             }
         }
     }

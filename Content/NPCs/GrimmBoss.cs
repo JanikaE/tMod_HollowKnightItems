@@ -82,9 +82,6 @@ namespace HollowKnightItems.Content.NPCs
             NPC.damage = 0;
             NPC.defense = 0;  // 在每个状态里再分别写攻击和防御
 
-            NPC.HitSound = SoundLoader.Enemy_Hit;
-            NPC.DeathSound = SoundLoader.Grimm_Death;
-
             NPC.value = Item.buyPrice(0, 4, 50, 0);  // NPC的爆出来的MONEY的数量，四个空从左到右是铂金，金，银，铜
             NPC.lavaImmune = true;  // 对岩浆免疫
             NPC.noGravity = true;  // 不受重力影响
@@ -127,6 +124,7 @@ namespace HollowKnightItems.Content.NPCs
                 Texture2D texture = TextureLoader.GrimmDeath.Value;
                 Graph.NewGraph(texture, NPC.position, 180);
                 AnimationSystem.StartPlay((int)AnimationSystem.MyAnimationID.GrimmDeath, 180, NPC.Center);
+                SoundEngine.PlaySound(SoundLoader.Grimm_Death, NPC.Center);
             }
         }
 
@@ -161,6 +159,15 @@ namespace HollowKnightItems.Content.NPCs
 
             // 标记碰撞箱的四个角
             RoundHitboxDust(NPC, new Color(255, 150, 150));
+
+            if (NPC.defense == 9999)
+            {
+                NPC.HitSound = SoundLoader.Metal_Hit;
+            }
+            else
+            {
+                NPC.HitSound = SoundLoader.Enemy_Hit;
+            }
         }
 
         public class StartState : NPCState
@@ -270,7 +277,7 @@ namespace HollowKnightItems.Content.NPCs
             {
                 NPC npc = n.NPC;
                 npc.damage = 0;
-                npc.defense = 9999;
+                npc.defense = Defence;
                 npc.velocity = Vector2.Zero;
                 Player player = Main.player[npc.target];
 
@@ -299,8 +306,9 @@ namespace HollowKnightItems.Content.NPCs
                         }                        
                         break;
                     case 20:
-                        n.GetFrame((int)Frame.None);
+                        n.GetFrame((int)Frame.None);                        
                         TeleportEffect(npc);
+                        npc.BottomRight = Main.screenPosition;
                         break;
                     case 70:
                         n.GetFrame((int)Frame.Teleport);
@@ -375,15 +383,22 @@ namespace HollowKnightItems.Content.NPCs
                 npc.defense = 9999;
                 npc.velocity = Vector2.Zero;
                 n.GetFrame((int)Frame.Blowfish);
+
+                if (n.Timer == 20)
+                {
+                    //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
+                }
                 
                 // 从第50帧到第490帧，每隔40帧发射一轮弹幕，共计12轮
                 if ((n.Timer - 50) % 40 == 0 && n.Timer < 500)
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
+                        int r1 = 5, r2 = 5;
                         for (int i = -3; i < 8; i++)
                         {
-                            if (random.Next(2) > 0)
+                            
+                            if (random.Next(10) > r1)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
@@ -392,8 +407,13 @@ namespace HollowKnightItems.Content.NPCs
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
+                                r1++;
                             }
-                            if (random.Next(2) > 0)
+                            else
+                            {
+                                r1--;
+                            }
+                            if (random.Next(10) > r2)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
@@ -402,7 +422,12 @@ namespace HollowKnightItems.Content.NPCs
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
-                            }                                
+                                r2++;
+                            }
+                            else
+                            {
+                                r2--;
+                            }
                         }
                         for (int i = -1; i < 2; i++)
                         {
@@ -493,6 +518,7 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     case 1:
                         n.GetFrame((int)Frame.Flybird);
+                        //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                         break;
                     case 32:
                     case 68:
@@ -564,7 +590,8 @@ namespace HollowKnightItems.Content.NPCs
                         for (int i = -12; i < 13; i++)
                         {
                             Rect.NewRect(new Vector2(npc.Center.X + i * 120, npc.Bottom.Y), 10, 10, new Color(255, 153, 153));
-                        }                        
+                        }
+                        //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                         break;
                     case 60:
                         // 地刺
@@ -630,6 +657,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 15:
                         // 俯冲
                         npc.velocity *= Speed.Swoop;
+                        SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
                         // Dust to do
                         break;                    
                     case 25:                        
@@ -642,6 +670,7 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.Swoop3);
                         // 横冲
                         npc.velocity *= Speed.Swoop;
+                        SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
                         // Dust to do
                         break;
                     case 65:
@@ -684,6 +713,7 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.Sho2);
                         // 横冲
                         npc.velocity *= Speed.Scratch;
+                        SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
                         break;
                     case 36:
                         // 停顿
@@ -693,6 +723,7 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.Sho3);                   
                         // 升龙拳
                         npc.velocity = new Vector2(Speed.Sho / 2, Speed.Sho) * -1;
+                        //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                         break;
                     case 68:
                         n.GetFrame((int)Frame.Start);
