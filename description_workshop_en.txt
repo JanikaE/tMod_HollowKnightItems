@@ -1,0 +1,9 @@
+[h1]v1.0.1[/h1]
+New Boss: Troupe Master Grimm.
+Guide will sell the item used for summoning, and related items will be unlocked after defeating the boss.
+
+[h2]More information in changelog.[/h2]
+
+[h1]v1.0.0[/h1]
+Give you a lovely companion on your journey in Terraria, Grimmchild.
+[url=https://www.bilibili.com/video/BV1ud4y147EB/]demo video[/url]
