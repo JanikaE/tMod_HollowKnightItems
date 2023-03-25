@@ -113,16 +113,16 @@ namespace HollowKnightItems.Content.NPCs
 
         public override bool CheckDead()
         {
+            Main.NewText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.WinInfo"));
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
-            return false;
+            return true;
         }
 
         public override void HitEffect(int hitDirection, double damage)
         {
             if (NPC.life <= 0)
             {
-                Texture2D texture = TextureLoader.GrimmDeath.Value;
-                Graph.NewGraph(texture, NPC.position, 180);
+                Graph.NewGraph(TextureLoader.GrimmDeath.Value, NPC.position, 180);
                 AnimationSystem.StartPlay((int)AnimationSystem.MyAnimationID.GrimmDeath, 180, NPC.Center);
                 SoundEngine.PlaySound(SoundLoader.Grimm_Death, NPC.Center);
             }
@@ -147,14 +147,6 @@ namespace HollowKnightItems.Content.NPCs
             if (NPC.target < 0 || NPC.target == 255 || Main.player[NPC.target].dead || !Main.player[NPC.target].active)
             {
                 NPC.TargetClosest();
-            }
-
-            Player player = Main.player[NPC.target];
-            if (player.dead)
-            {
-                // 如果玩家寄了就让Boss消失
-                NPC.EncourageDespawn(10);
-                return;
             }
 
             // 标记碰撞箱的四个角
@@ -309,6 +301,11 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.None);                        
                         TeleportEffect(npc);
                         npc.BottomRight = Main.screenPosition;
+                        if (player.dead)
+                        {
+                            npc.active = false;
+                            Main.NewText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.LoseInfo"));
+                        }
                         break;
                     case 70:
                         n.GetFrame((int)Frame.Teleport);

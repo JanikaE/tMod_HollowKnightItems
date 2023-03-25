@@ -30,6 +30,7 @@ Mods: {
 				Default: 曾用于开启某场仪式
 				OFF: "[c/FF9696:待点燃]"
 				ON: "[c/FF9696:已点燃]"
+				Win: "[c/FF5A5A:你已经通过了考验]"
 			}
 		}
 
@@ -38,13 +39,9 @@ Mods: {
 				DisplayName: 剧团团长 格林
 				SpawnInfo1: 剧团团长
 				SpawnInfo2: 格林
+				LoseInfo: "[c/FF5A5A:你未能通过考验。再试一次吧。]"
+				WinInfo: "[c/FF5A5A:你通过了考验。恭喜！]"
 			}
-		}
-
-		Projectiles: {
-			CarefreeMelodyFire.DisplayName: Carefree Melody Fire
-			GrimmchildShoot.DisplayName: Grimmchild Shoot
-			GrimmchildSummon.DisplayName: Grimmchild Summon
 		}
 	}
 }

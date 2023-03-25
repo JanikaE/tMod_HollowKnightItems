@@ -24,11 +24,6 @@ namespace HollowKnightItems.Content.Items.Charms
             Item.value = 100;
         }
 
-        public override void AddRecipes()
-        {
-
-        }
-
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             player.GetModPlayer<CarefreeMelodyPlayer>().HasCarefreeMelody = true;

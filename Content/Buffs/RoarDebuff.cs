@@ -6,8 +6,8 @@
         {
             DisplayName.SetDefault("Roar");
             DisplayName.AddTranslation(7, "战吼");
-            Description.SetDefault("can't control");
-            Description.AddTranslation(7, "无法控制");
+            Description.SetDefault("Can't move");
+            Description.AddTranslation(7, "动弹不得");
 
             Main.debuff[Type] = true;
             Main.buffNoSave[Type] = true;

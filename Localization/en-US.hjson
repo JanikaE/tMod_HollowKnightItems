@@ -30,6 +30,7 @@ Mods: {
 				Default: Was used to open a ritual
 				OFF: "[c/FF9696:To be ignited]"
 				ON: "[c/FF9696:Ignited]"
+				Win: "[c/FF5A5A:You have passed the test.]"
 			}
 		}
 
@@ -38,13 +39,9 @@ Mods: {
 				DisplayName: Troupe Master Grimm
 				SpawnInfo1: Troupe Master
 				SpawnInfo2: Grimm
+				LoseInfo: "[c/FF5A5A:You failed the test. Try again.]"
+				WinInfo: "[c/FF5A5A:You passed the test. Congratulations!]"
 			}
-		}
-
-		Projectiles: {
-			CarefreeMelodyFire.DisplayName: Carefree Melody Fire
-			GrimmchildShoot.DisplayName: Grimmchild Shoot
-			GrimmchildSummon.DisplayName: Grimmchild Summon
 		}
 	}
 }

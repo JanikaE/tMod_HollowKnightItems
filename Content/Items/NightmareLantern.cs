@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Common.UIs;
+﻿using HollowKnightItems.Common.Systems;
+using HollowKnightItems.Common.UIs;
 using HollowKnightItems.Content.NPCs;
 using HollowKnightItems.Content.Rarities;
 
@@ -30,6 +31,11 @@ namespace HollowKnightItems.Content.Items
         {
             TooltipLine line = new(Mod, "NightmareLantern", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.Default"));
             tooltips.Add(line);
+            if (DownedBossSystem.downedGrimm)
+            {
+                line = new(Mod, "NightmareLantern", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.Win"));
+                tooltips.Add(line);
+            }            
         }
     }
 
