@@ -43,5 +43,14 @@ Mods: {
 				WinInfo: "[c/FF5A5A:你通过了考验。恭喜！]"
 			}
 		}
+
+		Projectiles: {
+			GrimmThorn.DisplayName: 梦魇尖刺
+           	GrimmFirebird.DisplayName: 梦魇火鸟
+           	GrimmFireball.DisplayName: 梦魇大火球
+          	GrimmShoot.DisplayName: 梦魇火球
+			GrimmchildShoot.DisplayName: 小格林火球
+			GrimmchildSummon.DisplayName: 格林之子
+		}
 	}
 }

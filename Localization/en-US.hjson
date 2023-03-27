@@ -43,5 +43,14 @@ Mods: {
 				WinInfo: "[c/FF5A5A:You passed the test. Congratulations!]"
 			}
 		}
+
+		Projectiles: {
+			GrimmThorn.DisplayName: Nightmare Thorn
+           	GrimmFirebird.DisplayName: Nightmare Firebird
+           	GrimmFireball.DisplayName: Nightmare Big Fireball
+          	GrimmShoot.DisplayName: Nightmare Fireball
+			GrimmchildShoot.DisplayName: Little Grimm Fireball
+			GrimmchildSummon.DisplayName: Grimmchild
+		}
 	}
 }

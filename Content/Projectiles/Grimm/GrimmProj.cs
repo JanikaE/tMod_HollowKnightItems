@@ -40,6 +40,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(true)]
     internal class GrimmThorn : GrimmProj
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            DisplayName.SetDefault("Nightmare Thorn");
+            DisplayName.AddTranslation(7, "梦魇尖刺");
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -64,6 +71,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(true)]
     internal class GrimmFirebird : GrimmProj
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            DisplayName.SetDefault("Nightmare Firebird");
+            DisplayName.AddTranslation(7, "梦魇火鸟");
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -103,6 +117,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(true)]
     internal class GrimmFireball : GrimmProj
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            DisplayName.SetDefault("Nightmare Big Fireball");
+            DisplayName.AddTranslation(7, "梦魇大火球");
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -147,6 +168,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(false)]
     internal class GrimmShoot : GrimmProj
     {
+        public override void SetStaticDefaults()
+        {
+            base.SetStaticDefaults();
+            DisplayName.SetDefault("Nightmare Fireball");
+            DisplayName.AddTranslation(7, "梦魇火球");
+        }
+
         public override void SetDefaults()
         {
             base.SetDefaults();

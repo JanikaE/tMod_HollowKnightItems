@@ -87,7 +87,7 @@
         /// <summary>
         /// 清除<see cref="ScreenTextUI.UITexts"/>中所有的对象
         /// </summary>
-        public static void ClaerAllScreenText()
+        public static void ClearAllScreenText()
         {
             for (int i = 0; i < ScreenTextUI.UITexts.Length; i++)
             {
@@ -105,7 +105,7 @@
         {
             screenTextUI = new ScreenTextUI();
             screenTextUI.Activate();
-            ScreenText.ClaerAllScreenText();
+            ScreenText.ClearAllScreenText();
             userInterface = new UserInterface();
             userInterface.SetState(screenTextUI);
         }
@@ -137,7 +137,7 @@
                         return true;
                     },
                     // 绘制层的类型
-                    InterfaceScaleType.UI)
+                    InterfaceScaleType.Game)
                 );
             }
         }

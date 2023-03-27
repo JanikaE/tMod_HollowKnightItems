@@ -1,0 +1,4 @@
+version 1.0.1.0 update:
+New Boss: Troupe Master Grimm.
+Guide will still sell the items related, and charms will be unlocked after defeating the boss.
+The current boss battle design still has many shortcomings, which may bring you a bad game experience. But in terms of my personal ability, this is the best I can do so far.

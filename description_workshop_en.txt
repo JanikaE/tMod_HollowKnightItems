@@ -2,7 +2,7 @@
 New Boss: Troupe Master Grimm.
 Guide will sell the item used for summoning, and related items will be unlocked after defeating the boss.
 
-[h2]More information in changelog.[/h2]
+[h3]More information in changelog or the mod's homepage: https://github.com/JanikaE/tMod_HollowKnightItems[/h3]
 
 [h1]v1.0.0[/h1]
 Give you a lovely companion on your journey in Terraria, Grimmchild.

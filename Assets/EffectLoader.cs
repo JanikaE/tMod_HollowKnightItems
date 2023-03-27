@@ -3,13 +3,15 @@
     internal class EffectLoader : ModSystem
     {
         public static Effect Fireball;
+        public static Effect Text;
 
         public override void Load()
         {
             // Screen Shader
 
-            // Projectile Shader
+            // Other Shader
             Fireball = GetEffect("Fireball").Value;
+            Text = GetEffect("Text").Value;
         }
     }
 }

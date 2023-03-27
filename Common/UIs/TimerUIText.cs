@@ -1,4 +1,6 @@
-﻿namespace HollowKnightItems.Common.UIs
+﻿using HollowKnightItems.Assets;
+
+namespace HollowKnightItems.Common.UIs
 {
     /// <summary>
     /// 带计时器的UIText
@@ -22,6 +24,14 @@
             {
                 timer--;
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);
+            spriteBatch.End();
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            EffectLoader.Text.CurrentTechnique.Passes["Test"].Apply();
         }
     }
 }

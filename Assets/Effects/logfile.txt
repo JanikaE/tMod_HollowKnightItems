@@ -31,3 +31,15 @@ Message at 2023/3/2 14:51:59: Compiling Content\Fireball.xnb
 Message at 2023/3/12 12:22:23: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
 Message at 2023/3/12 12:22:23: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
 Message at 2023/3/12 12:22:23: Compiling Content\Fireball.xnb
+Message at 2023/3/27 10:55:28: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/3/27 10:55:28: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/3/27 10:55:28: Compiling Content\Fireball.xnb
+Message at 2023/3/27 10:55:28: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/3/27 10:55:28: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/3/27 10:55:28: Compiling Content\Text.xnb
+Message at 2023/3/27 11:00:01: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/3/27 11:00:01: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/3/27 11:00:01: Compiling Content\Fireball.xnb
+Message at 2023/3/27 11:00:01: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/3/27 11:00:01: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/3/27 11:00:01: Compiling Content\Text.xnb
