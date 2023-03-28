@@ -105,7 +105,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             {
                 State = ProjectileState.Teleport;  // 保持传送状态，直至传送动画完成
             }
-            else if (npc != null & player.GetModPlayer<GrimmchidPlayer>().GrimmchildType)
+            else if (npc != null & player.GetModPlayer<GrimmchidPlayer>().Type)
             {
                 State = ProjectileState.ShootAround; // 射击状态
             }

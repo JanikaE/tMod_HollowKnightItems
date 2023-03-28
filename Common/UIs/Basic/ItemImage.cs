@@ -1,37 +1,45 @@
-﻿using System.Runtime.CompilerServices;
-
-namespace HollowKnightItems.Common.UIs.Basic
+﻿namespace HollowKnightItems.Common.UIs.Basic
 {
     internal class ItemImage : UIElement
     {
-        public int ItemID;
-        public Texture2D Image;
-        public string Text;
+        private int[] ItemID;
+        private Texture2D Image;
+        private string Text;
 
-        public ItemImage(int ID)
+        private int Timer;
+        private int Index;
+
+        public ItemImage(int[] ID)
         {
             ItemID = ID;
         }
 
         public override void OnInitialize()
         {
-            Main.instance.LoadItem(ItemID);
-            Image = TextureAssets.Item[ItemID].Value;
-            Text = new Item(ItemID).Name;
+            foreach(int i in ItemID)
+            {
+                Main.instance.LoadItem(i);
+            }
+            Timer = 0;
+            Index = 0;
         }
 
-        public void ChangeItem(int NewID)
+        public void ChangeItem(int[] NewID)
         {
             ItemID = NewID;
-            Main.instance.LoadItem(ItemID);
-            Image = TextureAssets.Item[ItemID].Value;
-            Text = new Item(ItemID).Name;
+            OnInitialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-            Image = TextureAssets.Item[ItemID].Value;
-            Text = new Item(ItemID).Name;            
+            Image = TextureAssets.Item[ItemID[Index]].Value;
+            Text = new Item(ItemID[Index]).Name;
+            Timer++;
+            if (Timer == 180)
+            {
+                Timer = 0;
+                Index = (Index + 1) % ItemID.Length;
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

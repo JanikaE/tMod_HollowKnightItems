@@ -34,10 +34,7 @@ namespace HollowKnightItems.Content.Items.Charms
             Player player = Main.player[Main.myPlayer];
             if (player.GetModPlayer<CarefreeMelodyPlayer>().HasCarefreeMelody)
             {
-                TooltipLine Line = new(Mod, "CarefreeProbability", Language.GetTextValue("Mods.HollowKnightItems.Items.CarefreeMelody.Probability") +
-                                                                    ":" +
-                                                                    player.GetModPlayer<CarefreeMelodyPlayer>().CarefreeOdds.ToString() + 
-                                                                    "%");
+                TooltipLine Line = new(Mod, "CarefreeProbability", GetText("Items.CarefreeMelody.Probability") + player.GetModPlayer<CarefreeMelodyPlayer>().CarefreeOdds.ToString() + "%");
                 tooltips.Add(Line);
             }
         }

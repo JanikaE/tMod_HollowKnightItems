@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Common.UIs;
+﻿using HollowKnightItems.Common.Players;
+using HollowKnightItems.Common.UIs;
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.Grimmchild;
 using HollowKnightItems.Content.Rarities;
@@ -38,25 +39,28 @@ namespace HollowKnightItems.Content.Items.Charms
         public override void UpdateAccessory(Player player, bool hideVisual)
         {
             Summon(player);
-            player.GetModPlayer<GrimmchidPlayer>().GrimmchildType = true;
+            player.GetModPlayer<GrimmchidPlayer>().Type = true;
         }
 
         public override void UpdateVanity(Player player)
         {
             Summon(player);
-            player.GetModPlayer<GrimmchidPlayer>().GrimmchildType = false;
+            player.GetModPlayer<GrimmchidPlayer>().Type = false;
         }
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            Player player = Main.player[Main.myPlayer];
-            if (player.GetModPlayer<GrimmchidPlayer>().HasGrimmchild)
-            {
-                TooltipLine Line = new(Mod, "GrimmchildDamage", Language.GetTextValue("Mods.HollowKnightItems.Items.Grimmchild.Damage") +
-                                                                        ":" +
-                                                                        GetGrimmchildAttack());
-                tooltips.Add(Line);
-            }
+            Player player = Main.LocalPlayer;
+            TooltipLine Line;
+
+            Line = new(Mod, "LeftClick", GetText("Items.Grimmchild.LeftClick"));
+            tooltips.Add(Line);
+            Line = new(Mod, "Intro", GetText("Items.Grimmchild.Intro"));
+            tooltips.Add(Line);
+            Line = new(Mod, "Stage", GetText("Common.Stage") + player.GetModPlayer<GrimmchidPlayer>().Stage);
+            tooltips.Add(Line);
+            Line = new(Mod, "Damage", GetText("Common.Damage") + GetGrimmchildAttack());
+            tooltips.Add(Line);
         }
 
         private void Summon(Player player)

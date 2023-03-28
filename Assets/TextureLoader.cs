@@ -3,12 +3,12 @@
     internal class TextureLoader : ModSystem
     {
         public static Asset<Texture2D> GrimmDeath;
-        public static Asset<Texture2D> UIDelete;
+        public static Asset<Texture2D> UIClose;
 
         public override void Load()
         {
             GrimmDeath = GetTexture("GrimmDeath");
-            UIDelete = GetTexture("UIDelete");
+            UIClose = GetTexture("UIClose");
         }
     }
 }

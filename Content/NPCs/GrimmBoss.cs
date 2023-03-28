@@ -113,7 +113,7 @@ namespace HollowKnightItems.Content.NPCs
 
         public override bool CheckDead()
         {
-            Main.NewText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.WinInfo"));
+            Main.NewText(GetText("NPCs.Grimm.WinInfo"));
             NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
             return true;
         }
@@ -304,7 +304,7 @@ namespace HollowKnightItems.Content.NPCs
                         if (player.dead)
                         {
                             npc.active = false;
-                            Main.NewText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.LoseInfo"));
+                            Main.NewText(GetText("NPCs.Grimm.LoseInfo"));
                         }
                         break;
                     case 70:

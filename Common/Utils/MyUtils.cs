@@ -1,4 +1,6 @@
-﻿namespace HollowKnightItems.Common.Utils
+﻿using HollowKnightItems.Common.Systems;
+
+namespace HollowKnightItems.Common.Utils
 {
     /// <summary>
     /// 自用的一些工具
@@ -68,7 +70,9 @@
             NPC.downedChristmasTree,
             NPC.downedChristmasSantank,
             NPC.downedChristmasIceQueen,
-            NPC.downedMartians
+            NPC.downedMartians,
+
+            DownedBossSystem.downedGrimm
         };
 
         /// <summary>
@@ -114,6 +118,15 @@
         public static Vector2 GetSize(this UIElement uie)
         {
             return new(uie.Width.Pixels, uie.Height.Pixels);
+        }
+
+        /// <summary>
+        /// 获取本地化字符串
+        /// </summary>
+        /// <param name="path">路径为Mods.HollowKnightItems.*</param>
+        public static string GetText(string path)
+        {
+            return Language.GetTextValue($"Mods.HollowKnightItems.{path}");
         }
 
         /// <summary>

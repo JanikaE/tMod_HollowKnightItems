@@ -22,7 +22,8 @@ Mods: {
 			Grimmchild: {
 				DisplayName: 格林之子
 				Tooltip: 一场完成的仪式的标志。包含着一团跳动的猩红之火。
-				Damage: 当前伤害
+				LeftClick: 左键以打开升级界面
+				Intro: "[c/FF5A5A:这个世界的特殊物质将会使它获得新的力量]"				
 			}
 
 			NightmareLantern: {
@@ -51,6 +52,13 @@ Mods: {
           	GrimmShoot.DisplayName: 梦魇火球
 			GrimmchildShoot.DisplayName: 小格林火球
 			GrimmchildSummon.DisplayName: 格林之子
+		}
+
+		Common: {
+			Close: 关闭
+			Upgrade: 升级
+			Stage: 当前阶段:
+			Damage: 当前伤害:
 		}
 	}
 }

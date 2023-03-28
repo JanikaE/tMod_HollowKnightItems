@@ -29,11 +29,11 @@ namespace HollowKnightItems.Content.Items
 
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
-            TooltipLine line = new(Mod, "NightmareLantern", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.Default"));
+            TooltipLine line = new(Mod, "NightmareLantern", GetText("Items.NightmareLantern.Default"));
             tooltips.Add(line);
             if (DownedBossSystem.downedGrimm)
             {
-                line = new(Mod, "NightmareLantern", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.Win"));
+                line = new(Mod, "NightmareLantern", GetText("Items.NightmareLantern.Win"));
                 tooltips.Add(line);
             }            
         }
@@ -66,8 +66,8 @@ namespace HollowKnightItems.Content.Items
                     NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
                 }
 
-                ScreenText.NewScreenText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.SpawnInfo1"), 2, 200, 0.1f, 0.8f);
-                ScreenText.NewScreenText(Language.GetTextValue("Mods.HollowKnightItems.NPCs.Grimm.SpawnInfo2"), 5, 200, 0.1f, 0.9f);
+                ScreenText.NewScreenText(GetText("NPCs.Grimm.SpawnInfo1"), 2, 200, 0.1f, 0.8f);
+                ScreenText.NewScreenText(GetText("NPCs.Grimm.SpawnInfo2"), 5, 200, 0.1f, 0.9f);
             }
             return true;
         }
@@ -91,7 +91,7 @@ namespace HollowKnightItems.Content.Items
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            TooltipLine line = new(Mod, "NightmareLanternOFF", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.OFF"));
+            TooltipLine line = new(Mod, "NightmareLanternOFF", GetText("Items.NightmareLantern.OFF"));
             tooltips.Add(line);
         }
     }
@@ -123,7 +123,7 @@ namespace HollowKnightItems.Content.Items
         public override void ModifyTooltips(List<TooltipLine> tooltips)
         {
             base.ModifyTooltips(tooltips);
-            TooltipLine line = new(Mod, "NightmareLanternON", Language.GetTextValue("Mods.HollowKnightItems.Items.NightmareLantern.ON"));
+            TooltipLine line = new(Mod, "NightmareLanternON", GetText("Items.NightmareLantern.ON"));
             tooltips.Add(line);
         }
     }

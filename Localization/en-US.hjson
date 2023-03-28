@@ -22,7 +22,8 @@ Mods: {
 			Grimmchild: {
 				DisplayName: Grimmchild
 				Tooltip: Symbol of a completed ritual. Contains a living, scarlet flame.
-				Damage: Current Damage
+				LeftClick: Left click to open the upgrade interface
+				Intro: "[c/FF5A5A:The special matter of this world will give it new power]"				
 			}
 
 			NightmareLantern: {
@@ -51,6 +52,13 @@ Mods: {
           	GrimmShoot.DisplayName: Nightmare Fireball
 			GrimmchildShoot.DisplayName: Little Grimm Fireball
 			GrimmchildSummon.DisplayName: Grimmchild
+		}
+
+		Common: {
+			Close: Close
+			Upgrade: Upgrade
+			Stage: Current Stage:
+			Damage: Current Damage:
 		}
 	}
 }

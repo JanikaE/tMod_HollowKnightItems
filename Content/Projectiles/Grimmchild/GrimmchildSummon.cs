@@ -1,4 +1,5 @@
 ﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Common.Players;
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.StateMachine;
 using static HollowKnightItems.Content.Projectiles.Grimmchild.GrimmchildSummon;
@@ -122,15 +123,15 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 vel.Normalize();
 
                 // 生成射弹
-                if (Projectile.frame == 11 && proj.Timer == 0)  // 在第11张帧图时生成射弹，保证攻击与动画一致
+                if (Projectile.frame == 11 && proj.Timer == 0 && Main.netMode != NetmodeID.MultiplayerClient)  // 在第11张帧图时生成射弹，保证攻击与动画一致
                 {
                     Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(),
-                        Projectile.Center + offset,
-                        vel * 13f,
-                        ModContent.ProjectileType<GrimmchildShoot>(),
-                        Projectile.damage + GetGrimmchildAttack(),
-                        Projectile.knockBack + 1,
-                        Projectile.owner);
+                                                Projectile.Center + offset,
+                                                vel * 13f,
+                                                ModContent.ProjectileType<GrimmchildShoot>(),
+                                                Projectile.damage + GetGrimmchildAttack(),
+                                                Projectile.knockBack + 1,
+                                                Projectile.owner);
                     proj.Timer++;
 
                     //播放声音
@@ -292,7 +293,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             {
                 proj.SetState<TeleportState>();  // 传送状态                  
             }
-            else if (npc != null & player.GetModPlayer<GrimmchidPlayer>().GrimmchildType)
+            else if (npc != null & player.GetModPlayer<GrimmchidPlayer>().Type)
             {
                 proj.SetState<ShootState>();  // 射击状态
                 proj.Target = npc.Center;

@@ -15,17 +15,5 @@
             Main.vanityPet[Type] = false;
             Main.buffNoTimeDisplay[Type] = true;
         }
-    }
-
-    internal class GrimmchidPlayer : ModPlayer 
-    {
-        public bool HasGrimmchild;
-        public bool GrimmchildType;  // 格林之子类型，true为饰品栏，false为时装栏
-
-        public override void ResetEffects()
-        {
-            HasGrimmchild = false;
-            GrimmchildType = false;
-        }
-    }
+    }    
 }
