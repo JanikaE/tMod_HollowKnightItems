@@ -1,4 +1,5 @@
-﻿using HollowKnightItems.Content.Buffs;
+﻿using HollowKnightItems.Common.UIs;
+using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.Projectiles.Grimmchild;
 using HollowKnightItems.Content.Rarities;
 
@@ -20,7 +21,18 @@ namespace HollowKnightItems.Content.Items.Charms
             Item.canBePlacedInVanityRegardlessOfConditions = true;
             Item.rare = ModContent.RarityType<CharmRarity>();
 
+            Item.consumable = false;
+            Item.useTime = 10;
+            Item.useAnimation = 10;
+            Item.useStyle = ItemUseStyleID.HoldUp;
+
             Item.value = 100;
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            GrimmchildUI.Visible = !GrimmchildUI.Visible;
+            return true;
         }
 
         public override void UpdateAccessory(Player player, bool hideVisual)

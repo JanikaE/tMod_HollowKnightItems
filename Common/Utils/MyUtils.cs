@@ -111,6 +111,11 @@
             }
         }
 
+        public static Vector2 GetSize(this UIElement uie)
+        {
+            return new(uie.Width.Pixels, uie.Height.Pixels);
+        }
+
         /// <summary>
         /// 获取Effect
         /// </summary>

@@ -1,4 +1,6 @@
-﻿namespace HollowKnightItems.Common.UIs
+﻿using HollowKnightItems.Common.UIs.Basic;
+
+namespace HollowKnightItems.Common.UIs
 {
     internal class ScreenTextUI : UIState
     {
@@ -98,21 +100,24 @@
 
     internal class ScreenTextSystem : ModSystem 
     {
-        public ScreenTextUI screenTextUI;
-        public UserInterface userInterface;
+        public ScreenTextUI ScreenTextUI;
+        public UserInterface UserInterface;
 
         public override void Load()
         {
-            screenTextUI = new ScreenTextUI();
-            screenTextUI.Activate();
+            ScreenTextUI = new ScreenTextUI();
+            ScreenTextUI.Activate();
             ScreenText.ClearAllScreenText();
-            userInterface = new UserInterface();
-            userInterface.SetState(screenTextUI);
+            UserInterface = new UserInterface();
+            UserInterface.SetState(ScreenTextUI);
         }
 
         public override void UpdateUI(GameTime gameTime)
         {
-            userInterface?.Update(gameTime);
+            if (ScreenTextUI.Visible)
+            {
+                UserInterface?.Update(gameTime);
+            }            
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)
@@ -132,7 +137,7 @@
                         if (ScreenTextUI.Visible)
                         {
                             //绘制UI
-                            screenTextUI.Draw(Main.spriteBatch);
+                            ScreenTextUI.Draw(Main.spriteBatch);
                         }
                         return true;
                     },
