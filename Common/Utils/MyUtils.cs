@@ -120,6 +120,12 @@ namespace HollowKnightItems.Common.Utils
             return new(uie.Width.Pixels, uie.Height.Pixels);
         }
 
+        public static Rectangle ToSquare(this Texture2D texture)
+        {
+            int r = Math.Min(texture.Width, texture.Height);
+            return new Rectangle(0, 0, r, r);
+        }
+
         /// <summary>
         /// 获取本地化字符串
         /// </summary>

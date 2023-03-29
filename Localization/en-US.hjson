@@ -57,6 +57,9 @@ Mods: {
 		Common: {
 			Close: Close
 			Upgrade: Upgrade
+			Max: Upgraded to Max
+			Lack: Lack of material
+			Consume: will be consumed
 			Stage: Current Stage:
 			Damage: Current Damage:
 		}

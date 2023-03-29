@@ -57,6 +57,9 @@ Mods: {
 		Common: {
 			Close: 关闭
 			Upgrade: 升级
+			Max: 已升级至Max
+			Lack: 缺少材料
+			Consume: 将会被消耗
 			Stage: 当前阶段:
 			Damage: 当前伤害:
 		}

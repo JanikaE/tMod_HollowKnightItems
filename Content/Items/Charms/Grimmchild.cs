@@ -57,7 +57,10 @@ namespace HollowKnightItems.Content.Items.Charms
             tooltips.Add(Line);
             Line = new(Mod, "Intro", GetText("Items.Grimmchild.Intro"));
             tooltips.Add(Line);
-            Line = new(Mod, "Stage", GetText("Common.Stage") + player.GetModPlayer<GrimmchidPlayer>().Stage);
+
+            int stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
+            string s = stage == 4 ? "(Max)" : "";
+            Line = new(Mod, "Stage", GetText("Common.Stage") + stage + s);
             tooltips.Add(Line);
             Line = new(Mod, "Damage", GetText("Common.Damage") + GetGrimmchildAttack());
             tooltips.Add(Line);

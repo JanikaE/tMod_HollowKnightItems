@@ -18,7 +18,10 @@
         {
             foreach(int i in ItemID)
             {
-                Main.instance.LoadItem(i);
+                if (i != 0)
+                {
+                    Main.instance.LoadItem(i);
+                }                
             }
             Timer = 0;
             Index = 0;
@@ -26,16 +29,28 @@
 
         public void ChangeItem(int[] NewID)
         {
-            ItemID = NewID;
-            OnInitialize();
+            if (NewID != ItemID)
+            {
+                ItemID = NewID;
+                OnInitialize();
+            }            
         }
 
         public override void Update(GameTime gameTime)
         {
-            Image = TextureAssets.Item[ItemID[Index]].Value;
-            Text = new Item(ItemID[Index]).Name;
+            base.Update(gameTime);
+            if (ItemID[Index] != 0)
+            {
+                Image = TextureAssets.Item[ItemID[Index]].Value;
+                Text = new Item(ItemID[Index]).Name;
+            }
+            else
+            {
+                Image = null;
+            }
+
             Timer++;
-            if (Timer == 180)
+            if (Timer >= 60)
             {
                 Timer = 0;
                 Index = (Index + 1) % ItemID.Length;
@@ -45,12 +60,16 @@
         public override void Draw(SpriteBatch spriteBatch)
         {         
             base.Draw(spriteBatch);
-            Vector2 position = GetDimensions().Position();
-            spriteBatch.Draw(Image, position, null, Color.White, 0, Image.Size() / this.GetSize(), 1f, 0, 0f);
-
-            if (IsMouseHovering)
+            if (Image != null)
             {
-                Main.hoverItemName = Text;
+                Vector2 position = GetDimensions().Position();
+                Rectangle? sourceRect = Image.Height > Image.Width * 3 ? Image.ToSquare() : null;
+                spriteBatch.Draw(Image, position, sourceRect, Color.White, 0, Vector2.Zero, 1f, 0, 0f);
+
+                if (IsMouseHovering)
+                {
+                    Main.hoverItemName = Text;
+                }
             }
         }
     }

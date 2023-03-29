@@ -14,11 +14,12 @@ namespace HollowKnightItems.Common.UIs
         private static readonly int[] Item2 = { 520, 521 };
         private static readonly int[] Item3 = { 3456, 3457, 3458, 3459 };
 
-        private readonly DragablePanel panel = new();
+        private readonly DragablePanel panel = new();        
         private readonly UIText currentStage = new(GetText("Common.Stage"));
+        private readonly UIPanel itemPanel = new();
         private readonly ItemImage target = new(ItemDefault);
         private readonly HoverImageButton close = new(TextureLoader.UIClose, GetText("Common.Close"));
-        private readonly HoverTextBox upgrade = new(GetText("Common.Upgrade"), Color.Blue, Color.LightBlue);        
+        private readonly HoverTextBox upgrade = new(GetText("Common.Upgrade"), Color.Blue, Color.LightBlue, "");        
 
         public override void OnInitialize()
         {
@@ -34,11 +35,15 @@ namespace HollowKnightItems.Common.UIs
             currentStage.VAlign = 0f;
             panel.Append(currentStage);
 
-            target.Width.Set(60f, 0f);
-            target.Height.Set(60f, 0f);
-            target.HAlign = 0.5f;
-            target.VAlign = 0.2f;
-            panel.Append(target);
+            itemPanel.Width.Set(50f, 0f);
+            itemPanel.Height.Set(50f, 0f);
+            itemPanel.HAlign = 0.5f;
+            itemPanel.VAlign = 0.3f;
+            panel.Append(itemPanel);
+
+            target.Width.Set(50f, 0f);
+            target.Height.Set(50f, 0f);
+            itemPanel.Append(target);
 
             close.Width.Set(20f, 0f);
             close.Height.Set(20f, 0f);
@@ -65,20 +70,10 @@ namespace HollowKnightItems.Common.UIs
         {
             Player player = Main.LocalPlayer;
             Stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
-            int[] material;
-            switch (Stage)
+            int[] material = GetMaterial();
+            if (material == null)
             {
-                case 1:
-                    material = Item1;
-                    break;
-                case 2:
-                    material = Item2;
-                    break;
-                case 3:
-                    material = Item3;
-                    break;
-                default:
-                    return;
+                return;
             }
 
             foreach (Item item in player.inventory)
@@ -104,8 +99,7 @@ namespace HollowKnightItems.Common.UIs
             {
                 Player player = Main.LocalPlayer;
                 Stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
-                string s = Stage == 4 ? "MAX" : Stage.ToString(); 
-                currentStage.SetText(GetText("Common.Stage") + s);
+                currentStage.SetText(GetText("Common.Stage") + Stage);
                 switch (Stage) 
                 {
                     case 1:                        
@@ -121,7 +115,40 @@ namespace HollowKnightItems.Common.UIs
                         target.ChangeItem(ItemDefault);
                         break;
                 }
+
+                if (Stage == 4)
+                {
+                    upgrade.SetHoverText(GetText("Common.Max"));
+                    return;
+                }
+                int[] material = GetMaterial();
+                if (material == null)
+                {
+                    upgrade.SetHoverText("");
+                    return;
+                }
+                foreach (Item item in player.inventory)
+                {
+                    if (material.Contains(item.type) && item.stack >= 10)
+                    {
+                        upgrade.SetHoverText(item.Name + GetText("Common.Consume") + "(10)");
+                        return;
+                    }
+                }
+                upgrade.SetHoverText(GetText("Common.Lack"));
             }
+        }
+
+        private static int[] GetMaterial()
+        {
+            int[] material = Stage switch
+            {
+                1 => Item1,
+                2 => Item2,
+                3 => Item3,
+                _ => null,
+            };
+            return material;
         }
     }
 
