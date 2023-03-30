@@ -17,7 +17,7 @@ namespace HollowKnightItems.Content.NPCs
         /// </summary>
         internal static class Distance
         {
-            public const int Blowfish = 300;
+            public const int Blowfish = 400;
             public const int Firebird = 400;
             public const int Thorn = 300;
             public const int Sho = 200;
@@ -35,7 +35,7 @@ namespace HollowKnightItems.Content.NPCs
             public const int Sho = 25;
         }
 
-        public const int Damage = 50;
+        public const int Damage = 40;
         public const int Defence = 10;
 
         /// <summary>
@@ -125,6 +125,7 @@ namespace HollowKnightItems.Content.NPCs
                 Graph.NewGraph(TextureLoader.GrimmDeath.Value, NPC.position, 180);
                 AnimationSystem.StartPlay((int)AnimationSystem.MyAnimationID.GrimmDeath, 180, NPC.Center);
                 SoundEngine.PlaySound(SoundLoader.Grimm_Death, NPC.Center);
+                Rect.ClearRect();
             }
         }
 
@@ -310,13 +311,16 @@ namespace HollowKnightItems.Content.NPCs
                     case 70:
                         n.GetFrame((int)Frame.Teleport);
                         // 瞬移
-                        float x, y;
+                        float x, y, offset;
                         switch (n.Any)
                         {                            
                             // Blowfish
                             case 0:
-                                // 传送至目标玩家上方
-                                npc.position = player.Center + new Vector2(-npc.width / 2, -Distance.Blowfish);
+                                // 传送至目标玩家面朝的方向的斜上方
+                                x = player.Center.X - npc.width / 2;
+                                offset = player.direction > 0 ? Distance.Blowfish / 2: -Distance.Blowfish / 2;
+                                y = player.Center.Y - Distance.Blowfish;
+                                npc.position = new Vector2(x + offset, y);
                                 break;
                             // Firebird
                             case 1:
@@ -391,11 +395,11 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     if (Main.netMode != NetmodeID.MultiplayerClient)
                     {
-                        int r1 = 5, r2 = 5;
+                        int r1 = 200, r2 = 200;
                         for (int i = -3; i < 8; i++)
                         {
                             
-                            if (random.Next(10) > r1)
+                            if (random.Next(300) > r1)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
@@ -404,13 +408,13 @@ namespace HollowKnightItems.Content.NPCs
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
-                                r1++;
+                                r1 += 60;
                             }
                             else
                             {
-                                r1--;
+                                r1 -= 40;
                             }
-                            if (random.Next(10) > r2)
+                            if (random.Next(300) > r2)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
@@ -419,11 +423,11 @@ namespace HollowKnightItems.Content.NPCs
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
-                                r2++;
+                                r2 += 60;
                             }
                             else
                             {
-                                r2--;
+                                r2 -= 40;
                             }
                         }
                         for (int i = -1; i < 2; i++)
@@ -542,7 +546,7 @@ namespace HollowKnightItems.Content.NPCs
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                     npc.Center,
-                                                    new Vector2(-npc.spriteDirection * 20, i * 10),
+                                                    new Vector2(-npc.spriteDirection * 20, i * 5),
                                                     ModContent.ProjectileType<GrimmFirebird>(),
                                                     30,
                                                     0.2f,
@@ -772,7 +776,8 @@ namespace HollowKnightItems.Content.NPCs
                 n.Stage += 10;
                 n.Timer = 0;
                 npc.netUpdate = true;
-            }
+                Rect.ClearRect();
+            }            
         }
 
         public static void TeleportToFront(NPC npc, Player player, int distance) 

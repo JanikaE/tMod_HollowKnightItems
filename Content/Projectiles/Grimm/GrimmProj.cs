@@ -102,11 +102,11 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             }
             if (player != null)
             {
-                if (player.Center.Y > Projectile.position.Y && Projectile.velocity.Y < 8)
+                if (player.Center.Y > Projectile.position.Y && Projectile.velocity.Y < 4)
                 {
                     Projectile.velocity.Y++;
                 }
-                else if(player.Center.Y < Projectile.position.Y && Projectile.velocity.Y > -8)
+                else if(player.Center.Y < Projectile.position.Y && Projectile.velocity.Y > -4)
                 {
                     Projectile.velocity.Y--;
                 }

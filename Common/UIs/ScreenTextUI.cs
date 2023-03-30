@@ -114,10 +114,7 @@ namespace HollowKnightItems.Common.UIs
 
         public override void UpdateUI(GameTime gameTime)
         {
-            if (ScreenTextUI.Visible)
-            {
-                UserInterface?.Update(gameTime);
-            }            
+            UserInterface?.Update(gameTime);      
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)

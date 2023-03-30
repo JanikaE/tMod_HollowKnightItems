@@ -21,16 +21,16 @@
             Boss_Explode = GetSoundStyle("Boss_Explode", 1, 1f);
             CarefreeMelody = GetSoundStyle("CarefreeMelody", 1, 0.5f);
             Dash = GetSoundStyle("Dash", 1, 1f);
-            Enemy_Hit = GetSoundStyle("Enemy_Hit", 1, 1f);
+            Enemy_Hit = GetSoundStyle("Enemy_Hit", 1, 0.6f, SoundLimitBehavior: SoundLimitBehavior.ReplaceOldest);
             Grimm_Attack = GetSoundStyle("Grimm_Attack", 1, 1f);  // 不太行，先不用
             Grimm_Death = GetSoundStyle("Grimm_Death", 1, 1f);
             Grimm_Firebird = GetSoundStyle("Grimm_Firebird", 1, 0.8f, SoundLimitBehavior: SoundLimitBehavior.ReplaceOldest);
             Grimm_FlyEnd = GetSoundStyle("Grimm_FlyEnd", 1, 1f);
-            Grimm_Teleport = GetSoundStyle("Grimm_Teleport", 1, 1f);
+            Grimm_Teleport = GetSoundStyle("Grimm_Teleport", 1, 0.5f);
             Grimm_Thorn = GetSoundStyle("Grimm_Thorn", 1, 1f);
             Grimmchild_Attack = GetSoundStyle("Grimmchild_Attack_", 2, 0.8f);
             Grimmchild_Routine = GetSoundStyle("Grimmchild_Routine_", 6, 1f);
-            Metal_Hit = GetSoundStyle("Metal_Hit", 1, 1f);
+            Metal_Hit = GetSoundStyle("Metal_Hit", 1, 1f, SoundLimitBehavior: SoundLimitBehavior.ReplaceOldest);
         }
     }
 }
