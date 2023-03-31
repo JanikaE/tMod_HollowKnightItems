@@ -1,5 +1,6 @@
 global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
+global using Microsoft.Xna.Framework.Input;
 global using ReLogic.Content;
 global using ReLogic.Graphics;
 global using System;

@@ -125,13 +125,16 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 // 生成射弹
                 if (Projectile.frame == 11 && proj.Timer == 0 && Main.netMode != NetmodeID.MultiplayerClient)  // 在第11张帧图时生成射弹，保证攻击与动画一致
                 {
+                    // 获取格林之子的阶段
+                    int Stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
                     Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(),
                                                 Projectile.Center + offset,
                                                 vel * 13f,
                                                 ModContent.ProjectileType<GrimmchildShoot>(),
                                                 Projectile.damage + GetGrimmchildAttack(),
                                                 Projectile.knockBack + 1,
-                                                Projectile.owner);
+                                                Projectile.owner,
+                                                Stage);  // 初始化AI[0]为格林之子的阶段
                     proj.Timer++;
 
                     //播放声音

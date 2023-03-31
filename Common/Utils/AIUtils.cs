@@ -51,7 +51,7 @@ namespace HollowKnightItems.Common.Utils
         /// <summary>
         /// 限定在一个正方形内随机运动
         /// </summary>
-        /// <param name="entity">实体</param>
+        /// <param name="entity">实体对象</param>
         /// <param name="center">正方形的中心</param>
         /// <param name="distance">边界与中心的距离</param>
         public static void MoveBetween(Entity entity, Vector2 center, int distance)
@@ -63,7 +63,7 @@ namespace HollowKnightItems.Common.Utils
         /// <summary>
         /// 限定在一个矩形内随机运动
         /// </summary>
-        /// <param name="entity">实体</param>
+        /// <param name="entity">实体对象</param>
         /// <param name="center">矩形的中心</param>
         /// <param name="distance">边界与中心的距离</param>
         public static void MoveBetween(Entity entity, Vector2 center, Vector2 distance)
@@ -95,7 +95,7 @@ namespace HollowKnightItems.Common.Utils
         /// <summary>
         /// 弹幕拖尾的Dust
         /// </summary>
-        /// <param name="projectile">弹幕实体</param>
+        /// <param name="projectile">弹幕对象</param>
         /// <param name="type">Dust类型</param>
         /// <param name="num">Dust数量</param>
         public static void TailDust(Projectile projectile, int type, int num)
@@ -103,6 +103,20 @@ namespace HollowKnightItems.Common.Utils
             for (int i = 0; i < num; i++)
             {
                 Dust.NewDust(projectile.position - projectile.velocity, projectile.width, projectile.height, type, newColor: new Color(255, 89, 89));
+            }
+        }
+
+        /// <summary>
+        /// 弹幕碰撞的Dust
+        /// </summary>
+        /// <param name="position">碰撞位置</param>
+        /// <param name="type">Dust类型</param>
+        public static void HitDust(Vector2 position, int type, Color color = default)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                Vector2 rotation = (i * MathHelper.Pi / 60).ToRotationVector2();
+                Dust.NewDust(position, 1, 1, type, rotation.X, rotation.Y, newColor: color);
             }
         }
 
@@ -122,8 +136,8 @@ namespace HollowKnightItems.Common.Utils
         /// <summary>
         /// 给碰撞箱描框的Dust
         /// </summary>
-        /// <param name="npc"></param>
-        /// <param name="color"></param>
+        /// <param name="entity">实体对象</param>
+        /// <param name="color">Dust颜色</param>
         public static void RoundHitboxDust(Entity entity, Color color) 
         {
             int type = ModContent.DustType<StaticPoint>();

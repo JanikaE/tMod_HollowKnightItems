@@ -32,7 +32,7 @@ namespace HollowKnightItems.Content.Items.Charms
 
         public override bool CanUseItem(Player player)
         {
-            //GrimmchildUI.Visible = !GrimmchildUI.Visible;
+            GrimmchildUI.Visible = !GrimmchildUI.Visible;
             return true;
         }
 
@@ -53,15 +53,15 @@ namespace HollowKnightItems.Content.Items.Charms
             Player player = Main.LocalPlayer;
             TooltipLine Line;
 
-            //Line = new(Mod, "LeftClick", GetText("Items.Grimmchild.LeftClick"));
-            //tooltips.Add(Line);
-            //Line = new(Mod, "Intro", GetText("Items.Grimmchild.Intro"));
-            //tooltips.Add(Line);
+            Line = new(Mod, "LeftClick", GetText("Items.Grimmchild.LeftClick"));
+            tooltips.Add(Line);
+            Line = new(Mod, "Intro", GetText("Items.Grimmchild.Intro"));
+            tooltips.Add(Line);
 
-            //int stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
-            //string s = stage == 4 ? "(Max)" : "";
-            //Line = new(Mod, "Stage", GetText("Common.Stage") + stage + s);
-            //tooltips.Add(Line);
+            int stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
+            string s = stage == 4 ? "(Max)" : "";
+            Line = new(Mod, "Stage", GetText("Common.Stage") + stage + s);
+            tooltips.Add(Line);
             Line = new(Mod, "Damage", GetText("Common.Damage") + GetGrimmchildAttack());
             tooltips.Add(Line);
         }

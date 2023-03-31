@@ -43,6 +43,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             {
                 Dust.NewDust(Projectile.position - Projectile.velocity, 30, 30, ModContent.DustType<TailingFlame>(), newColor: new Color(255, 89, 89));
             }
+
+            // 将格林之子的阶段反映在弹幕行为上
+            switch (Projectile.ai[0]) 
+            {
+                case 1:
+                    break;
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
@@ -54,22 +61,14 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             }
 
             // 弹幕碰撞的Dust
-            for (int i = 0; i < 12; i++)
-            {
-                Vector2 rotation = (i * MathHelper.Pi / 60).ToRotationVector2();
-                Dust.NewDust(Projectile.position, 1, 1, DustID.TintableDustLighted, rotation.X, rotation.Y, newColor: new Color(255, 0, 0));
-            }
+            HitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
             return false;
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
             // 弹幕碰撞的Dust
-            for (int i = 0; i < 12; i++)
-            {
-                Vector2 rotation = (i * MathHelper.Pi / 60).ToRotationVector2();
-                Dust.NewDust(Projectile.position, 1, 1, DustID.TintableDustLighted, rotation.X, rotation.Y, newColor: new Color(255, 0, 0));
-            }
+            HitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
         }
                 
         public override void PostDraw(Color lightColor)
