@@ -43,7 +43,7 @@ namespace HollowKnightItems.Common.Utils
             NPCID.MartianSaucer  // 火星飞碟
         };
 
-        public static bool[] bossDown = {
+        public static bool[] BossDown => new bool[]{
             NPC.downedSlimeKing,
             NPC.downedBoss1,
             NPC.downedBoss2,
@@ -81,9 +81,9 @@ namespace HollowKnightItems.Common.Utils
         public static int GetGrimmchildAttack()
         {
             int damage = 5;
-            for (int i = 0; i < bossDown.Length; i++)
+            for (int i = 0; i < BossDown.Length; i++)
             {
-                if (bossDown[i])
+                if (BossDown[i])
                 {
                     damage += 4;
                 }

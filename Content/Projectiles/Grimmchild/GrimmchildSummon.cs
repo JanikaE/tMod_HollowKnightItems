@@ -130,8 +130,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                     Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(),
                                                 Projectile.Center + offset,
                                                 vel * 13f,
-                                                ModContent.ProjectileType<GrimmchildShoot>(),
-                                                Projectile.damage + GetGrimmchildAttack(),
+                                                ModContent.ProjectileType<GrimmchildShoot_Big>(),
+                                                GetGrimmchildAttack(),
                                                 Projectile.knockBack + 1,
                                                 Projectile.owner,
                                                 Stage);  // 初始化AI[0]为格林之子的阶段
