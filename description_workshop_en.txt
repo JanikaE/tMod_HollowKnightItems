@@ -1,8 +1,11 @@
+[h3]More information in changelog or the mod's homepage: https://github.com/JanikaE/tMod_HollowKnightItems[/h3]
+
+[h1]v1.0.2[/h1]
+Add upgrades to the Grimmchild. making the projectiles it shoots have richer effects.
+
 [h1]v1.0.1[/h1]
 New Boss: Troupe Master Grimm.
 Guide will sell the item used for summoning, and related items will be unlocked after defeating the boss.
-
-[h3]More information in changelog or the mod's homepage: https://github.com/JanikaE/tMod_HollowKnightItems[/h3]
 
 [h1]v1.0.0[/h1]
 Give you a lovely companion on your journey in Terraria, Grimmchild.

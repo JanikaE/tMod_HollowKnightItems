@@ -1,2 +1,2 @@
-version 1.0.1.1 update:
-Slightly modified Grimm's AI
+version 1.0.2.0 update:
+Add upgrades to the Grimmchild. making the projectiles it shoots have richer effects.

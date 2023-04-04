@@ -7,7 +7,8 @@ using HollowKnightItems.Content.Projectiles.Grimm;
 
 namespace HollowKnightItems.Content.NPCs
 {
-    [AutoloadBossHead]
+    //[AutoloadBossHead]
+    [Autoload(false)]
     internal class GrimmBoss_new : SMNPC
     {
         /// <summary>

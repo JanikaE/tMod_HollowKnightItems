@@ -1,8 +1,11 @@
+[h3]更多信息见更新说明或模组主页：https://github.com/JanikaE/tMod_HollowKnightItems[/h3]
+
+[h1]v1.0.2[/h1]
+给格林之子增加了升级功能，让它发射的弹幕呈现出更丰富的效果。
+
 [h1]v1.0.1[/h1]
 新增boss：剧团团长 格林。
 召唤物需在向导处购买，相关物品也将在击败boss后解锁。
-
-[h3]更多信息见更新说明或模组主页：https://github.com/JanikaE/tMod_HollowKnightItems[/h3]
 
 [h1]v1.0.0[/h1]
 让你在泰拉瑞亚的旅途中多一个可爱的伙伴——格林之子。
