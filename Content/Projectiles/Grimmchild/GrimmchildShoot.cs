@@ -3,7 +3,6 @@ using HollowKnightItems.Content.Dusts;
 
 namespace HollowKnightItems.Content.Projectiles.Grimmchild
 {
-    [Autoload(false)]
     internal class GrimmchildShoot : ModProjectile
     {
         public override void SetStaticDefaults()
@@ -32,40 +31,81 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             //        Projectile.frame = 0;
             //    }
             //}
+            switch (Projectile.ai[1])
+            {
+                case 1:
+                    // 让弹幕在自然消失时也分裂
+                    if (Projectile.timeLeft == 1)
+                    {
+                        Split(Projectile.velocity);
+                    }
+                    break;
+                case 2:
+                    // 让弹幕在自然消失时逐渐缩小
+                    if (Projectile.timeLeft == 1)
+                    {
+                        Projectile.timeLeft = 2;
+                        Projectile.scale *= 0.95f;
+                    }
+                    if (Projectile.scale < 0.1f)
+                    {
+                        Projectile.Kill();
+                    }
+                    break;
+            }
+            TailDust(Projectile, ModContent.DustType<TailingFlame>(), (int)(9 * Projectile.scale));
+        }
 
-            TailDust(Projectile, ModContent.DustType<TailingFlame>(), (int)(Projectile.width * Projectile.scale / 4));
+        public override void OnSpawn(IEntitySource source)
+        {
+            // 初始化弹幕，区分分裂前后
+            switch (Projectile.ai[1]) 
+            {
+                case 1:                    
+                    Projectile.scale = 1f;
+                    Projectile.penetrate = 1;
+                    break;
+                case 2:
+                    Projectile.scale = 0.5f;
+                    Projectile.penetrate = -1;
+                    break;
+            }
         }
 
         public override bool OnTileCollide(Vector2 oldVelocity)
         {
-            Projectile.penetrate--;
-            if (Projectile.penetrate == 0)
+            switch (Projectile.ai[1])
             {
-                Projectile.Kill();
-            }
-            else
-            {
-                Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
+                case 1:
+                    Split(oldVelocity);
+                    Projectile.Kill();
+                    break;
+                case 2:
+                    // Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
 
-                // 弹幕反弹
-                // If the projectile hits the left or right side of the tile, reverse the X velocity
-                if (Math.Abs(Projectile.velocity.X - oldVelocity.X) > float.Epsilon)
-                {
-                    Projectile.velocity.X = -oldVelocity.X;
-                }
-                // If the projectile hits the top or bottom side of the tile, reverse the Y velocity
-                if (Math.Abs(Projectile.velocity.Y - oldVelocity.Y) > float.Epsilon)
-                {
-                    Projectile.velocity.Y = -oldVelocity.Y;
-                }
+                    // 弹幕反弹
+                    // If the projectile hits the left or right side of the tile, reverse the X velocity
+                    if (Math.Abs(Projectile.velocity.X - oldVelocity.X) > float.Epsilon)
+                    {
+                        Projectile.velocity.X = -oldVelocity.X;
+                    }
+                    // If the projectile hits the top or bottom side of the tile, reverse the Y velocity
+                    if (Math.Abs(Projectile.velocity.Y - oldVelocity.Y) > float.Epsilon)
+                    {
+                        Projectile.velocity.Y = -oldVelocity.Y;
+                    }
+                    break;
             }
-
             HitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
             return false;
         }
 
         public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
         {
+            if (Projectile.ai[1] == 1)
+            {
+                Split(Projectile.velocity);
+            }
             HitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
         }
                 
@@ -74,59 +114,16 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
         }
-
-        // 图像就直接用shader来画，原图给个形状就行
+        
         public override bool PreDraw(ref Color lightColor)
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
+            // 图像就直接用shader来画，原图给个形状就行
             EffectLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, (float)0.6, (float)0.6, 1));  // 设置中心颜色
             EffectLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.35, (float)0.35, 1));  // 设置边缘颜色
             EffectLoader.Fireball.CurrentTechnique.Passes["Test"].Apply();
             return true;
-        }
-    }
-
-    [Autoload(true)]
-    internal class GrimmchildShoot_Big : GrimmchildShoot 
-    {
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Projectile.width = 17;
-            Projectile.height = 17;
-
-            Projectile.penetrate = 1;
-        }
-
-        public override void AI()
-        {
-            base.AI();
-
-            // 让弹幕在自然消失时也分裂
-            if (Projectile.timeLeft == 1)
-            {
-                Split(Projectile.velocity);
-            }
-
-            // 将格林之子的阶段反映在弹幕行为上
-            switch (Projectile.ai[0])
-            {
-                case 1:
-                    break;
-            }
-        }
-
-        public override bool OnTileCollide(Vector2 oldVelocity)
-        {
-            Split(oldVelocity);
-            return base.OnTileCollide(oldVelocity);
-        }
-
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
-        {
-            Split(Projectile.velocity);
-            base.OnHitNPC(target, damage, knockback, crit);
         }
 
         /// <summary>
@@ -144,39 +141,12 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                     Projectile.NewProjectile(Projectile.GetSource_FromAI(),
                                             Projectile.position,
                                             velocity + vel.ToRotationVector2() * 2f,
-                                            ModContent.ProjectileType<GrimmchildShoot_Small>(),
+                                            ModContent.ProjectileType<GrimmchildShoot>(),
                                             GetGrimmchildAttack() / 2,
                                             Projectile.knockBack + 1,
-                                            Projectile.owner);
+                                            Projectile.owner,
+                                            ai1: 2);  // 分裂后的弹幕ai[1]标记为2
                 }
-            }
-        }
-    }
-
-    [Autoload(true)]
-    internal class GrimmchildShoot_Small : GrimmchildShoot 
-    {
-        public override void SetDefaults()
-        {
-            base.SetDefaults();
-            Projectile.width = 17;
-            Projectile.height = 17;
-
-            Projectile.penetrate = -1;
-        }
-
-        public override void AI()
-        {
-            base.AI();
-
-            if (Projectile.timeLeft == 1)
-            {
-                Projectile.timeLeft = 2;
-                Projectile.scale *= 0.95f;
-            }
-            if (Projectile.scale < 0.1f)
-            {
-                Projectile.Kill();
             }
         }
     }

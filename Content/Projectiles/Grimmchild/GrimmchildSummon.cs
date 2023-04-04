@@ -130,11 +130,12 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                     Projectile.NewProjectileDirect(Projectile.GetSource_FromAI(),
                                                 Projectile.Center + offset,
                                                 vel * 13f,
-                                                ModContent.ProjectileType<GrimmchildShoot_Big>(),
+                                                ModContent.ProjectileType<GrimmchildShoot>(),
                                                 GetGrimmchildAttack(),
                                                 Projectile.knockBack + 1,
                                                 Projectile.owner,
-                                                Stage);  // 初始化AI[0]为格林之子的阶段
+                                                Stage,  // 初始化ai[0]为格林之子的阶段
+                                                1);  // 分裂前的弹幕ai[1]标记为1
                     proj.Timer++;
 
                     //播放声音
