@@ -1,4 +1,6 @@
-﻿using HollowKnightItems.Content.Items;
+﻿using HollowKnightItems.Common.Systems;
+using HollowKnightItems.Content.Items;
+using HollowKnightItems.Content.Items.Charms;
 
 namespace HollowKnightItems.Content.NPCs
 {
@@ -48,9 +50,12 @@ namespace HollowKnightItems.Content.NPCs
 
         public override void SetupShop(Chest shop, ref int nextSlot)
         {
-            shop.item[nextSlot].SetDefaults(ModContent.ItemType<NightmareLantern_OFF>());
-            shop.item[nextSlot].value = 10000;
-            nextSlot++;
+            shop.item[0].SetDefaults(ModContent.ItemType<NightmareLantern_OFF>());
+            if (DownedBossSystem.downedGrimm)
+            {
+                shop.item[10].SetDefaults(ModContent.ItemType<Grimmchild>());
+                shop.item[11].SetDefaults(ModContent.ItemType<CarefreeMelody>());
+            }
         }
     }
 }
