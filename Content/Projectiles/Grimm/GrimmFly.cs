@@ -1,4 +1,6 @@
-﻿namespace HollowKnightItems.Content.Projectiles.Grimm
+﻿using HollowKnightItems.Content.NPCs;
+
+namespace HollowKnightItems.Content.Projectiles.Grimm
 {
     internal class GrimmFly : ModProjectile
     {
@@ -26,7 +28,7 @@
             NPC npc = null;
             foreach (NPC n in Main.npc)
             {
-                if (n.type == ModContent.NPCType<NPCs.GrimmBoss>())
+                if (n.type == ModContent.NPCType<GrimmBoss>())
                 {
                     npc = n;
                 }

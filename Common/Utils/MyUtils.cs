@@ -8,90 +8,8 @@ namespace HollowKnightItems.Common.Utils
     internal static class MyUtils
     {
         public static Random random = new();
-
-        public static int[] bossList = {
-            NPCID.KingSlime,  // 史莱姆王
-            NPCID.EyeofCthulhu,  // 克苏鲁之眼
-            NPCID.BrainofCthulhu,  // 克苏鲁之脑
-            NPCID.EaterofWorldsHead,  // 世界吞噬怪
-            NPCID.QueenBee,  // 蜂王
-            NPCID.Skeleton,  // 骷髅王
-            NPCID.Deerclops,  // 独眼巨鹿
-            NPCID.WallofFlesh,  // 血肉墙
-
-            NPCID.QueenSlimeBoss,  // 史莱姆皇后
-            NPCID.Retinazer,  // 激光眼
-            NPCID.Spazmatism,  // 魔焰眼
-            NPCID.TheDestroyer,  // 毁灭者
-            NPCID.SkeletronPrime,  // 机械骷髅王
-            NPCID.Plantera,  // 世纪之花
-            NPCID.Golem,  // 石巨人
-            NPCID.DukeFishron,  // 猪龙鱼公爵
-            NPCID.HallowBoss,  // 光之女皇
-            NPCID.CultistBoss,  // 拜月教邪教徒
-            NPCID.MoonLordCore,  // 月亮领主
-
-            NPCID.DD2DarkMageT1,  // 黑暗魔法师
-            NPCID.DD2OgreT2,  // 食人魔
-            NPCID.DD2Betsy,  // 双足飞龙
-            NPCID.PirateShip,  // 荷兰飞盗船
-            NPCID.MourningWood,  // 哀木
-            NPCID.Pumpking,  // 南瓜王
-            NPCID.Everscream,  // 常绿尖叫怪
-            NPCID.SantaNK1,  // 圣诞坦克
-            NPCID.IceQueen,  // 冰雪女王
-            NPCID.MartianSaucer  // 火星飞碟
-        };
-
-        public static bool[] BossDown => new bool[]{
-            NPC.downedSlimeKing,
-            NPC.downedBoss1,
-            NPC.downedBoss2,
-            NPC.downedBoss3,
-            NPC.downedQueenBee,
-            NPC.downedDeerclops,
-            Main.hardMode,
-
-            NPC.downedQueenSlime,
-            NPC.downedMechBoss1,
-            NPC.downedMechBoss2,
-            NPC.downedMechBoss3,
-            NPC.downedPlantBoss,
-            NPC.downedGolemBoss,
-            NPC.downedFishron,
-            NPC.downedEmpressOfLight,
-            NPC.downedAncientCultist,
-            NPC.downedMoonlord,
-
-            NPC.downedGoblins,
-            NPC.downedPirates,
-            NPC.downedHalloweenTree,
-            NPC.downedHalloweenKing,
-            NPC.downedChristmasTree,
-            NPC.downedChristmasSantank,
-            NPC.downedChristmasIceQueen,
-            NPC.downedMartians,
-
-            DownedBossSystem.downedGrimm
-        };
-
-        /// <summary>
-        /// 获取格林之子的攻击力
-        /// </summary>
-        public static int GetGrimmchildAttack()
-        {
-            int damage = 5;
-            for (int i = 0; i < BossDown.Length; i++)
-            {
-                if (BossDown[i])
-                {
-                    damage += 4;
-                }
-            }
-            return damage;
-        }
-
-        public static void ArrayToDefault(ref int[] array)
+        
+        public static void ArrayToDefault(this int[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -99,7 +17,7 @@ namespace HollowKnightItems.Common.Utils
             }
         }
 
-        public static void ArrayToDefault(ref bool[] array)
+        public static void ArrayToDefault(this bool[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -107,7 +25,7 @@ namespace HollowKnightItems.Common.Utils
             }
         }
 
-        public static void ArrayToDefault(ref Vector2[] array)
+        public static void ArrayToDefault(this Vector2[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
@@ -124,6 +42,28 @@ namespace HollowKnightItems.Common.Utils
         {
             int r = Math.Min(texture.Width, texture.Height);
             return new Rectangle(0, 0, r, r);
+        }
+
+        /// <summary>
+        /// 修正因旋转导致的位置偏移
+        /// </summary>
+        /// <param name="angle">旋转角度</param>
+        /// <param name="r">旋转半径</param>
+        public static Vector2 OffsetByAngle(float angle, int r)
+        {
+            angle = angle * MathHelper.Pi / 180;
+            return new Vector2((float)(Math.Sin(angle)), (float)((1 - Math.Cos(angle)))) * r;
+        }
+
+        /// <summary>
+        /// 首尾相接的位置偏移
+        /// </summary>
+        /// <param name="angle">旋转角度</param>
+        /// <param name="length">长度</param>
+        public static Vector2 OffsetToLink(float angle, int length)
+        {
+            angle = angle * MathHelper.Pi / 180;
+            return new Vector2((float)(Math.Sin(angle)), -(float)(Math.Cos(angle))) * length;
         }
 
         /// <summary>

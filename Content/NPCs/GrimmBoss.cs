@@ -4,8 +4,6 @@ using HollowKnightItems.Common.Systems.DrawSystem;
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.NPCs.StateMachine;
 using HollowKnightItems.Content.Projectiles.Grimm;
-using static HollowKnightItems.Content.NPCs.GrimmBoss;
-using static HollowKnightItems.Content.NPCs.Utils;
 
 namespace HollowKnightItems.Content.NPCs
 {
@@ -37,6 +35,7 @@ namespace HollowKnightItems.Content.NPCs
 
         public const int Damage = 40;
         public const int Defence = 10;
+        public const int DefenceMax = 9999;
 
         /// <summary>
         /// 每张帧图的命名
@@ -79,7 +78,7 @@ namespace HollowKnightItems.Content.NPCs
             NPC.scale = 1f;  // npc的贴图和碰撞箱的放缩倍率
             NPC.knockBackResist = 0f;
 
-            NPC.damage = 0;
+            NPC.damage = 0;  // 取消碰撞伤害
             NPC.defense = 0;  // 在每个状态里再分别写攻击和防御
 
             NPC.value = Item.buyPrice(0, 4, 50, 0);  // NPC的爆出来的MONEY的数量，四个空从左到右是铂金，金，银，铜
@@ -150,10 +149,8 @@ namespace HollowKnightItems.Content.NPCs
                 NPC.TargetClosest();
             }
 
-            // 标记碰撞箱的四个角
-            RoundHitboxDust(NPC, new Color(255, 150, 150));
-
-            if (NPC.defense == 9999)
+            // 设定不同的受击音效
+            if (NPC.defense == DefenceMax)
             {
                 NPC.HitSound = SoundLoader.Metal_Hit;
             }
@@ -215,7 +212,7 @@ namespace HollowKnightItems.Content.NPCs
             {
                 NPC npc = n.NPC;
                 npc.damage = Damage;
-                npc.defense = 9999;
+                npc.defense = DefenceMax;
                 Player player = Main.player[npc.target];
 
                 // 开局吼的声浪
@@ -302,6 +299,7 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.None);                        
                         TeleportEffect(npc);
                         npc.BottomRight = Main.screenPosition;
+                        // 只在Teleport状态中判断玩家是否死亡
                         if (player.dead)
                         {
                             npc.active = false;
@@ -337,10 +335,11 @@ namespace HollowKnightItems.Content.NPCs
                             // Swoop
                             case 3:
                                 // 传送至目标玩家面朝的方向的斜上方
-                                x = player.direction > 0 ? player.Center.X + Distance.Swoop : player.Center.X - Distance.Swoop - npc.width;
+                                x = player.Center.X;
+                                offset = player.direction > 0 ? Distance.Swoop : - Distance.Swoop - npc.width;
                                 // 让(NPC在俯冲之后)玩家与NPC底部对齐
                                 y = player.Bottom.Y - npc.height - Distance.Swoop;
-                                npc.position = new Vector2(x, y);
+                                npc.position = new Vector2(x + offset, y);
                                 break;
                         }
                         TeleportEffect(npc);
@@ -377,73 +376,47 @@ namespace HollowKnightItems.Content.NPCs
 
         public class BlowfishState : NPCState
         {
+            public static int prob;  // 发射弹幕的概率
+
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
                 npc.damage = Damage;
-                npc.defense = 9999;
+                npc.defense = DefenceMax;
                 npc.velocity = Vector2.Zero;
                 n.GetFrame((int)Frame.Blowfish);
 
                 if (n.Timer == 20)
                 {
                     //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
+                    prob = 100;
                 }
                 
-                // 从第50帧到第490帧，每隔40帧发射一轮弹幕，共计12轮
-                if ((n.Timer - 50) % 40 == 0 && n.Timer < 500)
+                // 从第50帧到第530帧，36帧为一轮弹幕，共计15轮
+                if (n.Timer >= 50 && n.Timer <= 490 && Main.netMode != NetmodeID.MultiplayerClient)
                 {
-                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                    float angle = (n.Timer - 50) * 10 + 90;  // 发射的角度
+                    float offset = random.Next(-2, 2);  // 加一个小的随机偏移
+                    float radian = (angle + offset) * MathHelper.Pi / 180;
+                    Vector2 velocity = radian.ToRotationVector2() * 6;
+                    if (random.Next(300) < prob)
                     {
-                        int r1 = 200, r2 = 200;
-                        for (int i = -3; i < 8; i++)
-                        {
-                            
-                            if (random.Next(300) > r1)
-                            {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                        npc.Center,
-                                                        new Vector2(1, i),
-                                                        ModContent.ProjectileType<GrimmShoot_Sides>(),
-                                                        30,
-                                                        0.2f,
-                                                        Main.myPlayer);
-                                r1 += 60;
-                            }
-                            else
-                            {
-                                r1 -= 40;
-                            }
-                            if (random.Next(300) > r2)
-                            {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                        npc.Center,
-                                                        new Vector2(-1, i),
-                                                        ModContent.ProjectileType<GrimmShoot_Sides>(),
-                                                        30,
-                                                        0.2f,
-                                                        Main.myPlayer);
-                                r2 += 60;
-                            }
-                            else
-                            {
-                                r2 -= 40;
-                            }
-                        }
-                        for (int i = -1; i < 2; i++)
-                        {
-                            Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                        npc.Center,
-                                                        new Vector2(i, 6),
-                                                        ModContent.ProjectileType<GrimmShoot_Below>(),
-                                                        30,
-                                                        0.2f,
-                                                        Main.myPlayer);
-                        }
+                        Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                npc.Center,
+                                                velocity,
+                                                ModContent.ProjectileType<GrimmShoot>(),
+                                                npc.damage,
+                                                0.2f,
+                                                Main.myPlayer);
+                        prob -= 40;  // 如果这个位置发射了弹幕，让下一个位置发射弹幕的概率减小
+                    }
+                    else
+                    {
+                        prob += 60;  // 反之让下一个位置发射弹幕的概率增加
                     }
                 }
 
-                if (n.Timer == 550)
+                if (n.Timer == 590)
                 {
                     // 切换至Teleport状态
                     n.SetState<TeleportState>();
@@ -457,6 +430,7 @@ namespace HollowKnightItems.Content.NPCs
 
         public class FlyState : NPCState
         {
+            public static int LockBlood;
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
@@ -481,6 +455,8 @@ namespace HollowKnightItems.Content.NPCs
                         }
                         // 设定初速
                         npc.velocity = new Vector2(8, 4);
+                        // 记录当前血量
+                        LockBlood = npc.life;
                         break;
                     case 280:
                         // 音效
@@ -498,6 +474,12 @@ namespace HollowKnightItems.Content.NPCs
                 float tarX = player.Center.X;
                 float tarY = player.Center.Y - Distance.Fly;
                 MoveBetween(npc, new Vector2(tarX, tarY), Distance.Fly);
+
+                // 限制在FlyState中受到的伤害
+                if (npc.life <= LockBlood - 150)
+                {
+                    npc.life = LockBlood - 150;
+                }
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
@@ -573,6 +555,11 @@ namespace HollowKnightItems.Content.NPCs
 
         public class ThornState : NPCState
         {
+            public int index;
+            public int[] offsets = new int[50];  // 记录每个位置的角度偏移
+            public int offsetR;  // 角度偏移
+            public Vector2 position;
+            public Vector2 offsetP;  // 位置偏移
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
@@ -585,6 +572,7 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     case 1:
                         n.GetFrame((int)Frame.Thorn);
+                        offsets.ArrayToDefault();
                         break;
                     case 20:
                         // 预警
@@ -595,33 +583,86 @@ namespace HollowKnightItems.Content.NPCs
                         //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                         break;
                     case 60:
-                        // 地刺
+                        // 地刺                        
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             for (int i = -12; i < 13; i++)
                             {
                                 // 向上
+                                index = (i + 12) * 2;
+                                offsetR = random.Next(-10, 11);
+                                offsets[index] = offsetR;
+                                position = npc.Center + new Vector2(i * 120, 60);
+                                offsetP = OffsetByAngle(offsetR, 60);
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                        npc.Center + new Vector2(i * 120 - 12, 120),
-                                                        new Vector2(0, -20),
+                                                        position + offsetP,
+                                                        Vector2.Zero,
                                                         ModContent.ProjectileType<GrimmThorn>(),
                                                         30,
                                                         0.2f,
-                                                        Main.myPlayer);
+                                                        Main.myPlayer,
+                                                        offsetR,
+                                                        0);
                                 // 向下
+                                index++;
+                                offsetR = random.Next(170, 191);
+                                offsets[index] = offsetR;
+                                position = npc.Center + new Vector2(i * 120, 180);
+                                offsetP = OffsetByAngle(offsetR - 180, -60);
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                        npc.Center + new Vector2(i * 120 - 12, 0),
-                                                        new Vector2(0, 20),
+                                                        position + offsetP,
+                                                        Vector2.Zero,
                                                         ModContent.ProjectileType<GrimmThorn>(),
                                                         30,
                                                         0.2f,
-                                                        Main.myPlayer);
+                                                        Main.myPlayer,
+                                                        offsetR,
+                                                        0);
                             }
                         }
                         // 音效
                         SoundEngine.PlaySound(SoundLoader.Grimm_Thorn, npc.Center);
                         // 清除预警
                         Rect.ClearRect();
+                        break;
+                    case 70:
+                    case 80:
+                        // 地刺
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            int turn = n.Timer / 10 - 6;
+                            for (int i = -12; i < 13; i++)
+                            {
+                                // 向上
+                                index = (i + 12) * 2;
+                                offsetR = offsets[index];
+                                position = npc.Center + new Vector2(i * 120, 60);
+                                offsetP = OffsetByAngle(offsetR, 60) + OffsetToLink(offsetR, turn * 120);
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        position + offsetP,
+                                                        Vector2.Zero,
+                                                        ModContent.ProjectileType<GrimmThorn>(),
+                                                        30,
+                                                        0.2f,
+                                                        Main.myPlayer,
+                                                        offsetR,
+                                                        turn);
+                                // 向下
+                                index++;
+                                offsetR = offsets[index];
+                                position = npc.Center + new Vector2(i * 120, 180);
+                                offsetP = OffsetByAngle(offsetR - 180, -60) + OffsetToLink(offsetR, turn * 120);
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        position + offsetP,
+                                                        Vector2.Zero,
+                                                        ModContent.ProjectileType<GrimmThorn>(),
+                                                        30,
+                                                        0.2f,
+                                                        Main.myPlayer,
+                                                        offsetR,
+                                                        turn);
+                            }
+                        }
                         break;
                     case 120:
                         // 切换至Teleport状态
@@ -758,10 +799,7 @@ namespace HollowKnightItems.Content.NPCs
                 n.Timer++;
             }
         }
-    }
 
-    internal static class Utils
-    {        
         public static void SwitchStateToFly(SMNPC n)
         {
             NPC npc = n.NPC;
@@ -777,10 +815,10 @@ namespace HollowKnightItems.Content.NPCs
                 n.Timer = 0;
                 npc.netUpdate = true;
                 Rect.ClearRect();
-            }            
+            }
         }
 
-        public static void TeleportToFront(NPC npc, Player player, int distance) 
+        public static void TeleportToFront(NPC npc, Player player, int distance)
         {
             float x, y;
             // 传送至目标玩家面朝的方向
@@ -802,5 +840,5 @@ namespace HollowKnightItems.Content.NPCs
             }
             SoundEngine.PlaySound(SoundLoader.Grimm_Teleport, pos);
         }
-    }    
+    }
 }

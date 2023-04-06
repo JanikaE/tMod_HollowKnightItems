@@ -52,19 +52,21 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             base.SetDefaults();
             Projectile.width = 24;
             Projectile.height = 120;
-            Projectile.timeLeft = 180;
+            Projectile.timeLeft = 240;
         }
 
         public override void AI()
         {
-            if (Projectile.ai[0] == 0)
-            {
-                int offset = Math.Abs((int)Projectile.velocity.Y / 20);
-                Projectile.velocity.X = random.Next(- offset, offset + 1);
-                Projectile.ai[0] = 1;
-            }
+            // 弹幕的旋转角度通过ai[0]传入
+            Projectile.rotation = Projectile.ai[0] * MathHelper.Pi / 180;
 
-            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+            // 弹幕的轮次通过ai[1]传入，轮次靠后的先开始运动
+            // 用timeLeft代替计时器
+            if (Projectile.timeLeft - Projectile.ai[1] * 20 < 180)
+            {
+                Vector2 dir = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2();
+                Projectile.velocity = dir * 20;
+            }
         }
     }
 
@@ -100,7 +102,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                     player = Main.player[n.target];
                 }
             }
-            if (player != null)
+            if (player != null && Projectile.ai[0] > 10)
             {
                 if (player.Center.Y > Projectile.position.Y && Projectile.velocity.Y < 4)
                 {
@@ -111,6 +113,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                     Projectile.velocity.Y--;
                 }
             }
+
+            Projectile.ai[0]++;
         }
     }
 
@@ -158,14 +162,12 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            EffectLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, 1, 1, 1));  // 设置中心颜色
-            EffectLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.34, (float)0.37, 1));  // 设置边缘颜色
-            EffectLoader.Fireball.CurrentTechnique.Passes["Test"].Apply();
+            EffectLoader.ApplyEffect_Fireball(new Color(255, 255, 255), new Color(255, 90, 90));
             return true;
         }
     }
 
-    [Autoload(false)]
+    [Autoload(true)]
     internal class GrimmShoot : GrimmProj
     {
         public override void SetStaticDefaults()
@@ -194,9 +196,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         {
             Main.spriteBatch.End();
             Main.spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            EffectLoader.Fireball.Parameters["uColorCenter"].SetValue(new Vector4(1, (float)0.6, (float)0.6, 1));  // 设置中心颜色
-            EffectLoader.Fireball.Parameters["uColorEdge"].SetValue(new Vector4(1, (float)0.35, (float)0.35, 1));  // 设置边缘颜色
-            EffectLoader.Fireball.CurrentTechnique.Passes["Test"].Apply();
+            EffectLoader.ApplyEffect_Fireball(new Color(255, 153, 153), new Color(255, 90, 90));
             return true;
         }
 
@@ -206,7 +206,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         }
     }
 
-    [Autoload(true)]
+    // old
+    [Autoload(false)]
     internal class GrimmShoot_Sides : GrimmShoot 
     {
         public override void AI()
@@ -258,7 +259,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         }
     }
 
-    [Autoload(true)]
+    // old
+    [Autoload(false)]
     internal class GrimmShoot_Below : GrimmShoot
     {
         public override void AI()
