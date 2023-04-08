@@ -567,8 +567,10 @@ namespace HollowKnightItems.Content.NPCs
             public int index;
             public int[] offsets = new int[50];  // 记录每个位置的角度偏移
             public int offsetR;  // 角度偏移
+            public Vector2 center;
             public Vector2 position;
             public Vector2 offsetP;  // 位置偏移
+            public int isTar;
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
@@ -583,10 +585,12 @@ namespace HollowKnightItems.Content.NPCs
                         offsets.ArrayToDefault();
                         break;
                     case 20:
+                        // 确定中心
+                        center = new(player.Center.X, npc.Bottom.Y);
                         // 预警
-                        for (int i = -12; i < 13; i++)
+                        for (int i = -7; i < 8; i++)
                         {
-                            Rect.NewRect(new Vector2(npc.Center.X + i * 120, npc.Bottom.Y), 10, 10, new Color(255, 153, 153));
+                            Rect.NewRect(center + new Vector2(i * 120, 0), 10, 10, new Color(255, 153, 153));
                         }
                         //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                         break;
@@ -594,14 +598,15 @@ namespace HollowKnightItems.Content.NPCs
                         // 地刺                        
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
-                            for (int i = -12; i < 13; i++)
+                            for (int i = -7; i < 8; i++)
                             {
                                 // 向上
-                                index = (i + 12) * 2;
+                                index = (i + 7) * 2;
                                 offsetR = random.Next(-10, 11);
                                 offsets[index] = offsetR;
-                                position = npc.Center + new Vector2(i * 120, 60);
+                                position = center + new Vector2(i * 120, 0) - OffsetToLink(offsetR, 120);
                                 offsetP = OffsetByAngle(offsetR, 60);
+                                isTar = random.Next(10) == 0 ? 10 : 0;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
@@ -610,13 +615,14 @@ namespace HollowKnightItems.Content.NPCs
                                                         KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
-                                                        0);
+                                                        isTar);
                                 // 向下
                                 index++;
                                 offsetR = random.Next(170, 191);
                                 offsets[index] = offsetR;
-                                position = npc.Center + new Vector2(i * 120, 180);
+                                position = center + new Vector2(i * 120, 120) - OffsetToLink(offsetR, 120);
                                 offsetP = OffsetByAngle(offsetR - 180, -60);
+                                isTar = random.Next(10) == 0 ? 10 : 0;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
@@ -625,7 +631,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
-                                                        0);
+                                                        isTar);
                             }
                         }
                         // 音效
@@ -639,13 +645,14 @@ namespace HollowKnightItems.Content.NPCs
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             int turn = n.Timer / 10 - 6;
-                            for (int i = -12; i < 13; i++)
+                            for (int i = -7; i < 8; i++)
                             {
                                 // 向上
-                                index = (i + 12) * 2;
+                                index = (i + 7) * 2;
                                 offsetR = offsets[index];
-                                position = npc.Center + new Vector2(i * 120, 60);
-                                offsetP = OffsetByAngle(offsetR, 60) + OffsetToLink(offsetR, turn * 120);
+                                position = center + new Vector2(i * 120, 0);
+                                offsetP = OffsetByAngle(offsetR, 60) + OffsetToLink(offsetR, (turn - 1) * 120);
+                                isTar = random.Next(10) == 0 ? 10 : 0;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
@@ -654,12 +661,13 @@ namespace HollowKnightItems.Content.NPCs
                                                         KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
-                                                        turn);
+                                                        turn + isTar);
                                 // 向下
                                 index++;
                                 offsetR = offsets[index];
-                                position = npc.Center + new Vector2(i * 120, 180);
-                                offsetP = OffsetByAngle(offsetR - 180, -60) + OffsetToLink(offsetR, turn * 120);
+                                position = center + new Vector2(i * 120, 120);
+                                offsetP = OffsetByAngle(offsetR - 180, -60) + OffsetToLink(offsetR, (turn - 1) * 120);
+                                isTar = random.Next(10) == 0 ? 10 : 0;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
@@ -668,7 +676,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
-                                                        turn);
+                                                        turn + isTar);
                             }
                         }
                         break;
@@ -793,16 +801,18 @@ namespace HollowKnightItems.Content.NPCs
                         // 弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
-                            for (int i = -1; i < 2; i++)
+                            int offset = random.Next(3, 5);
+                            for (int i = -2; i < 3; i++)
                             {
-                                float angle = npc.velocity.ToRotation() + i * MathHelper.Pi / 8;
+                                float angle = npc.velocity.ToRotation() + i * MathHelper.Pi / 16;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         angle.ToRotationVector2() * 15,
                                                         ModContent.ProjectileType<GrimmShoot>(),
                                                         30,
                                                         0.2f,
-                                                        Main.myPlayer);
+                                                        Main.myPlayer,
+                                                        ai1: offset);
                             }
                         }
                         break;

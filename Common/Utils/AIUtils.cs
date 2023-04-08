@@ -1,5 +1,6 @@
 ﻿using HollowKnightItems.Common.Systems;
 using HollowKnightItems.Content.Dusts;
+using HollowKnightItems.Content.NPCs;
 using HollowKnightItems.Content.Projectiles.Grimmchild;
 
 namespace HollowKnightItems.Common.Utils
@@ -133,6 +134,23 @@ namespace HollowKnightItems.Common.Utils
         }
 
         /// <summary>
+        /// 获取某个NPC(一般是Boss)的目标玩家
+        /// </summary>
+        /// <param name="type">NPC类型</param>
+        public static Player GetNPCTarget(int type)
+        {
+            Player player = null;
+            foreach (NPC n in Main.npc)
+            {
+                if (n.type == type)
+                {
+                    player = Main.player[n.target];
+                }
+            }
+            return player;
+        }
+
+        /// <summary>
         /// 限定在一个正方形内随机运动
         /// </summary>
         /// <param name="entity">实体对象</param>
@@ -179,25 +197,22 @@ namespace HollowKnightItems.Common.Utils
         /// <summary>
         /// 弹幕分裂
         /// </summary>
-        /// <param name="projectile"></param>
-        /// <param name="type"></param>
-        /// <param name="num"></param>
-        /// <param name="velocity"></param>
-        /// <param name="ignoreOld"></param>
-        /// <param name="damage"></param>
-        /// <param name="ai0"></param>
-        /// <param name="ai1"></param>
-        public static void ProjectileSplit(Projectile projectile, int type, int num, float velocity, bool ignoreOld, bool randomOffset = true, int damage = 0, float ai0 = 0, float ai1 = 0)
+        /// <param name="projectile">分裂前的弹幕对象</param>
+        /// <param name="type">分裂产生的弹幕类型</param>
+        /// <param name="num">弹幕数量</param>
+        /// <param name="oldVelocity">分裂前的弹幕速度, 若为0则忽略旧的速度</param>
+        /// <param name="velocity">分裂后的弹幕相对速率</param>
+        /// <param name="randomOffset">是否增加随机的角度偏移</param>
+        /// <param name="damage">弹幕伤害</param>
+        /// <param name="ai0">弹幕ai[0]初值</param>
+        /// <param name="ai1">弹幕ai[1]初值</param>
+        public static void ProjectileSplit(Projectile projectile, int type, int num, Vector2 oldVelocity, float velocity, bool randomOffset = true, int damage = 0, float ai0 = 0, float ai1 = 0)
         {
             int offset = randomOffset ? random.Next(360) : 0;
             for (int i = 0; i < 360; i += 360 / num)
             {
                 float dir = projectile.velocity.ToRotation() + ((i + offset) * MathHelper.Pi / 180);
-                Vector2 vel = dir.ToRotationVector2() * velocity;
-                if (!ignoreOld)
-                {
-                    vel += projectile.velocity;
-                }
+                Vector2 vel = dir.ToRotationVector2() * velocity + oldVelocity;
                 Projectile.NewProjectile(projectile.GetSource_FromAI(),
                                         projectile.position,
                                         vel,
