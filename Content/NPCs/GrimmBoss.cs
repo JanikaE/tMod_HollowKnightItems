@@ -33,9 +33,10 @@ namespace HollowKnightItems.Content.NPCs
             public const int Sho = 25;
         }
 
-        public const int Damage = 40;
-        public const int Defence = 10;
+        public static int Damage;
+        public static int Defence;
         public const int DefenceMax = 9999;
+        public const float KnockBack = 0.2f;
 
         /// <summary>
         /// 每张帧图的命名
@@ -79,7 +80,7 @@ namespace HollowKnightItems.Content.NPCs
             NPC.knockBackResist = 0f;
 
             NPC.damage = 0;  // 取消碰撞伤害
-            NPC.defense = 0;  // 在每个状态里再分别写攻击和防御
+            NPC.defense = 0;  // 在每个状态里再分别写防御
 
             NPC.value = Item.buyPrice(0, 4, 50, 0);  // NPC的爆出来的MONEY的数量，四个空从左到右是铂金，金，银，铜
             NPC.lavaImmune = true;  // 对岩浆免疫
@@ -164,8 +165,10 @@ namespace HollowKnightItems.Content.NPCs
         {
             public override void AI(SMNPC n)
             {
+                Damage = 40;
+                Defence = 20;
+
                 NPC npc = n.NPC;
-                npc.damage = 0;
                 npc.defense = Defence;
                 n.Stage = 0;
                 npc.velocity = Vector2.Zero;
@@ -211,7 +214,6 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = Damage;
                 npc.defense = DefenceMax;
                 Player player = Main.player[npc.target];
 
@@ -234,6 +236,9 @@ namespace HollowKnightItems.Content.NPCs
                                 Main.player[i].AddBuff(ModContent.BuffType<RoarDebuff>(), 90);
                             }                            
                         }
+                        // 数值变化
+                        Damage += Damage / 2;
+                        Defence /= 2;
                         break;
                     case 90:
                         n.GetFrame((int)Frame.Teleport);
@@ -266,7 +271,6 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = 0;
                 npc.defense = Defence;
                 npc.velocity = Vector2.Zero;
                 Player player = Main.player[npc.target];
@@ -376,12 +380,9 @@ namespace HollowKnightItems.Content.NPCs
 
         public class BlowfishState : NPCState
         {
-            public static int prob;  // 发射弹幕的概率
-
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = Damage;
                 npc.defense = DefenceMax;
                 npc.velocity = Vector2.Zero;
                 n.GetFrame((int)Frame.Blowfish);
@@ -389,31 +390,23 @@ namespace HollowKnightItems.Content.NPCs
                 if (n.Timer == 20)
                 {
                     //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
-                    prob = 100;
                 }
                 
                 // 从第50帧到第530帧，36帧为一轮弹幕，共计15轮
-                if (n.Timer >= 50 && n.Timer <= 490 && Main.netMode != NetmodeID.MultiplayerClient)
+                if (n.Timer >= 50 && n.Timer <= 530 && n.Timer % 2 == 0 && Main.netMode != NetmodeID.MultiplayerClient)
                 {
                     float angle = (n.Timer - 50) * 10 + 90;  // 发射的角度
-                    float offset = random.Next(-2, 2);  // 加一个小的随机偏移
+                    float offset = random.Next(-10, 11);  // 加一个小的随机偏移
                     float radian = (angle + offset) * MathHelper.Pi / 180;
                     Vector2 velocity = radian.ToRotationVector2() * 6;
-                    if (random.Next(300) < prob)
-                    {
-                        Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                npc.Center,
-                                                velocity,
-                                                ModContent.ProjectileType<GrimmShoot>(),
-                                                npc.damage,
-                                                0.2f,
-                                                Main.myPlayer);
-                        prob -= 40;  // 如果这个位置发射了弹幕，让下一个位置发射弹幕的概率减小
-                    }
-                    else
-                    {
-                        prob += 60;  // 反之让下一个位置发射弹幕的概率增加
-                    }
+                    Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                            npc.Center,
+                                            velocity,
+                                            ModContent.ProjectileType<GrimmShoot>(),
+                                            Damage,
+                                            KnockBack,
+                                            Main.myPlayer,
+                                            ai1: random.Next(3,5));
                 }
 
                 if (n.Timer == 590)
@@ -434,7 +427,6 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = 0;
                 npc.defense = 0;
                 Player player = Main.player[npc.target];
                 n.GetFrame((int)Frame.Fly);
@@ -492,7 +484,6 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = Damage;
                 npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
@@ -503,36 +494,54 @@ namespace HollowKnightItems.Content.NPCs
                         n.GetFrame((int)Frame.Flybird);
                         //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                         break;
+                    case 30:
+                        // 火球弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = -2; i < 3; i++)
+                            {
+                                float dir = (npc.spriteDirection - 1) * MathHelper.PiOver2 + i * MathHelper.PiOver4;
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center,
+                                                        dir.ToRotationVector2() * 4,
+                                                        ModContent.ProjectileType<GrimmShoot>(),
+                                                        Damage,
+                                                        KnockBack,
+                                                        Main.myPlayer,
+                                                        ai1: 1);
+                            }
+                        }
+                        break;
                     case 32:
                     case 68:
-                        // 弹幕
+                        // 火鸟弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                npc.Center,
-                                                new Vector2(-npc.spriteDirection * 20, 0),
-                                                ModContent.ProjectileType<GrimmFirebird>(),
-                                                30,
-                                                0.2f,
-                                                Main.myPlayer);
+                                                    npc.Center,
+                                                    new Vector2(-npc.spriteDirection * 20, 0),
+                                                    ModContent.ProjectileType<GrimmFirebird>(),
+                                                    Damage,
+                                                    KnockBack,
+                                                    Main.myPlayer);
                         }
                         // 音效
                         SoundEngine.PlaySound(SoundLoader.Grimm_Firebird , npc.Center);
                         break;
                     case 50:                    
                     case 86:
-                        // 弹幕
+                        // 火鸟弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
                             for (int i = -1; i < 2; i += 2)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                    npc.Center,
-                                                    new Vector2(-npc.spriteDirection * 20, i * 5),
-                                                    ModContent.ProjectileType<GrimmFirebird>(),
-                                                    30,
-                                                    0.2f,
-                                                    Main.myPlayer);
+                                                        npc.Center,
+                                                        new Vector2(-npc.spriteDirection * 20, i * 5),
+                                                        ModContent.ProjectileType<GrimmFirebird>(),
+                                                        Damage,
+                                                        KnockBack,
+                                                        Main.myPlayer);
                             }                            
                         }
                         // 音效
@@ -563,7 +572,6 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = Damage;
                 npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
@@ -597,9 +605,9 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
-                                                        ModContent.ProjectileType<GrimmThorn>(),
-                                                        30,
-                                                        0.2f,
+                                                        ModContent.ProjectileType<GrimmSpike_Thorn>(),
+                                                        Damage,
+                                                        KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
                                                         0);
@@ -612,9 +620,9 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
-                                                        ModContent.ProjectileType<GrimmThorn>(),
-                                                        30,
-                                                        0.2f,
+                                                        ModContent.ProjectileType<GrimmSpike_Thorn>(),
+                                                        Damage,
+                                                        KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
                                                         0);
@@ -641,9 +649,9 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
-                                                        ModContent.ProjectileType<GrimmThorn>(),
-                                                        30,
-                                                        0.2f,
+                                                        ModContent.ProjectileType<GrimmSpike_Thorn>(),
+                                                        Damage,
+                                                        KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
                                                         turn);
@@ -655,9 +663,9 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         position + offsetP,
                                                         Vector2.Zero,
-                                                        ModContent.ProjectileType<GrimmThorn>(),
-                                                        30,
-                                                        0.2f,
+                                                        ModContent.ProjectileType<GrimmSpike_Thorn>(),
+                                                        Damage,
+                                                        KnockBack,
                                                         Main.myPlayer,
                                                         offsetR,
                                                         turn);
@@ -684,7 +692,6 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = Damage;
                 npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
@@ -700,20 +707,48 @@ namespace HollowKnightItems.Content.NPCs
                         // 俯冲
                         npc.velocity *= Speed.Swoop;
                         SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
-                        // Dust to do
+                        // 弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = -2; i < 3; i++) 
+                            {
+                                int dir = npc.velocity.X > 0 ? -1 : 1;
+                                Vector2 pos = npc.Center + new Vector2(i * dir, i) * 60;
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        pos,
+                                                        npc.velocity * 1.1f,
+                                                        ModContent.ProjectileType<GrimmSpike_Swoop>(),
+                                                        Damage,
+                                                        KnockBack,
+                                                        Main.myPlayer);
+                            }
+                        }
                         break;                    
                     case 25:                        
                         // 停顿
                         npc.velocity = player.Center.X - npc.Center.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         n.GetFrame((int)Frame.Swoop2);
-                        // Dust to do
                         break;
                     case 55:
                         n.GetFrame((int)Frame.Swoop3);
                         // 横冲
-                        npc.velocity *= Speed.Swoop;
+                        npc.velocity *= (float)(Speed.Swoop * 1.414);
                         SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
-                        // Dust to do
+                        // 弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = -2; i < 3; i++)
+                            {
+                                Vector2 pos = npc.Center + new Vector2(0, i) * 60;
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        pos,
+                                                        npc.velocity * 1.1f,
+                                                        ModContent.ProjectileType<GrimmSpike_Swoop>(),
+                                                        Damage,
+                                                        KnockBack,
+                                                        Main.myPlayer);
+                            }
+                        }
                         break;
                     case 65:
                         // 停顿
@@ -739,7 +774,6 @@ namespace HollowKnightItems.Content.NPCs
             public override void AI(SMNPC n)
             {
                 NPC npc = n.NPC;
-                npc.damage = Damage;
                 npc.defense = Defence;
                 Player player = Main.player[npc.target];
 
@@ -756,6 +790,21 @@ namespace HollowKnightItems.Content.NPCs
                         // 横冲
                         npc.velocity *= Speed.Scratch;
                         SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
+                        // 弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {
+                            for (int i = -1; i < 2; i++)
+                            {
+                                float angle = npc.velocity.ToRotation() + i * MathHelper.Pi / 8;
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center,
+                                                        angle.ToRotationVector2() * 15,
+                                                        ModContent.ProjectileType<GrimmShoot>(),
+                                                        30,
+                                                        0.2f,
+                                                        Main.myPlayer);
+                            }
+                        }
                         break;
                     case 36:
                         // 停顿
@@ -773,11 +822,20 @@ namespace HollowKnightItems.Content.NPCs
                         // 弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
-                            for (int i = -2; i < 3; i++)
+                            for (int i = 0; i < 7; i++)
                             {
+                                float angle = i * MathHelper.Pi / 3;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
-                                                        new Vector2(i * 7, 0),
+                                                        angle.ToRotationVector2() * 15f,
+                                                        ModContent.ProjectileType<GrimmFireball>(),
+                                                        30,
+                                                        0.2f,
+                                                        Main.myPlayer);
+                                angle += MathHelper.Pi / 6;
+                                Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                        npc.Center,
+                                                        angle.ToRotationVector2() * 25,
                                                         ModContent.ProjectileType<GrimmFireball>(),
                                                         30,
                                                         0.2f,

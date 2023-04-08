@@ -1,16 +1,16 @@
 ﻿using HollowKnightItems.Assets;
 using HollowKnightItems.Content.Dusts;
 using HollowKnightItems.Content.NPCs;
+using HollowKnightItems.Content.Projectiles.Grimmchild;
+using System;
 
 namespace HollowKnightItems.Content.Projectiles.Grimm
 {
     /*  GrimmProj
-     *      -GrimmThorn
+     *      -GrimmSpike
      *      -GrimmFirebird
      *      -GrimmFireball
      *      -GrimmShoot
-     *          -GrimmShoot_Sides
-     *          -GrimmShoot_Below
      */
     [Autoload(false)]
     internal class GrimmProj : ModProjectile
@@ -34,12 +34,14 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             Projectile.light = 0.2f;
 
             CooldownSlot = ImmunityCooldownID.Bosses;
-        }        
+        }
     }
 
-    [Autoload(true)]
-    internal class GrimmThorn : GrimmProj
+    [Autoload(false)]
+    internal class GrimmSpike : GrimmProj
     {
+        public override string Texture => "HollowKnightItems/Content/Projectiles/Grimm/GrimmSpike";
+
         public override void SetStaticDefaults()
         {
             base.SetStaticDefaults();
@@ -54,7 +56,11 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             Projectile.height = 120;
             Projectile.timeLeft = 240;
         }
+    }
 
+    [Autoload(true)]
+    internal class GrimmSpike_Thorn : GrimmSpike 
+    {
         public override void AI()
         {
             // 弹幕的旋转角度通过ai[0]传入
@@ -69,6 +75,50 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             }
         }
     }
+
+    [Autoload(true)]
+    internal class GrimmSpike_Swoop : GrimmSpike
+    {
+
+        public override void AI()
+        {
+            if (Projectile.ai[0] < 20 || Projectile.ai[0] > 60)
+            {
+                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
+                Projectile.ai[1] = Projectile.velocity.Length();
+            }
+            else if (Projectile.ai[0] < 50)
+            {
+                Player player = null;
+                Vector2 dir;
+                foreach (NPC n in Main.npc)
+                {
+                    if (n.type == ModContent.NPCType<GrimmBoss>())
+                    {
+                        player = Main.player[n.target];
+                    }
+                }
+                if (player != null)
+                {
+                    dir = player.Center - Projectile.Center;                    
+                }
+                else
+                {
+                    dir = Vector2.Zero;
+                }
+                // 停止运动，将方向指向玩家位置
+                Projectile.rotation = dir.ToRotation() + MathHelper.PiOver2;
+                Projectile.velocity = Vector2.Zero;
+            }
+            else if (Projectile.ai[0] == 60)
+            {
+                Vector2 dir = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2();
+                Projectile.velocity = dir * Projectile.ai[1];
+            }
+            Projectile.ai[0]++;
+        }
+    }
+
 
     [Autoload(true)]
     internal class GrimmFirebird : GrimmProj
@@ -133,21 +183,27 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             base.SetDefaults();
             Projectile.width = 100;
             Projectile.height = 100;
-            Projectile.timeLeft = 120;
+            Projectile.timeLeft = 125;
         }
 
         public override void AI()
         {
-            TailDust(Projectile, TailType, Projectile.height);
+            TailDust(Projectile, TailType, 2, 1.5f);
             // 近似抛物线的运动
-            if (Projectile.ai[0] % 3 == 0) 
-            {
-                Projectile.velocity.Y += 1;
-            }
-            if (Projectile.ai[0] % 10 == 0)
-            {
-                Projectile.velocity.X *= 0.95f;
-            }
+            //if (Projectile.ai[0] % 3 == 0) 
+            //{
+            //    Projectile.velocity.Y += 1;
+            //}
+            //if (Projectile.ai[0] % 10 == 0)
+            //{
+            //    Projectile.velocity.X *= 0.95f;
+            //}
+
+            // 一点曲线运动
+            float rot = Projectile.velocity.ToRotation() + 0.05f;
+            Vector2 oldVel = Projectile.velocity;
+            Projectile.velocity = rot.ToRotationVector2() * oldVel.Length();
+
             Projectile.ai[0]++;
         }
 
@@ -202,7 +258,53 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void AI()
         {
-            TailDust(Projectile, TailType, Projectile.height / 10);
+            TailDust(Projectile, TailType, (int)(4 * Projectile.scale));
+            
+            // ai[1]等于1/2表示两种不同的分裂设计
+            if (Projectile.ai[0] > 60 && Main.netMode != NetmodeID.MultiplayerClient)
+            {
+                if (Projectile.ai[1] == 1)
+                {
+                    ProjectileSplit(Projectile, Type, 8, 15, true, damage: Projectile.damage, ai1: -1);
+                    Projectile.Kill();
+                }
+                else if (Projectile.ai[1] == 2)
+                {
+                    ProjectileSplit(Projectile, Type, 4, 0.5f, false, damage: Projectile.damage, ai1: -2);
+                    Projectile.Kill();
+                }                
+            }
+            // ai[1]等于3/4表示两种不同方向的圆周运动
+            if (Projectile.ai[1] == 3)
+            {
+                float rot = Projectile.velocity.ToRotation() + 0.01f;
+                Vector2 oldVel = Projectile.velocity;
+                Projectile.velocity = rot.ToRotationVector2() * oldVel.Length();
+            }
+            if (Projectile.ai[1] == 4)
+            {
+                float rot = Projectile.velocity.ToRotation() - 0.01f;
+                Vector2 oldVel = Projectile.velocity;
+                Projectile.velocity = rot.ToRotationVector2() * oldVel.Length();
+            }
+
+            Projectile.ai[0]++;
+        }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            switch (Projectile.ai[1])
+            {
+                case 1:
+                    Projectile.scale = 1.5f;
+                    break;
+                case -1:
+                    Projectile.scale = 0.6f;
+                    break;
+                case -2:
+                    Projectile.scale = 0.5f;
+                    break;
+            }
         }
     }
 

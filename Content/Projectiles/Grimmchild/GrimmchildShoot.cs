@@ -133,18 +133,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             {
                 // 在2/3/4阶段分别分裂出3/6/9个小弹幕
                 int num = ((int)Projectile.ai[0] - 1) * 3;
-                for (int i = 0; i < 360; i += 360 / num)
-                {
-                    float vel = velocity.ToRotation() + (i * MathHelper.Pi / 180);
-                    Projectile.NewProjectile(Projectile.GetSource_FromAI(),
-                                            Projectile.position,
-                                            velocity + vel.ToRotationVector2() * 2f,
-                                            ModContent.ProjectileType<GrimmchildShoot>(),
-                                            GetGrimmchildAttack() / 2,
-                                            Projectile.knockBack + 1,
-                                            Projectile.owner,
-                                            ai1: 2);  // 分裂后的弹幕ai[1]标记为2
-                }
+                ProjectileSplit(Projectile, ModContent.ProjectileType<GrimmchildShoot>(), num, 2f, false, damage: GetGrimmchildAttack() / 2,ai1: 2);
             }
         }
     }

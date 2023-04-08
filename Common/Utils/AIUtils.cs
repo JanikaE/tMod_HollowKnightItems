@@ -1,5 +1,6 @@
 ﻿using HollowKnightItems.Common.Systems;
 using HollowKnightItems.Content.Dusts;
+using HollowKnightItems.Content.Projectiles.Grimmchild;
 
 namespace HollowKnightItems.Common.Utils
 {
@@ -176,16 +177,51 @@ namespace HollowKnightItems.Common.Utils
         }
 
         /// <summary>
+        /// 弹幕分裂
+        /// </summary>
+        /// <param name="projectile"></param>
+        /// <param name="type"></param>
+        /// <param name="num"></param>
+        /// <param name="velocity"></param>
+        /// <param name="ignoreOld"></param>
+        /// <param name="damage"></param>
+        /// <param name="ai0"></param>
+        /// <param name="ai1"></param>
+        public static void ProjectileSplit(Projectile projectile, int type, int num, float velocity, bool ignoreOld, bool randomOffset = true, int damage = 0, float ai0 = 0, float ai1 = 0)
+        {
+            int offset = randomOffset ? random.Next(360) : 0;
+            for (int i = 0; i < 360; i += 360 / num)
+            {
+                float dir = projectile.velocity.ToRotation() + ((i + offset) * MathHelper.Pi / 180);
+                Vector2 vel = dir.ToRotationVector2() * velocity;
+                if (!ignoreOld)
+                {
+                    vel += projectile.velocity;
+                }
+                Projectile.NewProjectile(projectile.GetSource_FromAI(),
+                                        projectile.position,
+                                        vel,
+                                        type,
+                                        damage,
+                                        projectile.knockBack,
+                                        projectile.owner,
+                                        ai0,
+                                        ai1);
+            }
+        }
+
+        /// <summary>
         /// 弹幕拖尾的Dust
         /// </summary>
         /// <param name="projectile">弹幕对象</param>
         /// <param name="type">Dust类型</param>
         /// <param name="num">Dust数量</param>
-        public static void TailDust(Projectile projectile, int type, int num)
+        /// <param name="scale">Dust大小</param>
+        public static void TailDust(Projectile projectile, int type, int num, float scale = 1)
         {
             for (int i = 0; i < num; i++)
             {
-                Dust.NewDust(projectile.position - projectile.velocity, projectile.width, projectile.height, type, newColor: new Color(255, 89, 89));
+                Dust.NewDust(projectile.position - projectile.velocity, projectile.width, projectile.height, type, newColor: new Color(255, 89, 89), Scale: scale);
             }
         }
 
