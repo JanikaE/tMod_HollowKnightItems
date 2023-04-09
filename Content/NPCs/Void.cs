@@ -81,10 +81,7 @@ namespace HollowKnightItems.Content.NPCs
 
         public override string GetChat()
         {
-            // 挖坑
-            WeightedRandom<string> chat = new();
-            chat.Add("666");
-            return chat;
+            return GetNPCChat(Name, 3);
         }
 
         public override void SetChatButtons(ref string button, ref string button2)

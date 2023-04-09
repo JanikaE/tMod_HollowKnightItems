@@ -1,7 +1,5 @@
 ﻿using HollowKnightItems.Common.Systems;
 using HollowKnightItems.Content.Dusts;
-using HollowKnightItems.Content.NPCs;
-using HollowKnightItems.Content.Projectiles.Grimmchild;
 
 namespace HollowKnightItems.Common.Utils
 {

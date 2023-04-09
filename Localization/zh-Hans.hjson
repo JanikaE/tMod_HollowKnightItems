@@ -6,6 +6,16 @@ Mods: {
 				DisplayName: 格林之子
 				Description: 喵~
 			}
+		}		
+
+		Common: {
+			Close: Close
+			Upgrade: Upgrade
+			Max: Upgraded to Max
+			Lack: Lack of material
+			Consume: will be consumed
+			Stage: Current Stage:
+			Damage: Current Damage:
 		}
 
 		Items: {
@@ -43,6 +53,15 @@ Mods: {
 				LoseInfo: "[c/FF5A5A:你未能通过考验。再试一次吧。]"
 				WinInfo: "[c/FF5A5A:你通过了考验。恭喜！]"
 			}
+
+			Void: {
+				DisplayName: 虚空
+				Chat: {
+					0: 000
+					1: 111
+					2: 222
+				}
+			}
 		}
 
 		Projectiles: {
@@ -54,14 +73,50 @@ Mods: {
 			GrimmchildSummon.DisplayName: 格林之子
 		}
 
-		Common: {
-			Close: 关闭
-			Upgrade: 升级
-			Max: 已升级至Max
-			Lack: 缺少材料
-			Consume: 将会被消耗
-			Stage: 当前阶段:
-			Damage: 当前伤害:
-		}
+		TownNPCMood: {
+            Void: {
+                Content: 
+                NoHome: 
+                LoveSpace: 
+                FarFromHome: 
+                DislikeCrowded: 
+                HateCrowded: 
+                LikeNPC_Princess: 
+                '''
+                {NPCName}
+                '''
+                LoveBiome: 
+                '''
+                {BiomeName}
+                '''
+                LikeBiome: 
+                '''
+                {BiomeName}
+                '''
+                DislikeBiome: 
+                '''
+                {BiomeName}
+                '''
+                HateBiome: 
+                '''
+                {BiomeName}
+                '''
+                LikeNPC: 
+                '''
+                {NPCName}
+                '''
+                DislikeNPC: 
+                '''
+                {NPCName}
+                '''
+            }
+        }
 	}
+}
+
+TownNPCMood_Princess: {
+    LoveNPC_Void: 
+    '''
+    {NPCName}
+    '''
 }

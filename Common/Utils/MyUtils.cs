@@ -1,6 +1,4 @@
-﻿using HollowKnightItems.Common.Systems;
-
-namespace HollowKnightItems.Common.Utils
+﻿namespace HollowKnightItems.Common.Utils
 {
     /// <summary>
     /// 自用的一些工具
@@ -72,7 +70,23 @@ namespace HollowKnightItems.Common.Utils
         /// <param name="path">路径为Mods.HollowKnightItems.*</param>
         public static string GetText(string path)
         {
-            return Language.GetTextValue($"Mods.HollowKnightItems.{path}");
+            return Language.GetTextValue("Mods.HollowKnightItems." + path);
+        }
+
+        /// <summary>
+        /// 获取城镇NPC对话
+        /// </summary>
+        /// <param name="name">NPC名字</param>
+        /// <param name="num">对话数量</param>
+        public static WeightedRandom<string> GetNPCChat(string name, int num)
+        {
+            WeightedRandom<string> chats = new();
+            for (int i = 0; i < num; i++)
+            {
+                string chat = GetText("NPCs." + name + ".Chat." + i);
+                chats.Add(chat);
+            }
+            return chats;
         }
 
         /// <summary>

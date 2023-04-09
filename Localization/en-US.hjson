@@ -6,6 +6,16 @@ Mods: {
 				DisplayName: Grimmchild
 				Description: Meow~
 			}
+		}		
+
+		Common: {
+			Close: Close
+			Upgrade: Upgrade
+			Max: Upgraded to Max
+			Lack: Lack of material
+			Consume: will be consumed
+			Stage: Current Stage:
+			Damage: Current Damage:
 		}
 
 		Items: {
@@ -43,6 +53,15 @@ Mods: {
 				LoseInfo: "[c/FF5A5A:You failed the test. Try again.]"
 				WinInfo: "[c/FF5A5A:You passed the test. Congratulations!]"
 			}
+
+			Void: {
+				DisplayName: Void
+				Chat: {
+					0: 000
+					1: 111
+					2: 222
+				}
+			}
 		}
 
 		Projectiles: {
@@ -54,14 +73,50 @@ Mods: {
 			GrimmchildSummon.DisplayName: Grimmchild
 		}
 
-		Common: {
-			Close: Close
-			Upgrade: Upgrade
-			Max: Upgraded to Max
-			Lack: Lack of material
-			Consume: will be consumed
-			Stage: Current Stage:
-			Damage: Current Damage:
-		}
+		TownNPCMood: {
+            Void: {
+                Content: 
+                NoHome: 
+                LoveSpace: 
+                FarFromHome: 
+                DislikeCrowded: 
+                HateCrowded: 
+                LikeNPC_Princess: 
+                '''
+                {NPCName}
+                '''
+                LoveBiome: 
+                '''
+                {BiomeName}
+                '''
+                LikeBiome: 
+                '''
+                {BiomeName}
+                '''
+                DislikeBiome: 
+                '''
+                {BiomeName}
+                '''
+                HateBiome: 
+                '''
+                {BiomeName}
+                '''
+                LikeNPC: 
+                '''
+                {NPCName}
+                '''
+                DislikeNPC: 
+                '''
+                {NPCName}
+                '''
+            }
+        }
 	}
+}
+
+TownNPCMood_Princess: {
+    LoveNPC_Void: 
+    '''
+    {NPCName}
+    '''
 }
