@@ -1,11 +1,11 @@
 ﻿using HollowKnightItems.Common.Systems;
 using HollowKnightItems.Content.Items;
 using HollowKnightItems.Content.Items.Charms;
+using HollowKnightItems.Content.Projectiles;
 using Terraria.GameContent.Bestiary;
 
 namespace HollowKnightItems.Content.NPCs
 {
-    [Autoload(false)]
     internal class Void : ModNPC
     {
         private readonly int ID = NPCID.Wizard; // 动画套用巫师的数据
@@ -17,7 +17,8 @@ namespace HollowKnightItems.Content.NPCs
             Main.npcFrameCount[Type] = Main.npcFrameCount[ID];
             NPCID.Sets.ExtraFramesCount[Type] = NPCID.Sets.ExtraFramesCount[ID];
             NPCID.Sets.AttackFrameCount[Type] = NPCID.Sets.AttackFrameCount[ID];
-            NPCID.Sets.AttackType[Type] = NPCID.Sets.AttackType[ID];
+            NPCID.Sets.AttackType[Type] = 2;  // 魔法型攻击
+            NPCID.Sets.AttackTime[Type] = NPCID.Sets.AttackTime[ID];
             NPCID.Sets.MagicAuraColor[Type] = Color.Black;
             NPCID.Sets.DangerDetectRange[Type] = NPCID.Sets.DangerDetectRange[ID];
             NPCID.Sets.AttackAverageChance[Type] = NPCID.Sets.AttackAverageChance[ID];
@@ -45,9 +46,9 @@ namespace HollowKnightItems.Content.NPCs
 
             NPC.townNPC = true;
             NPC.friendly = true;
-            NPC.aiStyle = 7;
+            NPC.aiStyle = NPCAIStyleID.Passive;
 
-            AnimationType = NPCID.Wizard;
+            AnimationType = ID;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -68,7 +69,7 @@ namespace HollowKnightItems.Content.NPCs
         {
             // 随机姓名
             return new List<string>() { 
-                ""
+                "666"
             };
         }
 
@@ -82,7 +83,7 @@ namespace HollowKnightItems.Content.NPCs
         {
             // 挖坑
             WeightedRandom<string> chat = new();
-            chat.Add("");
+            chat.Add("666");
             return chat;
         }
 
@@ -120,18 +121,18 @@ namespace HollowKnightItems.Content.NPCs
         public override void TownNPCAttackCooldown(ref int cooldown, ref int randExtraCooldown)
         {
             cooldown = 60;
-            randExtraCooldown = 20;
+            randExtraCooldown = 0;
         }
 
         public override void TownNPCAttackProj(ref int projType, ref int attackDelay)
         {
-            // projType
-            attackDelay = 5;
+            projType = ModContent.ProjectileType<VoidSoul>();
+            attackDelay = 10;
         }
 
         public override void TownNPCAttackProjSpeed(ref float multiplier, ref float gravityCorrection, ref float randomOffset)
         {
-            multiplier = 6f;
+            multiplier = 10f;
             gravityCorrection = 0f;
             randomOffset = 0.2f;
         }

@@ -114,26 +114,6 @@ namespace HollowKnightItems.Common.Utils
         }
 
         /// <summary>
-        /// 敌方单位索敌
-        /// </summary>
-        /// <param name="position">索敌中心</param>
-        /// <param name="maxDistance">最大距离</param>
-        public static Player FindClosestPlayer(Vector2 position, float maxDistance)
-        {
-            Player res = null;
-            foreach (var player in Main.player)
-            {
-                float dis = Vector2.Distance(position, player.Center);
-                if (dis < maxDistance)
-                {
-                    maxDistance = dis;
-                    res = player;
-                }
-            }
-            return res;
-        }
-
-        /// <summary>
         /// 获取某个NPC(一般是Boss)的目标玩家
         /// </summary>
         /// <param name="type">NPC类型</param>
@@ -202,11 +182,11 @@ namespace HollowKnightItems.Common.Utils
         /// <param name="num">弹幕数量</param>
         /// <param name="oldVelocity">分裂前的弹幕速度, 若为0则忽略旧的速度</param>
         /// <param name="velocity">分裂后的弹幕相对速率</param>
-        /// <param name="randomOffset">是否增加随机的角度偏移</param>
         /// <param name="damage">弹幕伤害</param>
+        /// <param name="randomOffset">是否增加随机的角度偏移</param>
         /// <param name="ai0">弹幕ai[0]初值</param>
         /// <param name="ai1">弹幕ai[1]初值</param>
-        public static void ProjectileSplit(Projectile projectile, int type, int num, Vector2 oldVelocity, float velocity, bool randomOffset = true, int damage = 0, float ai0 = 0, float ai1 = 0)
+        public static void ProjectileSplit(Projectile projectile, int type, int num, Vector2 oldVelocity, float velocity, int damage, bool randomOffset = true, float ai0 = 0, float ai1 = 0)
         {
             int offset = randomOffset ? random.Next(360) : 0;
             for (int i = 0; i < 360; i += 360 / num)
