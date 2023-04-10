@@ -74,7 +74,7 @@
         }
 
         /// <summary>
-        /// 获取城镇NPC对话
+        /// 获取城镇NPC对话(通常)
         /// </summary>
         /// <param name="name">NPC名字</param>
         /// <param name="num">对话数量</param>
@@ -87,6 +87,25 @@
                 chats.Add(chat);
             }
             return chats;
+        }
+
+        /// <summary>
+        /// 获取城镇NPC对话(特殊条件)
+        /// </summary>
+        /// <param name="name">NPC名字</param>
+        /// <param name="condistion">条件</param>
+        public static string GetNPCChat(string name, string condistion)
+        {
+            return GetText("NPCs." + name + ".Chat." + condistion);
+        }
+
+        /// <summary>
+        /// 获取NPC图鉴描述
+        /// </summary>
+        /// <param name="name">NPC名字</param>
+        public static string GetNPCBestiary(string name)
+        {
+            return GetText("NPCs." + name + ".Bestiary");
         }
 
         /// <summary>

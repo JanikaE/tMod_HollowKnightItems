@@ -48,6 +48,11 @@ Mods: {
 		NPCs: {
 			Grimm: {
 				DisplayName: Troupe Master Grimm
+				Bestiary: 
+				'''
+				A test given by Void, referencing its own past experiences combined with some of what it has seen and heard in this world.
+				It's going to be a grand performance.
+				'''
 				SpawnInfo1: Troupe Master
 				SpawnInfo2: Grimm
 				LoseInfo: "[c/FF5A5A:You failed the test. Try again.]"
@@ -57,15 +62,18 @@ Mods: {
 			Void: {
 				DisplayName: Void
 				Chat: {
-					0: 000
-					1: 111
-					2: 222
+					0: 
+					1: 
+					2: 
+					3: 
+					Grimmchild: 
 				}
+				Bestiary: A traveler from another dimension, who has completed his mission and embarks on a journey to other worlds.
 			}
 		}
 
 		Projectiles: {
-			GrimmThorn.DisplayName: Nightmare Thorn
+			GrimmSpike.DisplayName: Nightmare Spike
            	GrimmFirebird.DisplayName: Nightmare Firebird
            	GrimmFireball.DisplayName: Nightmare Big Fireball
           	GrimmShoot.DisplayName: Nightmare Fireball

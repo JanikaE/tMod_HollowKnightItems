@@ -2,7 +2,6 @@
 using HollowKnightItems.Content.Items;
 using HollowKnightItems.Content.Items.Charms;
 using HollowKnightItems.Content.Projectiles;
-using Terraria.GameContent.Bestiary;
 
 namespace HollowKnightItems.Content.NPCs
 {
@@ -33,7 +32,13 @@ namespace HollowKnightItems.Content.NPCs
             NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
 
             // 幸福度设置
-
+            NPC.Happiness.SetBiomeAffection<UndergroundBiome>(AffectionLevel.Love)
+                        .SetBiomeAffection<JungleBiome>(AffectionLevel.Like)
+                        .SetBiomeAffection<OceanBiome>(AffectionLevel.Dislike)
+                        .SetBiomeAffection<HallowBiome>(AffectionLevel.Hate)
+                        .SetNPCAffection(NPCID.Guide, AffectionLevel.Love)
+                        .SetNPCAffection(NPCID.Wizard, AffectionLevel.Like)
+                        .SetNPCAffection(NPCID.Angler, AffectionLevel.Dislike);
         }
 
         public override void SetDefaults()
@@ -55,8 +60,7 @@ namespace HollowKnightItems.Content.NPCs
         {
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
-                // 图鉴内描述
-                new FlavorTextBestiaryInfoElement("")
+                new FlavorTextBestiaryInfoElement(GetNPCBestiary(Name))
             }) ;
         }
 
@@ -69,7 +73,7 @@ namespace HollowKnightItems.Content.NPCs
         {
             // 随机姓名
             return new List<string>() { 
-                "666"
+                ""
             };
         }
 
@@ -81,7 +85,12 @@ namespace HollowKnightItems.Content.NPCs
 
         public override string GetChat()
         {
-            return GetNPCChat(Name, 3);
+            WeightedRandom<string> chats = GetNPCChat(Name, 4);
+            if (DownedBossSystem.downedGrimm)
+            {
+                chats.Add(GetNPCChat(Name, "Grimmchild"));
+            }
+            return chats;
         }
 
         public override void SetChatButtons(ref string button, ref string button2)

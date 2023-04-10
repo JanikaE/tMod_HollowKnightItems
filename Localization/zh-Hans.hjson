@@ -9,13 +9,13 @@ Mods: {
 		}		
 
 		Common: {
-			Close: Close
-			Upgrade: Upgrade
-			Max: Upgraded to Max
-			Lack: Lack of material
-			Consume: will be consumed
-			Stage: Current Stage:
-			Damage: Current Damage:
+			Close: 关闭
+			Upgrade: 升级
+			Max: 已升级至Max
+			Lack: 缺少材料
+			Consume: 将会被消耗
+			Stage: 当前阶段:
+			Damage: 当前伤害:			
 		}
 
 		Items: {
@@ -48,6 +48,11 @@ Mods: {
 		NPCs: {
 			Grimm: {
 				DisplayName: 剧团团长 格林
+				Bestiary: 
+				'''
+				由虚空给予的一项考验，参考了它自己过去的经历，并结合了它在这个世界的一些所见所闻。
+				这将是一场盛大的演出。
+				'''
 				SpawnInfo1: 剧团团长
 				SpawnInfo2: 格林
 				LoseInfo: "[c/FF5A5A:你未能通过考验。再试一次吧。]"
@@ -57,15 +62,18 @@ Mods: {
 			Void: {
 				DisplayName: 虚空
 				Chat: {
-					0: 000
-					1: 111
-					2: 222
+					0: 想知道我是从哪个世界来的？我觉得你早就知道答案了，不然我们也不会在这遇见彼此。
+					1: 我已经完成了自己过去的使命。既然我们在此相遇了，就让我来帮助你完成你的使命吧。
+					2: 来到这里后我感觉失去了许多能力，大概是这个世界在限制了我的力量吧。不过问题不大，我想已经不需要再战斗了。
+					3: 我身上还带着很多有用的物品，我想以后会有机会让它们帮到你的。
+					Grimmchild: 格林之子是个很可爱的伙伴，应该会让你的旅途增添一份乐趣。
 				}
+				Bestiary: 来自异次元的旅行者，因完成了自己的使命而踏上前往其他世界的道路。
 			}
 		}
 
 		Projectiles: {
-			GrimmThorn.DisplayName: 梦魇尖刺
+			GrimmSpike.DisplayName: 梦魇尖刺
            	GrimmFirebird.DisplayName: 梦魇火鸟
            	GrimmFireball.DisplayName: 梦魇大火球
           	GrimmShoot.DisplayName: 梦魇火球
@@ -75,39 +83,43 @@ Mods: {
 
 		TownNPCMood: {
             Void: {
-                Content: 
-                NoHome: 
-                LoveSpace: 
-                FarFromHome: 
-                DislikeCrowded: 
-                HateCrowded: 
+                Content: 恰到好处的感觉。
+                NoHome: 我想我可能需要一个椅子...不对，是屋子，用来休息。
+                LoveSpace: 我感觉像是回到了那个小镇。虽然有些冷寂但却令人安心。
+                FarFromHome: 我的旅途像是看不到尽头。
+                DislikeCrowded: 这里有些过于热闹了，我不习惯这样。
+                HateCrowded: 真是个吵闹的环境，我的精神有些受不了了。
                 LikeNPC_Princess: 
                 '''
-                {NPCName}
+                {NPCName}似乎有种特殊的魅力，能让这里的每个人都喜欢她，也包括我。
                 '''
                 LoveBiome: 
                 '''
-                {BiomeName}
+                {BiomeName}和我过去冒险的环境有些相似，有机会的话我会和你谈谈我过去的经历的。
                 '''
                 LikeBiome: 
                 '''
-                {BiomeName}
+                {BiomeName}蜜蜂真是一种很奇妙的生物，你能理解吗。
                 '''
                 DislikeBiome: 
                 '''
-                {BiomeName}
+                {BiomeName}平静的水面会勾起我一些不太好的回忆。
                 '''
-                HateBiome: 
+				HateBiome: 
                 '''
-                {BiomeName}
+                {BiomeName}光明是危险的！
+                '''
+				LoveNPC: 
+                '''
+                {NPCName}对这个世界了如指掌，我很享受和他交流的过程。
                 '''
                 LikeNPC: 
                 '''
-                {NPCName}
+                {NPCName}对法术有一些独特的见解，我想我能从他那里学到些什么。
                 '''
                 DislikeNPC: 
                 '''
-                {NPCName}
+                {NPCName}...他的性格是不是有点太差了。
                 '''
             }
         }
