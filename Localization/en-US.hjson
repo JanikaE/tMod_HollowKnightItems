@@ -62,11 +62,11 @@ Mods: {
 			Void: {
 				DisplayName: Void
 				Chat: {
-					0: 
-					1: 
-					2: 
-					3: 
-					Grimmchild: 
+					0: Want to know what world I'm from? I think you already know the answer, otherwise we wouldn't have met each other here.
+					1: I have completed my past mission. Now that we've met here, let me help you fulfill your mission.
+					2: After coming here, I felt that I had lost a lot of abilities, probably because the world was limiting my power. But no problem, I don't think I need to fight anymore.
+					3: I also have a lot of useful items with me. I think there will be opportunities for them to help you in the future.
+					Grimmchild: Grimmchild is a lovely companion and should add a lot of fun to your journey.
 				}
 				Bestiary: A traveler from another dimension, who has completed his mission and embarks on a journey to other worlds.
 			}
@@ -83,39 +83,43 @@ Mods: {
 
 		TownNPCMood: {
             Void: {
-                Content: 
-                NoHome: 
-                LoveSpace: 
-                FarFromHome: 
-                DislikeCrowded: 
-                HateCrowded: 
+                Content: Just the right feeling.
+                NoHome: I think I might need a chair... No, a house, for rest.
+                LoveSpace: I feel like I was back in that town. It's a bit chilly but reassuring.
+                FarFromHome:  My journey seemed like there was no end in sight.
+                DislikeCrowded: It's a little too lively here. I'm not used to that.
+                HateCrowded: It was such a noisy environment that my spirit was a little unbearable.
                 LikeNPC_Princess: 
                 '''
-                {NPCName}
+                {NPCName} She seems to have a special charm that makes everyone here like her, including me.
                 '''
                 LoveBiome: 
                 '''
-                {BiomeName}
+                {BiomeName} Somewhat similar to the circumstances of my past adventures. I cherish that journey.
                 '''
                 LikeBiome: 
                 '''
-                {BiomeName}
+                {BiomeName} Bees are such wonderful creatures, can you understand?
                 '''
                 DislikeBiome: 
                 '''
-                {BiomeName}
+                {BiomeName} The calm waters will bring back some not-so-good memories in me.
                 '''
                 HateBiome: 
                 '''
-                {BiomeName}
+                {BiomeName} Light Is Dangerous!
+                '''
+				LoveNPC: 
+                '''
+                {NPCName} He knows the world inside out and I enjoy communicating with him.
                 '''
                 LikeNPC: 
                 '''
-                {NPCName}
+                {NPCName} He had some unique insights into spells, and I thought I could learn something from him.
                 '''
                 DislikeNPC: 
                 '''
-                {NPCName}
+                {NPCName} ...Isn't his personality a little too bad?
                 '''
             }
         }
@@ -125,6 +129,6 @@ Mods: {
 TownNPCMood_Princess: {
     LoveNPC_Void: 
     '''
-    {NPCName}
+    {NPCName} Like a ghost, mysterious but cute.
     '''
 }

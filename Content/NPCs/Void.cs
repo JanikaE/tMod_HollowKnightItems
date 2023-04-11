@@ -64,24 +64,20 @@ namespace HollowKnightItems.Content.NPCs
             }) ;
         }
 
-        public override bool CanTownNPCSpawn(int numTownNPCs, int money)
-        {
-            return true;
-        }
+        public override bool CanTownNPCSpawn(int numTownNPCs, int money) => true;
 
         public override List<string> SetNPCNameList()
         {
             // 随机姓名
             return new List<string>() { 
-                ""
+                "Revek", "Milly", "Caspian", "Atra", "Chagax",
+                "Garro", "Kcin", "Karina", "Warrior", "Grohac",
+                "Perpetos", "Molten", "Magnus", "Waldie", "Wayner",
+                "Wyatt", "Hex", "Thistlewind", "Boss"
             };
         }
 
-        public override bool CanGoToStatue(bool toKingStatue)
-        {
-            // 无性别
-            return true;
-        }
+        public override bool CanGoToStatue(bool toKingStatue) => true;  // 无性别
 
         public override string GetChat()
         {
