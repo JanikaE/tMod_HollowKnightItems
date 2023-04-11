@@ -223,12 +223,29 @@ namespace HollowKnightItems.Common.Utils
         /// </summary>
         /// <param name="position">碰撞位置</param>
         /// <param name="type">Dust类型</param>
-        public static void HitDust(Vector2 position, int type, Color color = default)
+        public static void ProjectileHitDust(Vector2 position, int type, Color color)
         {
             for (int i = 0; i < 12; i++)
             {
                 Vector2 rotation = (i * MathHelper.Pi / 60).ToRotationVector2();
                 Dust.NewDust(position, 1, 1, type, rotation.X, rotation.Y, newColor: color);
+            }
+        }
+
+        /// <summary>
+        /// NPC受击的Dust
+        /// </summary>
+        /// <param name="npc">NPC对象</param>
+        /// <param name="hitDirection">受击方向</param>
+        /// <param name="color">Dust颜色</param>
+        public static void NPCHitDust(NPC npc, int hitDirection, Color color)
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                float rotation = hitDirection > 0 ? 0 : MathHelper.PiOver2;
+                float offset = random.Next(-30, 30) * MathHelper.Pi / 180;
+                Vector2 dir = (rotation + offset).ToRotationVector2() * 5;
+                Dust.NewDust(npc.Center, 0, 0, ModContent.DustType<Hit>(), dir.X, dir.Y, newColor: color);
             }
         }
 

@@ -4,8 +4,8 @@
     {
         public static SoundStyle Boss_Explode;
         public static SoundStyle CarefreeMelody;
+        public static SoundStyle Creature_Hit;
         public static SoundStyle Dash;
-        public static SoundStyle Enemy_Hit;
         public static SoundStyle Grimm_Attack;
         public static SoundStyle Grimm_Death;
         public static SoundStyle Grimm_Firebird;
@@ -20,8 +20,8 @@
         {
             Boss_Explode = GetSoundStyle("Boss_Explode", 1, 1f);
             CarefreeMelody = GetSoundStyle("CarefreeMelody", 1, 0.5f);
+            Creature_Hit = GetSoundStyle("Enemy_Hit", 1, 0.6f, SoundLimitBehavior: SoundLimitBehavior.ReplaceOldest);
             Dash = GetSoundStyle("Dash", 1, 1f);
-            Enemy_Hit = GetSoundStyle("Enemy_Hit", 1, 0.6f, SoundLimitBehavior: SoundLimitBehavior.ReplaceOldest);
             Grimm_Attack = GetSoundStyle("Grimm_Attack", 1, 1f);  // 不太行，先不用
             Grimm_Death = GetSoundStyle("Grimm_Death", 1, 1f);
             Grimm_Firebird = GetSoundStyle("Grimm_Firebird", 1, 0.8f, SoundLimitBehavior: SoundLimitBehavior.ReplaceOldest);

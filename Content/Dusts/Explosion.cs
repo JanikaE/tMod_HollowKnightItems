@@ -6,20 +6,16 @@
         {
             dust.noGravity = true;
             dust.noLight = true;
-            dust.scale *= 5f;
+            dust.scale *= 3f;
         }
 
         public override bool Update(Dust dust)
         {
             dust.position += dust.velocity;
             dust.velocity *= 0.98f;
-            if (dust.velocity.ToRotation() < 5)
+            if (dust.velocity.Length() < 5)
             {
-                dust.scale *= 0.99f;
-            }
-            else
-            {
-                dust.scale *= 1.1f;
+                dust.scale *= 0.98f;
             }
 
             if (dust.scale < 0.3)

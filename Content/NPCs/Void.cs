@@ -1,4 +1,6 @@
-﻿using HollowKnightItems.Common.Systems;
+﻿using HollowKnightItems.Assets;
+using HollowKnightItems.Common.Systems;
+using HollowKnightItems.Content.Dusts;
 using HollowKnightItems.Content.Items;
 using HollowKnightItems.Content.Items.Charms;
 using HollowKnightItems.Content.Projectiles;
@@ -52,8 +54,29 @@ namespace HollowKnightItems.Content.NPCs
             NPC.townNPC = true;
             NPC.friendly = true;
             NPC.aiStyle = NPCAIStyleID.Passive;
+            NPC.HitSound = SoundLoader.Creature_Hit;
 
             AnimationType = ID;
+        }
+
+        public override void HitEffect(int hitDirection, double damage)
+        {
+            NPCHitDust(NPC, hitDirection, Color.Black);
+            if (NPC.life <= 0)
+            {
+                for (int i = 0; i < 24; i++)
+                {
+                    float rotation = (float)(i * Math.PI / 3);
+                    Vector2 dir = rotation.ToRotationVector2() * 20;
+                    Dust.NewDust(NPC.Center, 0, 0, ModContent.DustType<Hit>(), dir.X, dir.Y, newColor: new Color(0, 0, 0));
+                }
+            }
+        }
+
+        public override bool SpecialOnKill()
+        {
+            Main.NewText(GetText("NPCs.Void.DeathInfo"));
+            return true;
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -77,7 +100,8 @@ namespace HollowKnightItems.Content.NPCs
             };
         }
 
-        public override bool CanGoToStatue(bool toKingStatue) => true;  // 无性别
+        // 无性别
+        public override bool CanGoToStatue(bool toKingStatue) => true;
 
         public override string GetChat()
         {
@@ -96,12 +120,16 @@ namespace HollowKnightItems.Content.NPCs
 
         public override void OnChatButtonClicked(bool firstButton, ref bool shop)
         {
-            // 如果按下第一个按钮，则开启商店
+            // 第一个按钮的作用
             if (firstButton)
             {
                 shop = true;
             }
-            // 在if之后可以写第二个按钮的作用
+            // 第二个按钮的作用
+            else
+            {
+                
+            }
         }
 
         public override void SetupShop(Chest shop, ref int nextSlot)

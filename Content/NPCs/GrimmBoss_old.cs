@@ -160,7 +160,7 @@ namespace HollowKnightItems.Content.NPCs
             }
             else
             {
-                NPC.HitSound = SoundLoader.Enemy_Hit;
+                NPC.HitSound = SoundLoader.Creature_Hit;
             }
         }
 

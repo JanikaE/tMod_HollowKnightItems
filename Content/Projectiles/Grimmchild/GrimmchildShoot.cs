@@ -96,7 +96,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                     }
                     break;
             }
-            HitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
+            ProjectileHitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
             return false;
         }
 
@@ -106,7 +106,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             {
                 Split(Projectile.velocity);
             }
-            HitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
+            ProjectileHitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
         }
                 
         public override void PostDraw(Color lightColor)

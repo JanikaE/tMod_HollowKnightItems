@@ -292,12 +292,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                 if (Projectile.ai[1] == 1)
                 {
                     ProjectileSplit(Projectile, Type, 8, Vector2.Zero, 15, Projectile.damage, ai1: -1);
+                    Projectile.Kill();
                 }
                 else if (Projectile.ai[1] == 2)
                 {
                     ProjectileSplit(Projectile, Type, 4, Projectile.velocity, 0.5f, Projectile.damage, ai1: -2);
+                    Projectile.Kill();
                 }
-                Projectile.Kill();
             }
             // ai[1]等于3/4表示两种不同方向的圆周运动
             if (Projectile.ai[1] == 3)

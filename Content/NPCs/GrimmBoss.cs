@@ -128,6 +128,7 @@ namespace HollowKnightItems.Content.NPCs
 
         public override void HitEffect(int hitDirection, double damage)
         {
+            NPCHitDust(NPC, hitDirection, Color.White);
             if (NPC.life <= 0)
             {
                 Graph.NewGraph(TextureLoader.GrimmDeath.Value, NPC.position, 180);
@@ -137,11 +138,8 @@ namespace HollowKnightItems.Content.NPCs
             }
         }
 
-        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position)
-        {
-            // 不显示小血条
-            return false;
-        }
+        // 不显示小血条
+        public override bool? DrawHealthBar(byte hbPosition, ref float scale, ref Vector2 position) => false;
 
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
@@ -165,7 +163,7 @@ namespace HollowKnightItems.Content.NPCs
             }
             else
             {
-                NPC.HitSound = SoundLoader.Enemy_Hit;
+                NPC.HitSound = SoundLoader.Creature_Hit;
             }
         }
 
@@ -590,7 +588,7 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     case 1:
                         n.GetFrame((int)Frame.Thorn);
-                        offsets.ArrayToDefault();
+                        offsets.ToDefault();
                         break;
                     case 20:
                         // 确定中心

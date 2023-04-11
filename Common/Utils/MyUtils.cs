@@ -7,33 +7,15 @@
     {
         public static Random random = new();
         
-        public static void ArrayToDefault(this int[] array)
+        /// <summary>
+        /// int数组元素置0
+        /// </summary>
+        public static void ToDefault(this int[] array)
         {
             for (int i = 0; i < array.Length; i++)
             {
                 array[i] = 0;
             }
-        }
-
-        public static void ArrayToDefault(this bool[] array)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = false;
-            }
-        }
-
-        public static void ArrayToDefault(this Vector2[] array)
-        {
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i] = Vector2.Zero;
-            }
-        }
-
-        public static Vector2 GetSize(this UIElement uie)
-        {
-            return new(uie.Width.Pixels, uie.Height.Pixels);
         }
 
         public static Rectangle ToSquare(this Texture2D texture)
@@ -70,7 +52,7 @@
         /// <param name="path">路径为Mods.HollowKnightItems.*</param>
         public static string GetText(string path)
         {
-            return Language.GetTextValue("Mods.HollowKnightItems." + path);
+            return Language.GetTextValue($"Mods.HollowKnightItems.{path}");
         }
 
         /// <summary>
@@ -83,7 +65,7 @@
             WeightedRandom<string> chats = new();
             for (int i = 0; i < num; i++)
             {
-                string chat = GetText("NPCs." + name + ".Chat." + i);
+                string chat = GetText($"NPCs.{name}.Chat.{i}");
                 chats.Add(chat);
             }
             return chats;
@@ -96,7 +78,7 @@
         /// <param name="condistion">条件</param>
         public static string GetNPCChat(string name, string condistion)
         {
-            return GetText("NPCs." + name + ".Chat." + condistion);
+            return GetText($"NPCs.{name}.Chat.{condistion}");
         }
 
         /// <summary>
@@ -105,7 +87,7 @@
         /// <param name="name">NPC名字</param>
         public static string GetNPCBestiary(string name)
         {
-            return GetText("NPCs." + name + ".Bestiary");
+            return GetText($"NPCs.{name}.Bestiary");
         }
 
         /// <summary>
