@@ -69,7 +69,8 @@ Mods: {
 					Grimmchild: Grimmchild is a lovely companion and should add a lot of fun to your journey.
 				}
 				Bestiary: A traveler from another dimension, who has completed his mission and embarks on a journey to other worlds.
-				DeathInfo: "[c/FF0000:The consciousness of Void temporarily returns to The Abyss.]"
+				DeathInfo1: "[c/FF0000:The consciousness of Void temporarily returns to The Abyss.]"
+				DeathInfo2: "[c/000000:Void is sent back to chair.]"
 			}
 		}
 
@@ -128,7 +129,7 @@ Mods: {
 }
 
 TownNPCMood_Princess: {
-    LoveNPC_Void: 
+    LoveNPC_HollowKnightItems/Void: 
     '''
     {NPCName} Like a ghost, mysterious but cute.
     '''

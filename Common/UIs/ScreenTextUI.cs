@@ -23,7 +23,7 @@ namespace HollowKnightItems.Common.UIs
                     Visible = true;
 
                     // 当text的计时器归零时，清除这个text
-                    if (UITexts[i].timer == 0)
+                    if (UITexts[i].Timer == 0)
                     {
                         UITexts[i] = null;
                     }

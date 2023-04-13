@@ -9,10 +9,16 @@
         {
             // Screen Shader
 
-            // Other Shader
+            // Pixel Shader
             Fireball = GetEffect("Fireball").Value;
             Text = GetEffect("Text").Value;
         }
+
+        public static void ApplyEffect_Text(Vector2 imageSize)
+        {
+            Text.Parameters["uImageSize"].SetValue(imageSize);
+            Text.CurrentTechnique.Passes["Test"].Apply();
+        } 
 
         public static void ApplyEffect_Fireball(Color centerColor, Color edgeColor)
         {

@@ -69,7 +69,8 @@ Mods: {
 					Grimmchild: 格林之子是个很可爱的伙伴，应该会让你的旅途增添一份乐趣。
 				}
 				Bestiary: 来自异次元的旅行者，因完成了自己的使命而踏上前往其他世界的道路。
-				DeathInfo: "[c/FF0000:虚空的意识暂时回归了深渊。]"
+				DeathInfo1: "[c/FF0000:虚空的意识暂时回归了深渊。]"
+				DeathInfo2: "[c/FF0000:虚空被送回了椅子上。]"
 			}
 		}
 
@@ -128,7 +129,7 @@ Mods: {
 }
 
 TownNPCMood_Princess: {
-    LoveNPC_Void: 
+    LoveNPC_HollowKnightItems/Void: 
     '''
     {NPCName}就像幽灵一样，神秘但又可爱。
     '''

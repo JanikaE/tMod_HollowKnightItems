@@ -79,8 +79,9 @@ namespace HollowKnightItems.Content.NPCs
             NPC.scale = 1f;  // npc的贴图和碰撞箱的放缩倍率
             NPC.knockBackResist = 0f;
 
-            NPC.damage = 0;  // 取消碰撞伤害
-            NPC.defense = 0;  // 在每个状态里再分别写防御
+            // 这里写图鉴里反映的数值
+            NPC.damage = 40;  // 实际数值在AIBefore里写
+            NPC.defense = 20;  // 实际数值在每个状态里分别写
 
             NPC.value = Item.buyPrice(0, 4, 50, 0);  // NPC的爆出来的MONEY的数量，四个空从左到右是铂金，金，银，铜
             NPC.lavaImmune = true;  // 对岩浆免疫
@@ -165,6 +166,9 @@ namespace HollowKnightItems.Content.NPCs
             {
                 NPC.HitSound = SoundLoader.Creature_Hit;
             }
+
+            // 取消碰撞伤害
+            NPC.damage = 0;  
         }
 
         public class StartState : NPCState
@@ -243,8 +247,8 @@ namespace HollowKnightItems.Content.NPCs
                             }                            
                         }
                         // 数值变化
-                        Damage += Damage / 2;
-                        Defence /= 2;
+                        Damage = 60;
+                        Defence = 10;
                         break;
                     case 90:
                         n.GetFrame((int)Frame.Teleport);
@@ -518,8 +522,25 @@ namespace HollowKnightItems.Content.NPCs
                             }
                         }
                         break;
-                    case 32:
-                    case 68:
+                    case 35:
+                    case 75:
+                        // 火鸟弹幕
+                        if (Main.netMode != NetmodeID.MultiplayerClient)
+                        {                            
+                            Projectile.NewProjectile(npc.GetSource_FromAI(),
+                                                    npc.Center,
+                                                    new Vector2(-npc.spriteDirection * 20, 0),
+                                                    ModContent.ProjectileType<GrimmFirebird>(),
+                                                    Damage,
+                                                    KnockBack,
+                                                    Main.myPlayer,
+                                                    random.Next(60));
+                        }
+                        // 音效
+                        SoundEngine.PlaySound(SoundLoader.Grimm_Firebird , npc.Center);
+                        break;
+                    case 55:                    
+                    case 95:
                         // 火鸟弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
@@ -529,31 +550,13 @@ namespace HollowKnightItems.Content.NPCs
                                                     ModContent.ProjectileType<GrimmFirebird>(),
                                                     Damage,
                                                     KnockBack,
-                                                    Main.myPlayer);
-                        }
-                        // 音效
-                        SoundEngine.PlaySound(SoundLoader.Grimm_Firebird , npc.Center);
-                        break;
-                    case 50:                    
-                    case 86:
-                        // 火鸟弹幕
-                        if (Main.netMode != NetmodeID.MultiplayerClient)
-                        {
-                            for (int i = -1; i < 2; i += 2)
-                            {
-                                Projectile.NewProjectile(npc.GetSource_FromAI(),
-                                                        npc.Center,
-                                                        new Vector2(-npc.spriteDirection * 20, i * 5),
-                                                        ModContent.ProjectileType<GrimmFirebird>(),
-                                                        Damage,
-                                                        KnockBack,
-                                                        Main.myPlayer);
-                            }                            
+                                                    Main.myPlayer,
+                                                    random.Next(60)); 
                         }
                         // 音效
                         SoundEngine.PlaySound(SoundLoader.Grimm_Firebird, npc.Center);
                         break;
-                    case 126:
+                    case 135:
                         n.SetState<TeleportState>();
                         n.Timer = 0;
                         npc.netUpdate = true;
@@ -838,28 +841,34 @@ namespace HollowKnightItems.Content.NPCs
                         // 弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
                         {
-                            for (int i = 0; i < 7; i++)
+                            for (int i = 0; i < 3; i++)
                             {
-                                float angle = i * MathHelper.Pi / 3;
+                                float offset = random.Next(360) * MathHelper.Pi / 2;
+                                float angle = i * MathHelper.Pi / 3 + offset;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
-                                                        angle.ToRotationVector2() * 15f,
+                                                        angle.ToRotationVector2() * 5f,
                                                         ModContent.ProjectileType<GrimmFireball>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
-                                angle += MathHelper.Pi / 6;
+                                
+                            }
+                            for (int i = 0; i < 6; i++)
+                            {
+                                float offset = random.Next(360) * MathHelper.Pi / 2;
+                                float angle = i * MathHelper.Pi / 6 + offset;
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
-                                                        angle.ToRotationVector2() * 25,
+                                                        angle.ToRotationVector2() * 10,
                                                         ModContent.ProjectileType<GrimmFireball>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
-                            }                            
+                            }
                         }
                         break;
-                    case 120:
+                    case 300:
                         // 切换至Teleport状态
                         n.SetState<TeleportState>();
                         n.Timer = 0;

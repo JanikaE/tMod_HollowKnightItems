@@ -7,6 +7,7 @@ using HollowKnightItems.Content.Projectiles;
 
 namespace HollowKnightItems.Content.NPCs
 {
+    [AutoloadHead]
     internal class Void : ModNPC
     {
         private readonly int ID = NPCID.Wizard; // 动画套用巫师的数据
@@ -68,15 +69,26 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     float rotation = (float)(i * Math.PI / 3);
                     Vector2 dir = rotation.ToRotationVector2() * 20;
-                    Dust.NewDust(NPC.Center, 0, 0, ModContent.DustType<Hit>(), dir.X, dir.Y, newColor: new Color(0, 0, 0));
+                    Dust.NewDust(NPC.Center, 0, 0, ModContent.DustType<Hit>(), dir.X, dir.Y, newColor: Color.Black);
                 }
             }
         }
 
-        public override bool SpecialOnKill()
+        public override bool CheckDead()
         {
-            Main.NewText(GetText("NPCs.Void.DeathInfo"));
-            return true;
+            Vector2? chiarPosition = FindClosestTile(NPC.position, Chairs);
+            if (chiarPosition.HasValue)
+            {
+                NPC.position = chiarPosition.Value;
+                NPC.life = NPC.lifeMax;
+                Main.NewText(GetText("NPCs.Void.DeathInfo2"));
+                return false;
+            }
+            else
+            {
+                Main.NewText(GetText("NPCs.Void.DeathInfo1"));
+                return true;
+            }
         }
 
         public override void SetBestiary(BestiaryDatabase database, BestiaryEntry bestiaryEntry)
@@ -84,7 +96,7 @@ namespace HollowKnightItems.Content.NPCs
             bestiaryEntry.Info.AddRange(new IBestiaryInfoElement[] {
                 BestiaryDatabaseNPCsPopulator.CommonTags.SpawnConditions.Biomes.Underground,
                 new FlavorTextBestiaryInfoElement(GetNPCBestiary(Name))
-            }) ;
+            });
         }
 
         public override bool CanTownNPCSpawn(int numTownNPCs, int money) => true;

@@ -43,3 +43,35 @@ Message at 2023/3/27 11:00:01: Compiling Content\Fireball.xnb
 Message at 2023/3/27 11:00:01: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
 Message at 2023/3/27 11:00:01: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
 Message at 2023/3/27 11:00:01: Compiling Content\Text.xnb
+Message at 2023/4/12 18:57:15: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 18:57:15: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/12 18:57:15: Compiling Content\Fireball.xnb
+Message at 2023/4/12 18:57:15: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 18:57:15: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Error at 2023/4/12 18:57:16: Errors compiling C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx:
+C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx(10,11): error X5608: Compiled shader code uses too many arithmetic instruction slots (106). Max. allowed by the target (ps_2_0) is 64.
+(1,1): error X5609: Compiled shader code uses too many instruction slots (131). Max. allowed by the target (ps_2_0) is 96.
+C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx(31,23): ID3DXEffectCompiler::CompileEffect: There was an error compiling expression
+ID3DXEffectCompiler: Compilation failed
+Message at 2023/4/12 19:02:45: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 19:02:45: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/12 19:02:45: Compiling Content\Fireball.xnb
+Message at 2023/4/12 19:02:45: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 19:02:45: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Error at 2023/4/12 19:02:46: Errors compiling C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx:
+C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx(10,11): error X5608: Compiled shader code uses too many arithmetic instruction slots (106). Max. allowed by the target (ps_2_0) is 64.
+(1,1): error X5609: Compiled shader code uses too many instruction slots (131). Max. allowed by the target (ps_2_0) is 96.
+C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx(31,23): ID3DXEffectCompiler::CompileEffect: There was an error compiling expression
+ID3DXEffectCompiler: Compilation failed
+Message at 2023/4/12 19:04:03: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 19:04:03: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/12 19:04:03: Compiling Content\Fireball.xnb
+Message at 2023/4/12 19:04:03: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 19:04:03: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/12 19:04:03: Compiling Content\Text.xnb
+Message at 2023/4/12 19:15:30: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 19:15:30: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/12 19:15:30: Compiling Content\Fireball.xnb
+Message at 2023/4/12 19:15:30: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/12 19:15:30: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/12 19:15:30: Compiling Content\Text.xnb

@@ -10,19 +10,19 @@ namespace HollowKnightItems.Common.UIs.Basic
         /// <summary>
         /// 计时器
         /// </summary>
-        public int timer;
+        public int Timer;
 
         public TimerUIText(string text, float textScale = 1, bool large = false, int timer = -1) : base(text, textScale, large)
         {
-            this.timer = timer;
+            this.Timer = timer;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (timer > 0)
+            if (Timer > 0)
             {
-                timer--;
+                Timer--;
             }
         }
 
@@ -31,7 +31,7 @@ namespace HollowKnightItems.Common.UIs.Basic
             base.Draw(spriteBatch);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            EffectLoader.Text.CurrentTechnique.Passes["Test"].Apply();
+            EffectLoader.ApplyEffect_Text(this.GetSize());
         }
     }
 }

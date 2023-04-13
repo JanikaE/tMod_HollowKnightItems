@@ -33,6 +33,11 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
+
+        public override void OnSpawn(IEntitySource source)
+        {
+            Main.NewText($"{Projectile.Name} {Projectile.damage}");
+        }
     }
 
     [Autoload(false)]
@@ -107,6 +112,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void OnSpawn(IEntitySource source)
         {
+            base.OnSpawn(source);
             // 弹幕的旋转角度通过ai[0]传入
             Projectile.rotation = Projectile.ai[0] * MathHelper.Pi / 180;
             Vector2 dir = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2();
@@ -177,18 +183,21 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             TailDust(Projectile, TailType, Projectile.height / 10);
             Projectile.spriteDirection = Projectile.direction;
 
-            Player player = GetNPCTarget(ModContent.NPCType<GrimmBoss>());
-            if (player != null && Projectile.ai[0] > 10)
-            {
-                if (player.Center.Y > Projectile.position.Y && Projectile.velocity.Y < 4)
-                {
-                    Projectile.velocity.Y++;
-                }
-                else if(player.Center.Y < Projectile.position.Y && Projectile.velocity.Y > -4)
-                {
-                    Projectile.velocity.Y--;
-                }
-            }
+            // 对玩家的弱跟踪
+            //Player player = GetNPCTarget(ModContent.NPCType<GrimmBoss>());
+            //if (player != null && Projectile.ai[0] > 10)
+            //{
+            //    if (player.Center.Y > Projectile.position.Y && Projectile.velocity.Y < 4)
+            //    {
+            //        Projectile.velocity.Y++;
+            //    }
+            //    else if(player.Center.Y < Projectile.position.Y && Projectile.velocity.Y > -4)
+            //    {
+            //        Projectile.velocity.Y--;
+            //    }
+            //}
+
+            Projectile.velocity.Y = (float)Math.Sin(Projectile.ai[0] * MathHelper.Pi / 30) * 15;
 
             Projectile.ai[0]++;
         }
@@ -209,7 +218,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             base.SetDefaults();
             Projectile.width = 100;
             Projectile.height = 100;
-            Projectile.timeLeft = 125;
+            Projectile.timeLeft = 300;
         }
 
         public override void AI()
@@ -226,7 +235,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             //}
 
             // 一点曲线运动
-            float rot = Projectile.velocity.ToRotation() + 0.05f;
+            float rot = Projectile.velocity.ToRotation() + 0.02f;
             Vector2 oldVel = Projectile.velocity;
             Projectile.velocity = rot.ToRotationVector2() * oldVel.Length();
 
@@ -319,6 +328,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void OnSpawn(IEntitySource source)
         {
+            // 根据不同的分裂状态改变弹幕的大小
             switch (Projectile.ai[1])
             {
                 case 1:

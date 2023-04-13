@@ -18,6 +18,11 @@
             }
         }
 
+        public static Vector2 GetSize(this UIElement uie)
+        {
+            return new(uie.Width.Pixels, uie.Height.Pixels);
+        }
+
         public static Rectangle ToSquare(this Texture2D texture)
         {
             int r = Math.Min(texture.Width, texture.Height);
