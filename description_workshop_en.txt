@@ -1,5 +1,9 @@
 [h3]More information in changelog or the mod's homepage: https://github.com/JanikaE/tMod_HollowKnightItems[/h3]
 
+[h1]v1.0.3[/h1]
+New Town NPC: Void£¬to replace Guide's work of selling mod-related items.
+Significantly modified the way Boss Grimm attacks.
+
 [h1]v1.0.2[/h1]
 Add upgrades to the Grimmchild. making the projectiles it shoots have richer effects.
 

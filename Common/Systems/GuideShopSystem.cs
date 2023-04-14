@@ -86,12 +86,12 @@ namespace HollowKnightItems.Common.Systems
 
                             if (sell)
                             {
-                                shop.item[0].SetDefaults(ModContent.ItemType<NightmareLantern_OFF>());
-                                if (DownedBossSystem.downedGrimm)
-                                {
-                                    shop.item[10].SetDefaults(ModContent.ItemType<Grimmchild>());
-                                    shop.item[11].SetDefaults(ModContent.ItemType<CarefreeMelody>());
-                                }
+                                //shop.item[0].SetDefaults(ModContent.ItemType<NightmareLantern_OFF>());
+                                //if (DownedBossSystem.downedGrimm)
+                                //{
+                                //    shop.item[10].SetDefaults(ModContent.ItemType<Grimmchild>());
+                                //    shop.item[11].SetDefaults(ModContent.ItemType<CarefreeMelody>());
+                                //}
                             }
                         }
                         MouseLeft = false;

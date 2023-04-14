@@ -6,6 +6,11 @@ Mods: {
 				DisplayName: Grimmchild
 				Description: Meow~
 			}
+
+			RoarDebuff: {
+				DisplayName: Roar
+				Description: Can't move
+			}
 		}		
 
 		Common: {

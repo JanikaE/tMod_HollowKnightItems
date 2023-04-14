@@ -25,7 +25,6 @@
 
         public override void AI()
         {
-            Projectile.spriteDirection = Projectile.direction;
             Projectile.rotation = Projectile.velocity.ToRotation();
         }
     }

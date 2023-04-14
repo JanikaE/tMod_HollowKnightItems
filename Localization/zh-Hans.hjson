@@ -6,6 +6,11 @@ Mods: {
 				DisplayName: 格林之子
 				Description: 喵~
 			}
+
+			RoarDebuff: {
+				DisplayName: 战吼
+				Description: 动弹不得
+			}
 		}		
 
 		Common: {

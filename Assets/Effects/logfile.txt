@@ -75,3 +75,28 @@ Message at 2023/4/12 19:15:30: Compiling Content\Fireball.xnb
 Message at 2023/4/12 19:15:30: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
 Message at 2023/4/12 19:15:30: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
 Message at 2023/4/12 19:15:30: Compiling Content\Text.xnb
+Message at 2023/4/13 10:48:46: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 10:48:46: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/13 10:48:46: Compiling Content\Fireball.xnb
+Message at 2023/4/13 10:48:46: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 10:48:46: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/13 10:48:46: Compiling Content\Text.xnb
+Message at 2023/4/13 10:59:40: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 10:59:40: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/13 10:59:40: Compiling Content\Fireball.xnb
+Message at 2023/4/13 10:59:40: Importing Outline.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 10:59:40: Processing Outline.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/13 10:59:40: Compiling Content\Outline.xnb
+Message at 2023/4/13 10:59:40: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 10:59:40: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Error at 2023/4/13 10:59:40: Errors compiling C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx:
+C:\Users\DELL\Documents\My Games\Terraria\tModLoader\ModSources\HollowKnightItems\Assets\Effects\Text.fx(18,6): error X3000: syntax error: unexpected token ';'
+Message at 2023/4/13 11:00:35: Importing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 11:00:35: Processing Fireball.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/13 11:00:35: Compiling Content\Fireball.xnb
+Message at 2023/4/13 11:00:35: Importing Outline.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 11:00:35: Processing Outline.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/13 11:00:35: Compiling Content\Outline.xnb
+Message at 2023/4/13 11:00:35: Importing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.EffectImporter
+Message at 2023/4/13 11:00:35: Processing Text.fx with Microsoft.Xna.Framework.Content.Pipeline.Processors.EffectProcessor
+Message at 2023/4/13 11:00:35: Compiling Content\Text.xnb

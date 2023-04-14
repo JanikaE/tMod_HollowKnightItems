@@ -18,7 +18,7 @@ namespace HollowKnightItems.Common.Players
             // 判定无忧旋律
             if (HasCarefreeMelody)
             {
-                int CarefreeHit = random.Next(0, 99);
+                int CarefreeHit = random.Next(0, 100);
                 if (CarefreeHit < CarefreeOdds)
                 {
                     for (float r = 0f; r < MathHelper.TwoPi; r += MathHelper.TwoPi / 3f)
@@ -26,11 +26,12 @@ namespace HollowKnightItems.Common.Players
                         Vector2 position = new(Player.Center.X + (float)Math.Cos(r) * 30 - 40,
                                             Player.Center.Y + (float)Math.Sin(r) * 30 - 60);
                         Projectile.NewProjectile(Terraria.Entity.GetSource_NaturalSpawn(),
-                            position,
-                            new Vector2(0, 0),
-                            ModContent.ProjectileType<CarefreeMelodyFire>(),
-                            0,
-                            0);
+                                                position,
+                                                new Vector2(0, 0),
+                                                ModContent.ProjectileType<CarefreeMelodyFire>(),
+                                                0,
+                                                0,
+                                                Player.whoAmI);
                     }
                     SoundEngine.PlaySound(SoundLoader.CarefreeMelody);
                     Player.immune = true;

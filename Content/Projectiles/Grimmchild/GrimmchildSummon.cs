@@ -1,9 +1,8 @@
 ﻿using HollowKnightItems.Assets;
 using HollowKnightItems.Common.Players;
 using HollowKnightItems.Content.Buffs;
+using HollowKnightItems.Content.NPCs;
 using HollowKnightItems.Content.Projectiles.StateMachine;
-using static HollowKnightItems.Content.Projectiles.Grimmchild.GrimmchildSummon;
-using static HollowKnightItems.Content.Projectiles.Grimmchild.Utils;
 
 namespace HollowKnightItems.Content.Projectiles.Grimmchild
 {
@@ -275,14 +274,10 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
                 SwitchState_Grimmchild(proj);
             }
         }
-    }
 
-    public static class Utils
-    {
         /// <summary>
         /// 切换状态
         /// </summary>
-        /// <param name="proj"></param>
         public static void SwitchState_Grimmchild(SMProjectile proj)
         {
             var Projectile = proj.Projectile;
@@ -290,7 +285,9 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             NPC npc = FindClosestEnemy(Projectile.Center, 500f, (n) =>
             {
                 return n.CanBeChasedBy() &&
-                !n.dontTakeDamage && Collision.CanHitLine(Projectile.Center, 1, 1, n.Center, 1, 1);
+                !n.dontTakeDamage &&
+                Collision.CanHitLine(Projectile.Center, 1, 1, n.Center, 1, 1) &&
+                n.type != ModContent.NPCType<GrimmBoss>();
             });
 
             if (Vector2.Distance(Projectile.Center, player.Center) > 800)

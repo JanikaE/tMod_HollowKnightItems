@@ -34,9 +34,12 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
-        public override void OnSpawn(IEntitySource source)
+        public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
         {
-            Main.NewText($"{Projectile.Name} {Projectile.damage}");
+            // 伤害随机浮动
+            int rand = random.Next(85, 116);
+            // 不知道为什么，不重新设定伤害会偏高
+            damage = Projectile.damage * rand / 100;
         }
     }
 
@@ -55,9 +58,10 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 24;
-            Projectile.height = 24;
-            DrawOriginOffsetY = -48;
+            Projectile.width = 20;
+            Projectile.height = 20;
+            DrawOffsetX = -2;
+            DrawOriginOffsetY = -50;
             Projectile.timeLeft = 240;
         }
     }
@@ -78,7 +82,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             }
             if (isTar)
             {
-                if (Projectile.ai[0] + turn * 10 >= 30 && Projectile.ai[0] + turn * 10 < 60)
+                if (Projectile.ai[0] + turn * 10 >= 30 && Projectile.ai[0] + turn * 10 < 80)
                 {
                     Player player = GetNPCTarget(ModContent.NPCType<GrimmBoss>());
                     Vector2 dir;
@@ -93,7 +97,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                     // 将方向指向玩家位置
                     Projectile.rotation = dir.ToRotation() + MathHelper.PiOver2;
                 }
-                else if (Projectile.ai[0] + turn * 10 >= 60)
+                else if (Projectile.ai[0] + turn * 10 >= 80)
                 {
                     Vector2 dir = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2();
                     Projectile.velocity = dir * 20;
@@ -128,12 +132,12 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
         public override void AI()
         {
-            if (Projectile.ai[0] < 20 || Projectile.ai[0] > 60)
+            if (Projectile.ai[0] < 30 || Projectile.ai[0] > 80)
             {
                 Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
                 Projectile.ai[1] = Projectile.velocity.Length();
             }
-            else if (Projectile.ai[0] < 50)
+            else if (Projectile.ai[0] < 60)
             {
                 Player player = GetNPCTarget(ModContent.NPCType<GrimmBoss>());
                 Vector2 dir;
@@ -149,7 +153,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                 Projectile.rotation = dir.ToRotation() + MathHelper.PiOver2;
                 Projectile.velocity = Vector2.Zero;
             }
-            else if (Projectile.ai[0] == 60)
+            else if (Projectile.ai[0] == 80)
             {
                 Vector2 dir = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2();
                 Projectile.velocity = dir * Projectile.ai[1];
@@ -197,7 +201,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             //    }
             //}
 
-            Projectile.velocity.Y = (float)Math.Sin(Projectile.ai[0] * MathHelper.Pi / 30) * 15;
+            Projectile.velocity.Y = (float)Math.Sin(Projectile.ai[0] * MathHelper.Pi / 60) * 10;
 
             Projectile.ai[0]++;
         }
@@ -216,9 +220,11 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 100;
-            Projectile.height = 100;
-            Projectile.timeLeft = 300;
+            Projectile.width = 80;
+            Projectile.height = 80;
+            DrawOffsetX = -10;
+            DrawOriginOffsetY = -10;
+            Projectile.timeLeft = 150;
         }
 
         public override void AI()
@@ -235,7 +241,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             //}
 
             // 一点曲线运动
-            float rot = Projectile.velocity.ToRotation() + 0.02f;
+            float rot = Projectile.velocity.ToRotation() + 0.04f;
             Vector2 oldVel = Projectile.velocity;
             Projectile.velocity = rot.ToRotationVector2() * oldVel.Length();
 
@@ -271,8 +277,10 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void SetDefaults()
         {
             base.SetDefaults();
-            Projectile.width = 30;
-            Projectile.height = 30;
+            Projectile.width = 24;
+            Projectile.height = 24;
+            DrawOffsetX = -3;
+            DrawOriginOffsetY = -3;
             Projectile.timeLeft = 300;
         }
 
@@ -300,7 +308,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             {
                 if (Projectile.ai[1] == 1)
                 {
-                    ProjectileSplit(Projectile, Type, 8, Vector2.Zero, 15, Projectile.damage, ai1: -1);
+                    ProjectileSplit(Projectile, Type, 6, Vector2.Zero, 15, Projectile.damage, ai1: -1);
                     Projectile.Kill();
                 }
                 else if (Projectile.ai[1] == 2)
@@ -312,13 +320,13 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             // ai[1]等于3/4表示两种不同方向的圆周运动
             if (Projectile.ai[1] == 3)
             {
-                float rot = Projectile.velocity.ToRotation() + 0.01f;
+                float rot = Projectile.velocity.ToRotation() + 0.005f;
                 Vector2 oldVel = Projectile.velocity;
                 Projectile.velocity = rot.ToRotationVector2() * oldVel.Length();
             }
-            if (Projectile.ai[1] == 4)
+            else if (Projectile.ai[1] == 4)
             {
-                float rot = Projectile.velocity.ToRotation() - 0.01f;
+                float rot = Projectile.velocity.ToRotation() - 0.005f;
                 Vector2 oldVel = Projectile.velocity;
                 Projectile.velocity = rot.ToRotationVector2() * oldVel.Length();
             }

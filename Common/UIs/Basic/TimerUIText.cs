@@ -31,7 +31,7 @@ namespace HollowKnightItems.Common.UIs.Basic
             base.Draw(spriteBatch);
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.NonPremultiplied, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullNone, null, Main.GameViewMatrix.TransformationMatrix);
-            EffectLoader.ApplyEffect_Text(this.GetSize());
+            EffectLoader.ApplyEffect_Text(0.25f);
         }
     }
 }

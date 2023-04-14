@@ -14,10 +14,10 @@
             Text = GetEffect("Text").Value;
         }
 
-        public static void ApplyEffect_Text(Vector2 imageSize)
+        public static void ApplyEffect_Text(float threshold)
         {
-            Text.Parameters["uImageSize"].SetValue(imageSize);
-            Text.CurrentTechnique.Passes["Test"].Apply();
+            Text.Parameters["uThreshold"].SetValue(threshold);
+            Text.CurrentTechnique.Passes["Normal"].Apply();
         } 
 
         public static void ApplyEffect_Fireball(Color centerColor, Color edgeColor)

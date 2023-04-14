@@ -1,2 +1,3 @@
-version 1.0.2.0 update:
-Add upgrades to the Grimmchild. making the projectiles it shoots have richer effects.
+version 1.0.3.0 update:
+New Town NPC: Void£¬to replace Guide's work of selling mod-related items.
+Significantly modified the way Boss Grimm attacks.
