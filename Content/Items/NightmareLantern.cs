@@ -8,12 +8,6 @@ namespace HollowKnightItems.Content.Items
     [Autoload(false)]
     internal class NightmareLantern : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Nightmare Lantern");
-            DisplayName.AddTranslation(7, "梦魇之灯");
-        }
-
         public override void SetDefaults()
         {
             Item.width = 54;
@@ -35,7 +29,7 @@ namespace HollowKnightItems.Content.Items
             {
                 line = new(Mod, "NightmareLantern", GetText("Items.NightmareLantern.Win"));
                 tooltips.Add(line);
-            }            
+            }
         }
     }
 
@@ -63,7 +57,7 @@ namespace HollowKnightItems.Content.Items
                 else
                 {
                     // If the player is in multiplayer, request a spawn
-                    NetMessage.SendData(MessageID.SpawnBoss, number: player.whoAmI, number2: type);
+                    NetMessage.SendData(MessageID.SpawnBossUseLicenseStartEvent, number: player.whoAmI, number2: type);
                 }
 
                 ScreenText.NewScreenText(GetText("NPCs.Grimm.SpawnInfo1"), 2, 200, 0.1f, 0.8f);

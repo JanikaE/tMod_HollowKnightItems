@@ -13,10 +13,10 @@ namespace HollowKnightItems.Common.Players
             HasCarefreeMelody = false;
         }
 
-        public override bool PreHurt(bool pvp, bool quiet, ref int damage, ref int hitDirection, ref bool crit, ref bool customDamage, ref bool playSound, ref bool genGore, ref PlayerDeathReason damageSource, ref int cooldownCounter)
+        public override bool ImmuneTo(PlayerDeathReason damageSource, int cooldownCounter, bool dodgeable)
         {
             // 判定无忧旋律
-            if (HasCarefreeMelody)
+            if (HasCarefreeMelody && Player == Main.LocalPlayer)
             {
                 int CarefreeHit = random.Next(0, 100);
                 if (CarefreeHit < CarefreeOdds)

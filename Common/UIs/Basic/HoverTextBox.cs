@@ -15,7 +15,7 @@
 
         public void SetHoverText(string text)
         {
-            hoverText = text; 
+            hoverText = text;
         }
 
         public override void Update(GameTime gameTime)

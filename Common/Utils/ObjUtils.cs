@@ -21,7 +21,7 @@
             float distance = float.MaxValue;
 
             // 遍历地图中所有物块
-            for (int i = 0; i < Main.mapMaxX; i++) 
+            for (int i = 0; i < Main.mapMaxX; i++)
             {
                 for (int j = 0; j < Main.mapMaxY; j++)
                 {
@@ -29,7 +29,7 @@
                     if (tileType.Contains(tile.TileType))
                     {
                         Vector2 newTarget = new Point(i, j).ToWorldCoordinates();
-                        float newDistance = position.Distance(newTarget); 
+                        float newDistance = position.Distance(newTarget);
                         if (newDistance < distance)
                         {
                             distance = newDistance;

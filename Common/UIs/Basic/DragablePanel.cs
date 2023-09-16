@@ -8,15 +8,15 @@
         private Vector2 offset;  // 在拖动时存储与UIPanel左上角的偏移量        
         private bool dragging;  // 检查当前是否正在拖动面板的标志
 
-        public override void MouseDown(UIMouseEvent evt)
+        public override void LeftMouseDown(UIMouseEvent evt)
         {
-            base.MouseDown(evt);
+            base.LeftMouseDown(evt);
             DragStart(evt);
         }
 
-        public override void MouseUp(UIMouseEvent evt)
+        public override void LeftMouseUp(UIMouseEvent evt)
         {
-            base.MouseUp(evt);
+            base.LeftMouseUp(evt);
             DragEnd(evt);
         }
 

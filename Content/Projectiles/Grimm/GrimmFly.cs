@@ -12,7 +12,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             Projectile.penetrate = -1;
             Projectile.timeLeft = 380;
             Projectile.friendly = false;
-            Projectile.hostile = true;            
+            Projectile.hostile = true;
             Projectile.ignoreWater = true;
             Projectile.tileCollide = false;
             Projectile.netImportant = true;
@@ -32,8 +32,8 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                 {
                     npc = n;
                 }
-            }            
-            if (npc == null || npc.life <= 0) 
+            }
+            if (npc == null || npc.life <= 0)
             {
                 Projectile.active = false;
                 return;
@@ -45,7 +45,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                 switch (Projectile.velocity.X)
                 {
                     // 设定实际的初始速度
-                    case 0: 
+                    case 0:
                         Projectile.velocity = new Vector2(16, 8);
                         break;
                     case 1:
@@ -88,6 +88,6 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             }
             Projectile.spriteDirection = Projectile.direction;
             Projectile.ai[0]++;
-        }    
+        }
     }
 }

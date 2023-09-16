@@ -14,7 +14,7 @@ namespace HollowKnightItems.Common.UIs
 
             // 默认UI关闭
             Visible = false;
-            for (int i = 0; i< UITexts.Length; i++)
+            for (int i = 0; i < UITexts.Length; i++)
             {
                 if (UITexts[i] != null)
                 {
@@ -27,7 +27,7 @@ namespace HollowKnightItems.Common.UIs
                     {
                         UITexts[i] = null;
                     }
-                }                
+                }
             }
         }
     }
@@ -73,7 +73,7 @@ namespace HollowKnightItems.Common.UIs
                     index = i;
                     break;
                 }
-                
+
             }
             return index;
         }
@@ -98,7 +98,7 @@ namespace HollowKnightItems.Common.UIs
         }
     }
 
-    internal class ScreenTextSystem : ModSystem 
+    internal class ScreenTextSystem : ModSystem
     {
         public ScreenTextUI ScreenTextUI;
         public UserInterface UserInterface;
@@ -114,7 +114,7 @@ namespace HollowKnightItems.Common.UIs
 
         public override void UpdateUI(GameTime gameTime)
         {
-            UserInterface?.Update(gameTime);      
+            UserInterface?.Update(gameTime);
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)

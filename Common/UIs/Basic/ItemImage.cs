@@ -16,12 +16,12 @@
 
         public override void OnInitialize()
         {
-            foreach(int i in ItemID)
+            foreach (int i in ItemID)
             {
                 if (i != 0)
                 {
                     Main.instance.LoadItem(i);
-                }                
+                }
             }
             Timer = 0;
             Index = 0;
@@ -33,7 +33,7 @@
             {
                 ItemID = NewID;
                 OnInitialize();
-            }            
+            }
         }
 
         public override void Update(GameTime gameTime)
@@ -58,7 +58,7 @@
         }
 
         public override void Draw(SpriteBatch spriteBatch)
-        {         
+        {
             base.Draw(spriteBatch);
             if (Image != null)
             {

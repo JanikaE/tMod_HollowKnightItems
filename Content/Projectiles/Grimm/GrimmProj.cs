@@ -34,12 +34,10 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
             CooldownSlot = ImmunityCooldownID.Bosses;
         }
 
-        public override void ModifyHitPlayer(Player target, ref int damage, ref bool crit)
+        public override void ModifyHitPlayer(Player target, ref Player.HurtModifiers modifiers)
         {
             // 伤害随机浮动
-            int rand = random.Next(85, 116);
-            // 不知道为什么，不重新设定伤害会偏高
-            damage = Projectile.damage * rand / 100;
+            // int rand = random.Next(85, 116);
         }
     }
 
@@ -47,13 +45,6 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     internal class GrimmSpike : GrimmProj
     {
         public override string Texture => "HollowKnightItems/Content/Projectiles/Grimm/GrimmSpike";
-
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            DisplayName.SetDefault("Nightmare Thorn");
-            DisplayName.AddTranslation(7, "梦魇尖刺");
-        }
 
         public override void SetDefaults()
         {
@@ -67,7 +58,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     }
 
     [Autoload(true)]
-    internal class GrimmSpike_Thorn : GrimmSpike 
+    internal class GrimmSpike_Thorn : GrimmSpike
     {
         public override void AI()
         {
@@ -110,7 +101,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                     Vector2 dir = (Projectile.rotation - MathHelper.PiOver2).ToRotationVector2();
                     Projectile.velocity = dir * 20;
                 }
-            }            
+            }
             Projectile.ai[0]++;
         }
 
@@ -143,7 +134,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                 Vector2 dir;
                 if (player != null)
                 {
-                    dir = player.Center - Projectile.Center;                    
+                    dir = player.Center - Projectile.Center;
                 }
                 else
                 {
@@ -166,13 +157,6 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(true)]
     internal class GrimmFirebird : GrimmProj
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            DisplayName.SetDefault("Nightmare Firebird");
-            DisplayName.AddTranslation(7, "梦魇火鸟");
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -210,13 +194,6 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(true)]
     internal class GrimmFireball : GrimmProj
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            DisplayName.SetDefault("Nightmare Big Fireball");
-            DisplayName.AddTranslation(7, "梦魇大火球");
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -267,13 +244,6 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
     [Autoload(true)]
     internal class GrimmShoot : GrimmProj
     {
-        public override void SetStaticDefaults()
-        {
-            base.SetStaticDefaults();
-            DisplayName.SetDefault("Nightmare Fireball");
-            DisplayName.AddTranslation(7, "梦魇火球");
-        }
-
         public override void SetDefaults()
         {
             base.SetDefaults();
@@ -302,7 +272,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
         public override void AI()
         {
             TailDust(Projectile, TailType, (int)(4 * Projectile.scale));
-            
+
             // ai[1]等于1/2表示两种不同的分裂设计
             if (Projectile.ai[0] > 60 && Main.netMode != NetmodeID.MultiplayerClient)
             {
@@ -354,7 +324,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
 
     // old
     [Autoload(false)]
-    internal class GrimmShoot_Sides : GrimmShoot 
+    internal class GrimmShoot_Sides : GrimmShoot
     {
         public override void AI()
         {
@@ -388,14 +358,14 @@ namespace HollowKnightItems.Content.Projectiles.Grimm
                     // 然后平行运动
                     Projectile.velocity.Y = 0;
                 }
-                
+
             }
             else
             {
                 Projectile.velocity.X = -6;
                 if (Projectile.position.X > pos.X)
                 {
-                    Projectile.velocity.Y = - 12 * dir.Y / dir.X;
+                    Projectile.velocity.Y = -12 * dir.Y / dir.X;
                 }
                 else
                 {

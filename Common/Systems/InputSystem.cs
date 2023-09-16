@@ -12,7 +12,7 @@ namespace HollowKnightItems.Common.Systems
             if (Main.chatText != "")
             {
                 text = Main.chatText;
-            }            
+            }
             if (Main.inputText.IsKeyDown(Keys.Enter) && text != null)
             {
                 // 开个后门

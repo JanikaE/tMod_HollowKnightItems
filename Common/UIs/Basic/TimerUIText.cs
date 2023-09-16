@@ -14,7 +14,7 @@ namespace HollowKnightItems.Common.UIs.Basic
 
         public TimerUIText(string text, float textScale = 1, bool large = false, int timer = -1) : base(text, textScale, large)
         {
-            this.Timer = timer;
+            Timer = timer;
         }
 
         public override void Update(GameTime gameTime)

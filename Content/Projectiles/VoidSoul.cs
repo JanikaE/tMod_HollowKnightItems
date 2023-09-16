@@ -2,12 +2,6 @@
 {
     internal class VoidSoul : ModProjectile
     {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Shade Soul");
-            DisplayName.AddTranslation(7, "暗影之魂");
-        }
-
         public override void SetDefaults()
         {
             Projectile.width = 53;

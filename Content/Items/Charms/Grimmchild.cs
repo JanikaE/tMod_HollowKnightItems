@@ -8,18 +8,10 @@ namespace HollowKnightItems.Content.Items.Charms
 {
     internal class Grimmchild : ModItem
     {
-        public override void SetStaticDefaults()
-        {
-            DisplayName.SetDefault("Grimmchild");
-            DisplayName.AddTranslation(7, "格林之子");
-            Tooltip.SetDefault("Symbol of a completed ritual. Contains a living, scarlet flame.");
-            Tooltip.AddTranslation(7, "一场完成的仪式的标志。包含着一团跳动的猩红之火。");
-        }
-
         public override void SetDefaults()
         {
             Item.accessory = true;
-            Item.canBePlacedInVanityRegardlessOfConditions = true;
+            Item.hasVanityEffects = true;
             Item.rare = ModContent.RarityType<CharmRarity>();
 
             Item.consumable = false;

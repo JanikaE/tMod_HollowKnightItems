@@ -2,7 +2,6 @@ global using Microsoft.Xna.Framework;
 global using Microsoft.Xna.Framework.Graphics;
 global using Microsoft.Xna.Framework.Input;
 global using ReLogic.Content;
-global using ReLogic.Graphics;
 global using System;
 global using System.Collections.Generic;
 global using System.IO;
@@ -14,7 +13,6 @@ global using Terraria.GameContent;
 global using Terraria.GameContent.Bestiary;
 global using Terraria.GameContent.Personalities;
 global using Terraria.GameContent.UI.Elements;
-global using Terraria.GameInput;
 global using Terraria.Graphics.Shaders;
 global using Terraria.ID;
 global using Terraria.Localization;
@@ -30,7 +28,7 @@ global using static HollowKnightItems.Common.Utils.ObjUtils;
 namespace HollowKnightItems
 {
     public class HollowKnightItems : Mod
-	{
-        
+    {
+
     }
 }

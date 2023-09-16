@@ -59,9 +59,9 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
         public override void OnSpawn(IEntitySource source)
         {
             // 初始化弹幕，区分分裂前后
-            switch (Projectile.ai[1]) 
+            switch (Projectile.ai[1])
             {
-                case 1:                    
+                case 1:
                     Projectile.scale = 1f;
                     Projectile.penetrate = 1;
                     break;
@@ -100,7 +100,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             return false;
         }
 
-        public override void OnHitNPC(NPC target, int damage, float knockback, bool crit)
+        public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
             if (Projectile.ai[1] == 1)
             {
@@ -108,7 +108,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             }
             ProjectileHitDust(Projectile.position, DustID.TintableDustLighted, new Color(255, 0, 0));
         }
-                
+
         public override void PostDraw(Color lightColor)
         {
             Main.spriteBatch.End();
@@ -133,7 +133,7 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             {
                 // 在2/3/4阶段分别分裂出3/6/9个小弹幕
                 int num = ((int)Projectile.ai[0] - 1) * 3;
-                ProjectileSplit(Projectile, ModContent.ProjectileType<GrimmchildShoot>(), num, velocity, 2f, GetGrimmchildAttack() / 2,ai1: 2);
+                ProjectileSplit(Projectile, ModContent.ProjectileType<GrimmchildShoot>(), num, velocity, 2f, GetGrimmchildAttack() / 2, ai1: 2);
             }
         }
     }

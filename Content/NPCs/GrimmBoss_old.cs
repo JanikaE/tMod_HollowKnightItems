@@ -64,9 +64,6 @@ namespace HollowKnightItems.Content.NPCs
 
         public override void SetStaticDefaults()
         {
-            // 这里以后写到Localization里去
-            DisplayName.SetDefault("Troupe Master Grimm");
-            DisplayName.AddTranslation(7, "剧团团长 格林");
             Main.npcFrameCount[NPC.type] = 16;
             NPCID.Sets.MPAllowedEnemies[Type] = true;  // 有对应召唤物的boss
         }
@@ -76,7 +73,7 @@ namespace HollowKnightItems.Content.NPCs
             NPC.width = 240;
             NPC.height = 240;
             NPC.aiStyle = -1;
-            NPC.lifeMax = 3000;            
+            NPC.lifeMax = 3000;
             NPC.scale = 1f;  // npc的贴图和碰撞箱的放缩倍率
             NPC.knockBackResist = 0f;
 
@@ -119,7 +116,7 @@ namespace HollowKnightItems.Content.NPCs
             return true;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
             if (NPC.life <= 0)
             {
@@ -139,7 +136,7 @@ namespace HollowKnightItems.Content.NPCs
         public override bool CanHitPlayer(Player target, ref int cooldownSlot)
         {
             // 使用Boss免疫冷却时间计数器，防止通过从其他来源受到伤害来忽略Boss攻击
-            cooldownSlot = ImmunityCooldownID.Bosses;  
+            cooldownSlot = ImmunityCooldownID.Bosses;
             return true;
         }
 
@@ -176,7 +173,7 @@ namespace HollowKnightItems.Content.NPCs
 
                 // 受到攻击时切换至Angry状态
                 if (npc.life != npc.lifeMax && n.Timer < 180)
-                {                    
+                {
                     n.SetState<AngryState>();
                     n.Timer = 0;
                     npc.netUpdate = true;
@@ -196,7 +193,7 @@ namespace HollowKnightItems.Content.NPCs
                             break;
                         case 180:
                             n.GetFrame((int)Frame.Start);
-                            break;                        
+                            break;
                         case 210:
                             // 切换至Teleport状态
                             n.SetState<TeleportState>();
@@ -205,7 +202,7 @@ namespace HollowKnightItems.Content.NPCs
                             break;
                     }
                 }
-                
+
                 n.Timer++;
             }
         }
@@ -226,7 +223,7 @@ namespace HollowKnightItems.Content.NPCs
                     RoarDust(npc.Center);
                 }
 
-                switch (n.Timer) 
+                switch (n.Timer)
                 {
                     case 1:
                         n.GetFrame((int)Frame.Angry);
@@ -236,7 +233,7 @@ namespace HollowKnightItems.Content.NPCs
                             if (Main.player[i].active)
                             {
                                 Main.player[i].AddBuff(ModContent.BuffType<RoarDebuff>(), 90);
-                            }                            
+                            }
                         }
                         break;
                     case 90:
@@ -252,7 +249,7 @@ namespace HollowKnightItems.Content.NPCs
                         npc.position = player.Center + new Vector2(-npc.width / 2, -Distance.Blowfish);
                         TeleportEffect(npc);
                         break;
-                    case 160:                        
+                    case 160:
                         // 切换至Blowfish状态
                         n.SetState<BlowfishState>();
                         n.Stage++;
@@ -275,7 +272,7 @@ namespace HollowKnightItems.Content.NPCs
                 npc.velocity = Vector2.Zero;
                 Player player = Main.player[npc.target];
 
-                switch (n.Timer) 
+                switch (n.Timer)
                 {
                     case 1:
                         n.GetFrame((int)Frame.Teleport);
@@ -295,12 +292,12 @@ namespace HollowKnightItems.Content.NPCs
                             while (State == n.Any)
                             {
                                 State = random.Next(1, 5);
-                            }                            
+                            }
                             n.Any = State;
-                        }                        
+                        }
                         break;
                     case 20:
-                        n.GetFrame((int)Frame.None);                        
+                        n.GetFrame((int)Frame.None);
                         TeleportEffect(npc);
                         npc.BottomRight = Main.screenPosition;
                         if (player.dead)
@@ -314,12 +311,12 @@ namespace HollowKnightItems.Content.NPCs
                         // 瞬移
                         float x, y, offset;
                         switch (n.Any)
-                        {                            
+                        {
                             // Blowfish
                             case 0:
                                 // 传送至目标玩家面朝的方向的斜上方
                                 x = player.Center.X - npc.width / 2;
-                                offset = player.direction > 0 ? Distance.Blowfish / 2: -Distance.Blowfish / 2;
+                                offset = player.direction > 0 ? Distance.Blowfish / 2 : -Distance.Blowfish / 2;
                                 y = player.Center.Y - Distance.Blowfish;
                                 npc.position = new Vector2(x + offset, y);
                                 break;
@@ -348,7 +345,7 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 90:
                         // 切换状态
-                        switch (n.Any) 
+                        switch (n.Any)
                         {
                             case 0:
                                 n.SetState<BlowfishState>();
@@ -390,7 +387,7 @@ namespace HollowKnightItems.Content.NPCs
                 {
                     //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                 }
-                
+
                 // 从第50帧到第490帧，每隔40帧发射一轮弹幕，共计12轮
                 if ((n.Timer - 50) % 40 == 0 && n.Timer < 500)
                 {
@@ -399,7 +396,7 @@ namespace HollowKnightItems.Content.NPCs
                         int r1 = 200, r2 = 200;
                         for (int i = -3; i < 8; i++)
                         {
-                            
+
                             if (random.Next(300) > r1)
                             {
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
@@ -465,8 +462,8 @@ namespace HollowKnightItems.Content.NPCs
                 npc.defense = 0;
                 Player player = Main.player[npc.target];
                 n.GetFrame((int)Frame.Fly);
-                                
-                switch (n.Timer) 
+
+                switch (n.Timer)
                 {
                     case 1:
                         // 召唤分身
@@ -536,9 +533,9 @@ namespace HollowKnightItems.Content.NPCs
                                                 Main.myPlayer);
                         }
                         // 音效
-                        SoundEngine.PlaySound(SoundLoader.Grimm_Firebird , npc.Center);
+                        SoundEngine.PlaySound(SoundLoader.Grimm_Firebird, npc.Center);
                         break;
-                    case 50:                    
+                    case 50:
                     case 86:
                         // 弹幕
                         if (Main.netMode != NetmodeID.MultiplayerClient)
@@ -552,7 +549,7 @@ namespace HollowKnightItems.Content.NPCs
                                                     30,
                                                     0.2f,
                                                     Main.myPlayer);
-                            }                            
+                            }
                         }
                         // 音效
                         SoundEngine.PlaySound(SoundLoader.Grimm_Firebird, npc.Center);
@@ -567,7 +564,7 @@ namespace HollowKnightItems.Content.NPCs
                 // 让npc面朝玩家
                 // spriteDirection = 1意为翻转
                 npc.spriteDirection = player.position.X - npc.position.X > 0 ? -1 : 1;
-                SwitchStateToFly(n);                
+                SwitchStateToFly(n);
                 n.Timer++;
             }
         }
@@ -649,7 +646,7 @@ namespace HollowKnightItems.Content.NPCs
                 Player player = Main.player[npc.target];
 
                 // 根据计时器切换子状态
-                switch (n.Timer) 
+                switch (n.Timer)
                 {
                     case 1:
                         n.GetFrame((int)Frame.Swoop1);
@@ -661,8 +658,8 @@ namespace HollowKnightItems.Content.NPCs
                         npc.velocity *= Speed.Swoop;
                         SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
                         // Dust to do
-                        break;                    
-                    case 25:                        
+                        break;
+                    case 25:
                         // 停顿
                         npc.velocity = player.Center.X - npc.Center.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         n.GetFrame((int)Frame.Swoop2);
@@ -722,7 +719,7 @@ namespace HollowKnightItems.Content.NPCs
                         npc.velocity = npc.velocity.X > 0 ? new Vector2(1, 0) : new Vector2(-1, 0);
                         break;
                     case 56:
-                        n.GetFrame((int)Frame.Sho3);                   
+                        n.GetFrame((int)Frame.Sho3);
                         // 升龙拳
                         npc.velocity = new Vector2(Speed.Sho / 2, Speed.Sho) * -1;
                         //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
@@ -742,7 +739,7 @@ namespace HollowKnightItems.Content.NPCs
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
-                            }                            
+                            }
                         }
                         break;
                     case 120:
@@ -762,7 +759,7 @@ namespace HollowKnightItems.Content.NPCs
     }
 
     internal static class Utils
-    {        
+    {
         public static void SwitchStateToFly(SMNPC n)
         {
             NPC npc = n.NPC;
@@ -778,10 +775,10 @@ namespace HollowKnightItems.Content.NPCs
                 n.Timer = 0;
                 npc.netUpdate = true;
                 Rect.ClearRect();
-            }            
+            }
         }
 
-        public static void TeleportToFront(NPC npc, Player player, int distance) 
+        public static void TeleportToFront(NPC npc, Player player, int distance)
         {
             float x, y;
             // 传送至目标玩家面朝的方向
@@ -803,5 +800,5 @@ namespace HollowKnightItems.Content.NPCs
             }
             SoundEngine.PlaySound(SoundLoader.Grimm_Teleport, pos);
         }
-    }    
+    }
 }

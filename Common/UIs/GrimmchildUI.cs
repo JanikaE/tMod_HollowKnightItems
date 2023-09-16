@@ -14,12 +14,12 @@ namespace HollowKnightItems.Common.UIs
         private static readonly int[] Item2 = { 520, 521 };
         private static readonly int[] Item3 = { 3456, 3457, 3458, 3459 };
 
-        private readonly DragablePanel panel = new();        
+        private readonly DragablePanel panel = new();
         private readonly UIText currentStage = new(GetText("Common.Stage"));
         private readonly UIPanel itemPanel = new();
         private readonly ItemImage target = new(ItemDefault);
         private readonly HoverImageButton close = new(TextureLoader.UIClose, GetText("Common.Close"));
-        private readonly HoverTextBox upgrade = new(GetText("Common.Upgrade"), Color.Blue, Color.LightBlue, "");        
+        private readonly HoverTextBox upgrade = new(GetText("Common.Upgrade"), Color.Blue, Color.LightBlue, "");
 
         public override void OnInitialize()
         {
@@ -49,7 +49,7 @@ namespace HollowKnightItems.Common.UIs
             close.Height.Set(20f, 0f);
             close.HAlign = 1f;
             close.VAlign = 0f;
-            close.OnClick += Close_OnClick;
+            close.OnLeftClick += Close_OnLeftClick;
             panel.Append(close);
 
             upgrade.Width.Set(30f, 0f);
@@ -57,16 +57,16 @@ namespace HollowKnightItems.Common.UIs
             upgrade.HAlign = 0.5f;
             upgrade.VAlign = 1f;
             upgrade.ShowInputTicker = false;
-            upgrade.OnClick += Upgrade_OnClick;
+            upgrade.OnLeftClick += Upgrade_OnLeftClick;
             panel.Append(upgrade);
         }
 
-        private void Close_OnClick(UIMouseEvent evt, UIElement listeningElement)
+        private void Close_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Visible = false;
         }
 
-        private void Upgrade_OnClick(UIMouseEvent evt, UIElement listeningElement)
+        private void Upgrade_OnLeftClick(UIMouseEvent evt, UIElement listeningElement)
         {
             Player player = Main.LocalPlayer;
             Stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
@@ -94,15 +94,15 @@ namespace HollowKnightItems.Common.UIs
 
         public override void Update(GameTime gameTime)
         {
-            base.Update(gameTime);            
+            base.Update(gameTime);
             if (Visible)
             {
                 Player player = Main.LocalPlayer;
                 Stage = player.GetModPlayer<GrimmchidPlayer>().Stage;
                 currentStage.SetText(GetText("Common.Stage") + Stage);
-                switch (Stage) 
+                switch (Stage)
                 {
-                    case 1:                        
+                    case 1:
                         target.ChangeItem(Item1);
                         break;
                     case 2:
@@ -152,7 +152,7 @@ namespace HollowKnightItems.Common.UIs
         }
     }
 
-    internal class GrimmchildUISystem : ModSystem 
+    internal class GrimmchildUISystem : ModSystem
     {
         public GrimmchildUI GrimmchildUI;
         public UserInterface UserInterface;
@@ -167,10 +167,10 @@ namespace HollowKnightItems.Common.UIs
 
         public override void UpdateUI(GameTime gameTime)
         {
-            if (GrimmchildUI.Visible) 
+            if (GrimmchildUI.Visible)
             {
                 UserInterface?.Update(gameTime);
-            }            
+            }
         }
 
         public override void ModifyInterfaceLayers(List<GameInterfaceLayer> layers)

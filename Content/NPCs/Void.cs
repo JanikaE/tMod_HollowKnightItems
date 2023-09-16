@@ -13,9 +13,6 @@ namespace HollowKnightItems.Content.NPCs
         private readonly int ID = NPCID.Wizard; // 动画套用巫师的数据
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Void");
-            DisplayName.AddTranslation(7, "虚空");
-
             Main.npcFrameCount[Type] = Main.npcFrameCount[ID];
             NPCID.Sets.ExtraFramesCount[Type] = NPCID.Sets.ExtraFramesCount[ID];
             NPCID.Sets.AttackFrameCount[Type] = NPCID.Sets.AttackFrameCount[ID];
@@ -60,9 +57,9 @@ namespace HollowKnightItems.Content.NPCs
             AnimationType = ID;
         }
 
-        public override void HitEffect(int hitDirection, double damage)
+        public override void HitEffect(NPC.HitInfo hit)
         {
-            NPCHitDust(NPC, hitDirection, Color.Black);
+            NPCHitDust(NPC, hit.HitDirection, Color.Black);
             if (NPC.life <= 0)
             {
                 for (int i = 0; i < 24; i++)
@@ -99,12 +96,12 @@ namespace HollowKnightItems.Content.NPCs
             });
         }
 
-        public override bool CanTownNPCSpawn(int numTownNPCs, int money) => true;
+        public override bool CanTownNPCSpawn(int numTownNPCs) => true;
 
         public override List<string> SetNPCNameList()
         {
             // 随机姓名
-            return new List<string>() { 
+            return new List<string>() {
                 "Revek", "Milly", "Caspian", "Atra", "Chagax",
                 "Garro", "Kcin", "Karina", "Warrior", "Grohac",
                 "Perpetos", "Molten", "Magnus", "Waldie", "Wayner",
@@ -130,28 +127,24 @@ namespace HollowKnightItems.Content.NPCs
             button = Language.GetTextValue("LegacyInterface.28");
         }
 
-        public override void OnChatButtonClicked(bool firstButton, ref bool shop)
+        public override void OnChatButtonClicked(bool firstButton, ref string shopName)
         {
-            // 第一个按钮的作用
             if (firstButton)
             {
-                shop = true;
-            }
-            // 第二个按钮的作用
-            else
-            {
-                
+                shopName = "Shop";
             }
         }
 
-        public override void SetupShop(Chest shop, ref int nextSlot)
+        public override void AddShops()
         {
-            shop.item[0].SetDefaults(ModContent.ItemType<NightmareLantern_OFF>());
+            var shop = new NPCShop(Type, "Shop");
+            shop.Add(ModContent.ItemType<NightmareLantern_OFF>());
             if (DownedBossSystem.downedGrimm)
             {
-                shop.item[10].SetDefaults(ModContent.ItemType<Grimmchild>());
-                shop.item[11].SetDefaults(ModContent.ItemType<CarefreeMelody>());
+                shop.Add(ModContent.ItemType<Grimmchild>());
+                shop.Add(ModContent.ItemType<CarefreeMelody>());
             }
+            shop.Register();
         }
 
         public override void TownNPCAttackStrength(ref int damage, ref float knockback)

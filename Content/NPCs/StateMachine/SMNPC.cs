@@ -15,7 +15,7 @@
         public int State
         {
             get { return (int)NPC.ai[0]; }
-            set { NPC.ai[0] = (int)value; }
+            set { NPC.ai[0] = value; }
         }
         /// <summary>
         /// 计时器

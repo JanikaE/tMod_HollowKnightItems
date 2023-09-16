@@ -267,7 +267,7 @@ namespace HollowKnightItems.Common.Utils
         /// </summary>
         /// <param name="entity">实体对象</param>
         /// <param name="color">Dust颜色</param>
-        public static void RoundHitboxDust(Entity entity, Color color) 
+        public static void RoundHitboxDust(Entity entity, Color color)
         {
             int type = ModContent.DustType<StaticPoint>();
             Dust.NewDust(entity.TopLeft, 0, 0, type, 10, 0, newColor: color);

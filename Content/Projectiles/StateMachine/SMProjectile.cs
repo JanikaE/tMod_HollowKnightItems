@@ -14,7 +14,7 @@
         public int State
         {
             get { return (int)Projectile.ai[0]; }
-            set { Projectile.ai[0] = (int)value; }
+            set { Projectile.ai[0] = value; }
         }
         public int Timer
         {
@@ -30,7 +30,7 @@
         {
             var name = typeof(T).FullName;
             if (!StateDict.ContainsKey(name)) throw new ArgumentException("这个状态并不存在");
-            State = StateDict[name];            
+            State = StateDict[name];
         }
 
         /// <summary>

@@ -6,7 +6,7 @@
     internal static class MyUtils
     {
         public static Random random = new();
-        
+
         /// <summary>
         /// int数组元素置0
         /// </summary>
@@ -126,7 +126,8 @@
         /// <param name="Type">声音类型（音乐/音效/环境）</param>
         public static SoundStyle GetSoundStyle(string fileName, int numVariants, float Volume, float Pitch = 0, float PitchVariance = 0, int MaxInstances = 1, SoundLimitBehavior SoundLimitBehavior = SoundLimitBehavior.IgnoreNew, SoundType Type = SoundType.Sound)
         {
-            return new SoundStyle($"HollowKnightItems/Assets/Sounds/{fileName}", numVariants) with {
+            return new SoundStyle($"HollowKnightItems/Assets/Sounds/{fileName}", numVariants) with
+            {
                 Volume = Volume,
                 Pitch = Pitch,
                 PitchVariance = PitchVariance,

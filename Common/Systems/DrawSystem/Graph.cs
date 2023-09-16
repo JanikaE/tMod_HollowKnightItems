@@ -62,7 +62,7 @@
         public Vector2 position;
         public int timer;
 
-        public Graph(Texture2D texture, Vector2 position, int timer) 
+        public Graph(Texture2D texture, Vector2 position, int timer)
         {
             this.texture = texture;
             this.position = position;

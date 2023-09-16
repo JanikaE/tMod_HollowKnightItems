@@ -1,3 +1,2 @@
-version 1.0.3.0 update:
-New Town NPC: Void£¬to replace Guide's work of selling mod-related items.
-Significantly modified the way Boss Grimm attacks.
+version 1.0.4.0 update:
+Update to tModLoader1.4.4

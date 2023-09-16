@@ -1,21 +1,18 @@
-﻿using HollowKnightItems.Content.Items;
-using HollowKnightItems.Content.Items.Charms;
-
-namespace HollowKnightItems.Common.Systems
+﻿namespace HollowKnightItems.Common.Systems
 {
     internal class GuideShopSystem : ModSystem
     {
         public override void Load()
         {
-            On.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
+            //On.Terraria.Main.GUIChatDrawInner += Main_GUIChatDrawInner;
         }
 
         public override void Unload()
         {
-            On.Terraria.Main.GUIChatDrawInner -= Main_GUIChatDrawInner;
+            //On.Terraria.Main.GUIChatDrawInner -= Main_GUIChatDrawInner;
         }
 
-        public static object TextDisplayCache => typeof(Main).GetField("_textDisplayCache",System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(Main.instance);
+        public static object TextDisplayCache => typeof(Main).GetField("_textDisplayCache", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(Main.instance);
         public bool hover = false;
         public bool MouseLeft = false;
 
@@ -28,6 +25,7 @@ namespace HollowKnightItems.Common.Systems
             return postion;
         }
 
+        /*
         public void Main_GUIChatDrawInner(On.Terraria.Main.orig_GUIChatDrawInner orig, Main self)
         {
             orig(self);
@@ -99,9 +97,10 @@ namespace HollowKnightItems.Common.Systems
                 }
             }
         }
+        */
     }
 
-    internal class GuideShopPlayer : ModPlayer 
+    internal class GuideShopPlayer : ModPlayer
     {
         public override void PostSellItem(NPC vendor, Item[] shopInventory, Item item)
         {

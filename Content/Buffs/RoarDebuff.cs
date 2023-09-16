@@ -4,11 +4,6 @@
     {
         public override void SetStaticDefaults()
         {
-            DisplayName.SetDefault("Roar");
-            DisplayName.AddTranslation(7, "战吼");
-            Description.SetDefault("Can't move");
-            Description.AddTranslation(7, "动弹不得");
-
             Main.debuff[Type] = true;
             Main.buffNoSave[Type] = true;
             Main.buffNoTimeDisplay[Type] = true;
@@ -41,7 +36,7 @@
             if (HasRoarDebuff)
             {
                 Player.velocity = Vector2.Zero;
-            }            
+            }
         }
     }
 }

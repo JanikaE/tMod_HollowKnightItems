@@ -4,9 +4,10 @@ using HollowKnightItems.Content.Dusts;
 namespace HollowKnightItems.Common.Systems
 {
     internal class AnimationSystem : ModSystem
-    { 
+    {
         public static Animation[] Animations = new Animation[1];
-        public enum MyAnimationID{
+        public enum MyAnimationID
+        {
             GrimmDeath
         };
 
@@ -30,7 +31,7 @@ namespace HollowKnightItems.Common.Systems
         }
 
         public static void StartPlay(int id, int time, Vector2 position)
-        {            
+        {
             Animations[id].IsPlay = true;
             Animations[id].Timer = time;
             Animations[id].Position = position;
@@ -68,7 +69,7 @@ namespace HollowKnightItems.Common.Systems
         }
     }
 
-    public class Animation 
+    public class Animation
     {
         public bool IsPlay;
         public float Timer;

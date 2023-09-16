@@ -1,5 +1,8 @@
 [h3]更多信息见更新说明或模组主页：https://github.com/JanikaE/tMod_HollowKnightItems[/h3]
 
+[h1]v1.0.4[/h1]
+更新至tModLoader1.4.4
+
 [h1]v1.0.3[/h1]
 新增城镇NPC：虚空，代替了原本向导担任的售卖模组相关物品的工作。
 大幅修改了Boss格林的攻击方式。
