@@ -24,7 +24,7 @@ namespace HollowKnightItems.Content.NPCs
 
             // 图鉴设置
             NPCID.Sets.TownNPCBestiaryPriority.Add(Type);
-            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new(0)
+            NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new()
             {
                 //为NPC设置图鉴展示状态，赋予其Velocity即可展现出行走姿态
                 Velocity = 1f,
@@ -139,11 +139,8 @@ namespace HollowKnightItems.Content.NPCs
         {
             var shop = new NPCShop(Type, "Shop");
             shop.Add(ModContent.ItemType<NightmareLantern_OFF>());
-            if (DownedBossSystem.downedGrimm)
-            {
-                shop.Add(ModContent.ItemType<Grimmchild>());
-                shop.Add(ModContent.ItemType<CarefreeMelody>());
-            }
+            shop.Add(ModContent.ItemType<Grimmchild>(), new Condition(GetText("NPCs.Void.Condition"), () => DownedBossSystem.downedGrimm));
+            shop.Add(ModContent.ItemType<CarefreeMelody>(), new Condition(GetText("NPCs.Void.Condition"), () => DownedBossSystem.downedGrimm));
             shop.Register();
         }
 

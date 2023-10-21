@@ -1,4 +1,3 @@
-
 Mods: {
 	HollowKnightItems: {
 		Buffs: {
@@ -11,7 +10,7 @@ Mods: {
 				DisplayName: 战吼
 				Description: 动弹不得
 			}
-		}		
+		}
 
 		Common: {
 			Close: 关闭
@@ -20,7 +19,7 @@ Mods: {
 			Lack: 缺少材料
 			Consume: 将会被消耗
 			Stage: 当前阶段:
-			Damage: 当前伤害:			
+			Damage: 当前伤害:
 		}
 
 		Items: {
@@ -38,7 +37,7 @@ Mods: {
 				DisplayName: 格林之子
 				Tooltip: 一场完成的仪式的标志。包含着一团跳动的猩红之火。
 				LeftClick: 左键以打开升级界面
-				Intro: "[c/FF5A5A:这个世界的特殊物质将会使它获得新的力量]"				
+				Intro: "[c/FF5A5A:这个世界的特殊物质将会使它获得新的力量]"
 			}
 
 			NightmareLantern: {
@@ -48,16 +47,26 @@ Mods: {
 				ON: "[c/FF9696:已点燃]"
 				Win: "[c/FF5A5A:你已经通过了考验]"
 			}
+
+			NightmareLantern_OFF: {
+				DisplayName: 梦魇之灯
+				// Tooltip: ""
+			}
+
+			NightmareLantern_ON: {
+				DisplayName: 梦魇之灯
+				// Tooltip: ""
+			}
 		}
 
 		NPCs: {
 			Grimm: {
 				DisplayName: 剧团团长 格林
-				Bestiary: 
-				'''
-				由虚空给予的一项考验，参考了它自己过去的经历，并结合了它在这个世界的一些所见所闻。
-				这将是一场盛大的演出。
-				'''
+				Bestiary:
+					'''
+					由虚空给予的一项考验，参考了它自己过去的经历，并结合了它在这个世界的一些所见所闻。
+					这将是一场盛大的演出。
+					'''
 				SpawnInfo1: 剧团团长
 				SpawnInfo2: 格林
 				LoseInfo: "[c/FF5A5A:你未能通过考验。再试一次吧。]"
@@ -66,6 +75,7 @@ Mods: {
 
 			Void: {
 				DisplayName: 虚空
+
 				Chat: {
 					0: 想知道我是从哪个世界来的？我觉得你早就知道答案了，不然我们也不会在这遇见彼此。
 					1: 我已经完成了自己过去的使命。既然我们在此相遇了，就让我来帮助你完成你的使命吧。
@@ -73,69 +83,47 @@ Mods: {
 					3: 我身上还带着很多有用的物品，我想以后会有机会让它们帮到你的。
 					Grimmchild: 格林之子是个很可爱的伙伴，应该会让你的旅途增添一份乐趣。
 				}
+
 				Bestiary: 来自异次元的旅行者，因完成了自己的使命而踏上前往其他世界的道路。
 				DeathInfo1: "[c/FF0000:虚空的意识暂时回归了深渊。]"
 				DeathInfo2: "[c/FF0000:虚空被送回了椅子上。]"
+
+				TownNPCMood: {
+					Content: 恰到好处的感觉。
+					NoHome: 我想我可能需要一个椅子...不对，是屋子，用来休息。
+					LoveSpace: 我感觉像是回到了那个小镇。虽然有些冷寂但却令人安心。
+					FarFromHome: 我的旅途像是看不到尽头。
+					DislikeCrowded: 这里有些过于热闹了，我不习惯这样。
+					HateCrowded: 真是个吵闹的环境，我的精神有些受不了了。
+					LoveBiome: "{BiomeName}和我过去冒险的环境有些相似，我珍惜那段旅程。"
+					LikeBiome: "{BiomeName}蜜蜂真是一种很奇妙的生物，你能理解吗？"
+					DislikeBiome: "{BiomeName}平静的水面会勾起我一些不太好的回忆。"
+					HateBiome: "{BiomeName}光明是危险的！"
+					LoveNPC: "{NPCName}对这个世界了如指掌，我很享受和他交流的过程。"
+					LikeNPC: "{NPCName}对法术有一些独特的见解，我想我能从他那里学到些什么。"
+					DislikeNPC: "{NPCName}...他的性格是不是有点太差了?"
+					LikeNPC_Princess: "{NPCName}似乎有种特殊的魅力，能让这里的每个人都喜欢她，也包括我。"
+					Princess_LovesNPC: "{NPCName}就像幽灵一样，神秘但又可爱。"
+				}
+
+				Condition: 击败格林
 			}
+
+			// GrimmBoss.DisplayName: Grimm Boss
 		}
 
 		Projectiles: {
 			GrimmSpike.DisplayName: 梦魇尖刺
-           	GrimmFirebird.DisplayName: 梦魇火鸟
-           	GrimmFireball.DisplayName: 梦魇大火球
-          	GrimmShoot.DisplayName: 梦魇火球
+			GrimmFirebird.DisplayName: 梦魇火鸟
+			GrimmFireball.DisplayName: 梦魇大火球
+			GrimmShoot.DisplayName: 梦魇火球
 			GrimmchildShoot.DisplayName: 小格林火球
 			GrimmchildSummon.DisplayName: 格林之子
+			// CarefreeMelodyFire.DisplayName: Carefree Melody Fire
+			// GrimmFly.DisplayName: Grimm Fly
+			// GrimmSpike_Swoop.DisplayName: Grimm Spike_ Swoop
+			// GrimmSpike_Thorn.DisplayName: Grimm Spike_ Thorn
+			// VoidSoul.DisplayName: Void Soul
 		}
-
-		TownNPCMood: {
-            Void: {
-                Content: 恰到好处的感觉。
-                NoHome: 我想我可能需要一个椅子...不对，是屋子，用来休息。
-                LoveSpace: 我感觉像是回到了那个小镇。虽然有些冷寂但却令人安心。
-                FarFromHome: 我的旅途像是看不到尽头。
-                DislikeCrowded: 这里有些过于热闹了，我不习惯这样。
-                HateCrowded: 真是个吵闹的环境，我的精神有些受不了了。
-                LikeNPC_Princess: 
-                '''
-                {NPCName}似乎有种特殊的魅力，能让这里的每个人都喜欢她，也包括我。
-                '''
-                LoveBiome: 
-                '''
-                {BiomeName}和我过去冒险的环境有些相似，我珍惜那段旅程。
-                '''
-                LikeBiome: 
-                '''
-                {BiomeName}蜜蜂真是一种很奇妙的生物，你能理解吗？
-                '''
-                DislikeBiome: 
-                '''
-                {BiomeName}平静的水面会勾起我一些不太好的回忆。
-                '''
-				HateBiome: 
-                '''
-                {BiomeName}光明是危险的！
-                '''
-				LoveNPC: 
-                '''
-                {NPCName}对这个世界了如指掌，我很享受和他交流的过程。
-                '''
-                LikeNPC: 
-                '''
-                {NPCName}对法术有一些独特的见解，我想我能从他那里学到些什么。
-                '''
-                DislikeNPC: 
-                '''
-                {NPCName}...他的性格是不是有点太差了?
-                '''
-            }
-        }
 	}
-}
-
-TownNPCMood_Princess: {
-    LoveNPC_HollowKnightItems/Void: 
-    '''
-    {NPCName}就像幽灵一样，神秘但又可爱。
-    '''
 }

@@ -1,4 +1,3 @@
-
 Mods: {
 	HollowKnightItems: {
 		Buffs: {
@@ -11,7 +10,7 @@ Mods: {
 				DisplayName: Roar
 				Description: Can't move
 			}
-		}		
+		}
 
 		Common: {
 			Close: Close
@@ -38,7 +37,7 @@ Mods: {
 				DisplayName: Grimmchild
 				Tooltip: Symbol of a completed ritual. Contains a living, scarlet flame.
 				LeftClick: Left click to open the upgrade interface
-				Intro: "[c/FF5A5A:The special matter of this world will give it new power]"				
+				Intro: "[c/FF5A5A:The special matter of this world will give it new power]"
 			}
 
 			NightmareLantern: {
@@ -48,16 +47,26 @@ Mods: {
 				ON: "[c/FF9696:Ignited]"
 				Win: "[c/FF5A5A:You have passed the test.]"
 			}
+
+			NightmareLantern_OFF: {
+				DisplayName: NightmareLantern
+				Tooltip: ""
+			}
+
+			NightmareLantern_ON: {
+				DisplayName: NightmareLantern
+				Tooltip: ""
+			}
 		}
 
 		NPCs: {
 			Grimm: {
 				DisplayName: Troupe Master Grimm
-				Bestiary: 
-				'''
-				A test given by Void, referencing its own past experiences combined with some of what it has seen and heard in this world.
-				It's going to be a grand performance.
-				'''
+				Bestiary:
+					'''
+					A test given by Void, referencing its own past experiences combined with some of what it has seen and heard in this world.
+					It's going to be a grand performance.
+					'''
 				SpawnInfo1: Troupe Master
 				SpawnInfo2: Grimm
 				LoseInfo: "[c/FF5A5A:You failed the test. Try again.]"
@@ -66,6 +75,7 @@ Mods: {
 
 			Void: {
 				DisplayName: Void
+
 				Chat: {
 					0: Want to know what world I'm from? I think you already know the answer, otherwise we wouldn't have met each other here.
 					1: I have completed my past mission. Now that we've met here, let me help you fulfill your mission.
@@ -73,69 +83,47 @@ Mods: {
 					3: I also have a lot of useful items with me. I think there will be opportunities for them to help you in the future.
 					Grimmchild: Grimmchild is a lovely companion and should add a lot of fun to your journey.
 				}
+
 				Bestiary: A traveler from another dimension, who has completed his mission and embarks on a journey to other worlds.
 				DeathInfo1: "[c/FF0000:The consciousness of Void temporarily returns to The Abyss.]"
 				DeathInfo2: "[c/000000:Void is sent back to chair.]"
+
+				TownNPCMood: {
+					Content: Just the right feeling.
+					NoHome: I think I might need a chair... No, a house, for rest.
+					LoveSpace: I feel like I was back in that town. It's a bit chilly but reassuring.
+					FarFromHome: My journey seemed like there was no end in sight.
+					DislikeCrowded: It's a little too lively here. I'm not used to that.
+					HateCrowded: It was such a noisy environment that my spirit was a little unbearable.
+					LoveBiome: "{BiomeName} Somewhat similar to the circumstances of my past adventures. I cherish that journey."
+					LikeBiome: "{BiomeName} Bees are such wonderful creatures, can you understand?"
+					DislikeBiome: "{BiomeName} The calm waters will bring back some not-so-good memories in me."
+					HateBiome: "{BiomeName} Light Is Dangerous!"
+					LoveNPC: "{NPCName} He knows the world inside out and I enjoy communicating with him."
+					LikeNPC: "{NPCName} He had some unique insights into spells, and I thought I could learn something from him."
+					DislikeNPC: "{NPCName} ...Isn't his personality a little too bad?"
+					LikeNPC_Princess: "{NPCName} She seems to have a special charm that makes everyone here like her, including me."
+					Princess_LovesNPC: "{NPCName} Like a ghost, mysterious but cute."
+				}
+
+				Condition: Defeat Grimm
 			}
+
+			GrimmBoss.DisplayName: Grimm Boss
 		}
 
 		Projectiles: {
 			GrimmSpike.DisplayName: Nightmare Spike
-           	GrimmFirebird.DisplayName: Nightmare Firebird
-           	GrimmFireball.DisplayName: Nightmare Big Fireball
-          	GrimmShoot.DisplayName: Nightmare Fireball
+			GrimmFirebird.DisplayName: Nightmare Firebird
+			GrimmFireball.DisplayName: Nightmare Big Fireball
+			GrimmShoot.DisplayName: Nightmare Fireball
 			GrimmchildShoot.DisplayName: Little Grimm Fireball
 			GrimmchildSummon.DisplayName: Grimmchild
+			CarefreeMelodyFire.DisplayName: Carefree Melody Fire
+			GrimmFly.DisplayName: Grimm Fly
+			GrimmSpike_Swoop.DisplayName: Grimm Spike_ Swoop
+			GrimmSpike_Thorn.DisplayName: Grimm Spike_ Thorn
+			VoidSoul.DisplayName: Void Soul
 		}
-
-		TownNPCMood: {
-            Void: {
-                Content: Just the right feeling.
-                NoHome: I think I might need a chair... No, a house, for rest.
-                LoveSpace: I feel like I was back in that town. It's a bit chilly but reassuring.
-                FarFromHome:  My journey seemed like there was no end in sight.
-                DislikeCrowded: It's a little too lively here. I'm not used to that.
-                HateCrowded: It was such a noisy environment that my spirit was a little unbearable.
-                LikeNPC_Princess: 
-                '''
-                {NPCName} She seems to have a special charm that makes everyone here like her, including me.
-                '''
-                LoveBiome: 
-                '''
-                {BiomeName} Somewhat similar to the circumstances of my past adventures. I cherish that journey.
-                '''
-                LikeBiome: 
-                '''
-                {BiomeName} Bees are such wonderful creatures, can you understand?
-                '''
-                DislikeBiome: 
-                '''
-                {BiomeName} The calm waters will bring back some not-so-good memories in me.
-                '''
-                HateBiome: 
-                '''
-                {BiomeName} Light Is Dangerous!
-                '''
-				LoveNPC: 
-                '''
-                {NPCName} He knows the world inside out and I enjoy communicating with him.
-                '''
-                LikeNPC: 
-                '''
-                {NPCName} He had some unique insights into spells, and I thought I could learn something from him.
-                '''
-                DislikeNPC: 
-                '''
-                {NPCName} ...Isn't his personality a little too bad?
-                '''
-            }
-        }
 	}
-}
-
-TownNPCMood_Princess: {
-    LoveNPC_HollowKnightItems/Void: 
-    '''
-    {NPCName} Like a ghost, mysterious but cute.
-    '''
 }

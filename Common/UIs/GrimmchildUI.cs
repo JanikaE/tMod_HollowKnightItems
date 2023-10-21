@@ -95,6 +95,8 @@ namespace HollowKnightItems.Common.UIs
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            close.hoverText = GetText("Common.Close");
+            upgrade.SetText(GetText("Common.Upgrade"));
             if (Visible)
             {
                 Player player = Main.LocalPlayer;

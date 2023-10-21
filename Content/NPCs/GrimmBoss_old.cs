@@ -112,7 +112,8 @@ namespace HollowKnightItems.Content.NPCs
         public override bool CheckDead()
         {
             Main.NewText(GetText("NPCs.Grimm.WinInfo"));
-            NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
+            //NPC.SetEventFlagCleared(ref DownedBossSystem.downedGrimm, -1);
+            DownedBossSystem.downedGrimm = true;
             return true;
         }
 

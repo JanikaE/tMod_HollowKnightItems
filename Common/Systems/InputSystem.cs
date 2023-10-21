@@ -28,6 +28,22 @@ namespace HollowKnightItems.Common.Systems
                         Main.NewText("Set Grimmchild stage to " + stage);
                     }
                 }
+                // debug，查询boss击杀状态
+                if (text.StartsWith("/grimm boss"))
+                {
+                    Main.NewText($"{DownedBossSystem.downedGrimm}");
+                }
+                // debug，检查本地化文本
+                if (text.StartsWith("/text"))
+                {
+                    char[] chars = text.ToCharArray();
+                    string s = "";
+                    for (int i = 6; i < chars.Length; i++ )
+                    {
+                        s += chars[i];
+                    }
+                    Main.NewText($"Get Text:{GetText(s)}");
+                }
 
                 text = null;
             }
