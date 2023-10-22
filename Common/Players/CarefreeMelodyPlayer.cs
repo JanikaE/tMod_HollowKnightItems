@@ -41,15 +41,15 @@ namespace HollowKnightItems.Common.Players
                         Player.hurtCooldowns[i] += 60;
                     }
                     CarefreeOdds = 0;
-                    return false;
+                    return true;
                 }
                 else
                 {
                     CarefreeOdds += 10;
-                    return true;
+                    return false;
                 }
             }
-            return true;
+            return false;
         }
 
         public override void SaveData(TagCompound tag)

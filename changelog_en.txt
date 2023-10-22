@@ -1,2 +1,2 @@
-version 1.0.4.1 update:
-Fixed some text bugs.
+version 1.0.4.2 update:
+Fixed a bug that prevented player from taking damage
