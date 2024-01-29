@@ -3,7 +3,7 @@
     /// <summary>
     /// 自用的一些工具
     /// </summary>
-    internal static class MyUtils
+    internal static partial class MyUtils
     {
         public static Random random = new();
 

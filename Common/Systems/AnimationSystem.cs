@@ -5,88 +5,74 @@ namespace HollowKnightItems.Common.Systems
 {
     internal class AnimationSystem : ModSystem
     {
-        public static Animation[] Animations = new Animation[1];
-        public enum MyAnimationID
-        {
-            GrimmDeath
-        };
+        public static Dictionary<int, Animation> animations = new();
 
         public override void OnWorldLoad()
         {
-            for (int i = 0; i < Animations.Length; i++)
-            {
-                Animations[i] = new Animation();
-            }
+            animations.Add((int)MyAnimationID.GrimmDeath, new Animation(GrimmDeathAction));
         }
 
         public override void PostUpdateEverything()
         {
-            for (int i = 0; i < Animations.Length; i++)
+            foreach (Animation animation in animations.Values)
             {
-                if (Animations[i].IsPlay)
+                if (animation.isPlay)
                 {
-                    Play(i);
+                    Play(animation);
                 }
             }
         }
 
-        public static void StartPlay(int id, int time, Vector2 position)
+        public static void StartPlay(MyAnimationID id, int timer, Vector2 position)
         {
-            Animations[id].IsPlay = true;
-            Animations[id].Timer = time;
-            Animations[id].Position = position;
+            Animation animation = animations.GetValueOrDefault((int)id);
+            animation.timer = timer;
+            animation.position = position;
+            animation.isPlay = true;
         }
 
-        private static void Play(int id)
+        private static void Play(Animation animation)
         {
-            switch (id)
-            {
-                case (int)MyAnimationID.GrimmDeath:
-                    PlayGrimmDeath(id);
-                    break;
-            }
+            animation.action(animation.timer, animation.position);
 
-            Animations[id].Timer--;
-            if (Animations[id].Timer == 0)
+            animation.timer--;
+            if (animation.timer == 0)
             {
-                Animations[id].IsPlay = false;
+                animation.isPlay = false;
             }
         }
 
-        private static void PlayGrimmDeath(int id)
+        private static void GrimmDeathAction(int timer, Vector2 position)
         {
-            int num = Animations[id].Timer == 1 ? 200 : 10;
+            int num = timer == 1 ? 200 : 10;
             for (int i = 0; i < num; i++)
             {
                 float rotation = (float)(random.Next(360) * Math.PI / 180);
                 Vector2 dir = rotation.ToRotationVector2() * 20;
-                Dust.NewDust(Animations[id].Position, 0, 0, ModContent.DustType<Explosion>(), dir.X, dir.Y, newColor: new Color(255, 150, 150));
+                Dust.NewDust(position, 0, 0, ModContent.DustType<Explosion>(), dir.X, dir.Y, newColor: new Color(255, 150, 150));
             }
-            if (Animations[id].Timer == 1)
+            if (timer == 1)
             {
-                SoundEngine.PlaySound(SoundLoader.Boss_Explode, Animations[id].Position);
+                SoundEngine.PlaySound(SoundLoader.Boss_Explode, position);
             }
         }
     }
 
     public class Animation
     {
-        public bool IsPlay;
-        public float Timer;
-        public Vector2 Position;
+        public bool isPlay;
+        public int timer;
+        public Vector2 position;
+        public Action<int, Vector2> action;
 
-        public Animation()
+        public Animation(Action<int, Vector2> action)
         {
-            IsPlay = false;
-            Timer = 0;
-            Position = Vector2.Zero;
-        }
-
-        public Animation(bool isPlay, float timer, Vector2 position)
-        {
-            IsPlay = isPlay;
-            Timer = timer;
-            Position = position;
+            this.action = action;
         }
     }
+
+    public enum MyAnimationID
+    {
+        GrimmDeath
+    };
 }

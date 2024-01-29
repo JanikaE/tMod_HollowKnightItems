@@ -58,6 +58,45 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             }
         }
 
+        /// <summary>
+        /// 切换状态
+        /// </summary>
+        private static void SwitchState_Grimmchild(SMProjectile proj)
+        {
+            var Projectile = proj.Projectile;
+            Player player = Main.player[Projectile.owner];
+            NPC npc = FindClosestEnemy(Projectile.Center, 500f, (n) =>
+            {
+                return n.CanBeChasedBy() &&
+                !n.dontTakeDamage &&
+                Collision.CanHitLine(Projectile.Center, 1, 1, n.Center, 1, 1) &&
+                n.type != ModContent.NPCType<GrimmBoss>();
+            });
+
+            if (Vector2.Distance(Projectile.Center, player.Center) > 800)
+            {
+                proj.SetState<TeleportState>();  // 传送状态                  
+            }
+            else if (npc != null & player.GetModPlayer<GrimmchidPlayer>().Type)
+            {
+                proj.SetState<ShootState>();  // 射击状态
+                proj.Target = npc.Center;
+            }
+            else if (player.sitting.isSitting || player.sleeping.isSleeping)
+            {
+                proj.SetState<RestState>();  // 休息状态
+            }
+            else
+            {
+                proj.SetState<MoveState>();  // 移动状态
+            }
+
+            // 联机同步
+            Projectile.netUpdate = true;
+        }
+
+        #region State
+
         public class MoveState : ProjState
         {
             public override void AI(SMProjectile proj)
@@ -275,41 +314,6 @@ namespace HollowKnightItems.Content.Projectiles.Grimmchild
             }
         }
 
-        /// <summary>
-        /// 切换状态
-        /// </summary>
-        public static void SwitchState_Grimmchild(SMProjectile proj)
-        {
-            var Projectile = proj.Projectile;
-            Player player = Main.player[Projectile.owner];
-            NPC npc = FindClosestEnemy(Projectile.Center, 500f, (n) =>
-            {
-                return n.CanBeChasedBy() &&
-                !n.dontTakeDamage &&
-                Collision.CanHitLine(Projectile.Center, 1, 1, n.Center, 1, 1) &&
-                n.type != ModContent.NPCType<GrimmBoss>();
-            });
-
-            if (Vector2.Distance(Projectile.Center, player.Center) > 800)
-            {
-                proj.SetState<TeleportState>();  // 传送状态                  
-            }
-            else if (npc != null & player.GetModPlayer<GrimmchidPlayer>().Type)
-            {
-                proj.SetState<ShootState>();  // 射击状态
-                proj.Target = npc.Center;
-            }
-            else if (player.sitting.isSitting || player.sleeping.isSleeping)
-            {
-                proj.SetState<RestState>();  // 休息状态
-            }
-            else
-            {
-                proj.SetState<MoveState>();  // 移动状态
-            }
-
-            // 联机同步
-            Projectile.netUpdate = true;
-        }
+        #endregion
     }
 }

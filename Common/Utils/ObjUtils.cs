@@ -3,7 +3,7 @@
     /// <summary>
     /// 与Items/Tile相关的一些工具
     /// </summary>
-    internal static class ObjUtils
+    internal static partial class MyUtils
     {
         public static readonly int[] Chairs =
         {

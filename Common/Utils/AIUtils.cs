@@ -6,7 +6,7 @@ namespace HollowKnightItems.Common.Utils
     /// <summary>
     /// 与NPC/Projectile的AI/数值相关的工具
     /// </summary>
-    internal static class AIUtils
+    internal static partial class MyUtils
     {
         public static int[] bossList = {
             NPCID.KingSlime,  // 史莱姆王

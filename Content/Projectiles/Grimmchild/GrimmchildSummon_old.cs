@@ -3,8 +3,11 @@ using HollowKnightItems.Content.Buffs;
 
 namespace HollowKnightItems.Content.Projectiles.Grimmchild
 {
+    /// <summary>
+    /// V1.0.0.5改用状态机，此类弃用
+    /// </summary>
     [Autoload(false)]
-    internal class GrimmchildSummon_old : ModProjectile
+    internal class GrimmchildSummon_Old : ModProjectile
     {
         public enum ProjectileState
         {

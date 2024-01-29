@@ -21,9 +21,7 @@ global using Terraria.ModLoader.IO;
 global using Terraria.UI;
 global using Terraria.UI.Chat;
 global using Terraria.Utilities;
-global using static HollowKnightItems.Common.Utils.AIUtils;
 global using static HollowKnightItems.Common.Utils.MyUtils;
-global using static HollowKnightItems.Common.Utils.ObjUtils;
 
 namespace HollowKnightItems
 {

@@ -4,40 +4,29 @@ using HollowKnightItems.Common.Systems.DrawSystem;
 using HollowKnightItems.Content.Buffs;
 using HollowKnightItems.Content.NPCs.StateMachine;
 using HollowKnightItems.Content.Projectiles.Grimm;
-using static HollowKnightItems.Content.NPCs.GrimmBoss_old;
-using static HollowKnightItems.Content.NPCs.Utils;
 
 namespace HollowKnightItems.Content.NPCs
 {
+    /// <summary>
+    /// V1.0.1
+    /// </summary>
     //[AutoloadBossHead]
     [Autoload(false)]
-    internal class GrimmBoss_old : SMNPC
+    internal class GrimmBoss_Old : SMNPC
     {
-        /// <summary>
-        /// GrimmBoss AI中的一些距离常量
-        /// </summary>
-        internal static class Distance
-        {
-            public const int Blowfish = 400;
-            public const int Firebird = 400;
-            public const int Thorn = 300;
-            public const int Sho = 200;
-            public const int Swoop = 300;
-            public const int Fly = 200;
-        }
+        private const int BlowfishDistance = 400;
+        private const int FirebirdDistance = 400;
+        private const int ThornDistance = 300;
+        private const int ShoDistance = 200;
+        private const int SwoopDistance = 300;
+        private const int FlyDistance = 200;
 
-        /// <summary>
-        /// GrimmBoss AI中的一些速率常量
-        /// </summary>
-        internal static class Speed
-        {
-            public const int Swoop = 30;
-            public const int Scratch = 15;
-            public const int Sho = 25;
-        }
+        private const int SwoopSpeed = 30;
+        private const int ScratchSpeed = 15;
+        private const int ShoSpeed = 25;
 
-        public const int Damage = 40;
-        public const int Defence = 10;
+        private const int Damage = 40;
+        private const int Defence = 10;
 
         /// <summary>
         /// 每张帧图的命名
@@ -122,7 +111,7 @@ namespace HollowKnightItems.Content.NPCs
             if (NPC.life <= 0)
             {
                 Graph.NewGraph(TextureLoader.GrimmDeath.Value, NPC.position, 180);
-                AnimationSystem.StartPlay((int)AnimationSystem.MyAnimationID.GrimmDeath, 180, NPC.Center);
+                AnimationSystem.StartPlay(MyAnimationID.GrimmDeath, 180, NPC.Center);
                 SoundEngine.PlaySound(SoundLoader.Grimm_Death, NPC.Center);
                 Rect.ClearRect();
             }
@@ -161,6 +150,53 @@ namespace HollowKnightItems.Content.NPCs
                 NPC.HitSound = SoundLoader.Creature_Hit;
             }
         }
+
+        #region Utils
+
+        private static void SwitchStateToFly(SMNPC n)
+        {
+            NPC npc = n.NPC;
+            // 获取n.Stage的十位
+            int stage = n.Stage / 10;
+            // 在Attack状态中，受到攻击使血量下降到一定程度时，切换至Fly状态
+            // 用n.Stage的十位标记Fly次数
+            if (npc.life < npc.lifeMax * 0.65 && stage == 0 ||
+                npc.life < npc.lifeMax * 0.35 && stage == 1)
+            {
+                n.SetState<FlyState>();
+                n.Stage += 10;
+                n.Timer = 0;
+                npc.netUpdate = true;
+                Rect.ClearRect();
+            }
+        }
+
+        private static void TeleportToFront(NPC npc, Player player, int distance)
+        {
+            float x, y;
+            // 传送至目标玩家面朝的方向
+            x = player.direction > 0 ? player.Center.X + distance : player.Center.X - distance - npc.width;
+            // 让玩家与NPC底部对齐
+            y = player.Bottom.Y - npc.height;
+            npc.position = new Vector2(x, y);
+        }
+
+        /// <summary>
+        /// 用于瞬移时产生Dust和播放音效
+        /// </summary>
+        private static void TeleportEffect(NPC npc)
+        {
+            Vector2 pos = npc.position;
+            for (int i = 0; i < 300; i++)
+            {
+                Dust.NewDust(pos, npc.width, npc.height, DustID.TintableDustLighted, SpeedY: -4, newColor: new Color(255, 0, 0));
+            }
+            SoundEngine.PlaySound(SoundLoader.Grimm_Teleport, pos);
+        }
+
+        #endregion
+
+        #region State
 
         public class StartState : NPCState
         {
@@ -247,7 +283,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 140:
                         n.GetFrame((int)Frame.Teleport);
                         // 传送至目标玩家上方                        
-                        npc.position = player.Center + new Vector2(-npc.width / 2, -Distance.Blowfish);
+                        npc.position = player.Center + new Vector2(-npc.width / 2, -BlowfishDistance);
                         TeleportEffect(npc);
                         break;
                     case 160:
@@ -317,28 +353,28 @@ namespace HollowKnightItems.Content.NPCs
                             case 0:
                                 // 传送至目标玩家面朝的方向的斜上方
                                 x = player.Center.X - npc.width / 2;
-                                offset = player.direction > 0 ? Distance.Blowfish / 2 : -Distance.Blowfish / 2;
-                                y = player.Center.Y - Distance.Blowfish;
+                                offset = player.direction > 0 ? BlowfishDistance / 2 : -BlowfishDistance / 2;
+                                y = player.Center.Y - BlowfishDistance;
                                 npc.position = new Vector2(x + offset, y);
                                 break;
                             // Firebird
                             case 1:
-                                TeleportToFront(npc, player, Distance.Firebird);
+                                TeleportToFront(npc, player, FirebirdDistance);
                                 break;
                             // Thorn
                             case 2:
-                                TeleportToFront(npc, player, Distance.Thorn);
+                                TeleportToFront(npc, player, ThornDistance);
                                 break;
                             // Shoryuken
                             case 4:
-                                TeleportToFront(npc, player, Distance.Sho);
+                                TeleportToFront(npc, player, ShoDistance);
                                 break;
                             // Swoop
                             case 3:
                                 // 传送至目标玩家面朝的方向的斜上方
-                                x = player.direction > 0 ? player.Center.X + Distance.Swoop : player.Center.X - Distance.Swoop - npc.width;
+                                x = player.direction > 0 ? player.Center.X + SwoopDistance : player.Center.X - SwoopDistance - npc.width;
                                 // 让(NPC在俯冲之后)玩家与NPC底部对齐
-                                y = player.Bottom.Y - npc.height - Distance.Swoop;
+                                y = player.Bottom.Y - npc.height - SwoopDistance;
                                 npc.position = new Vector2(x, y);
                                 break;
                         }
@@ -495,8 +531,8 @@ namespace HollowKnightItems.Content.NPCs
 
                 // 乱飞
                 float tarX = player.Center.X;
-                float tarY = player.Center.Y - Distance.Fly;
-                MoveBetween(npc, new Vector2(tarX, tarY), Distance.Fly);
+                float tarY = player.Center.Y - FlyDistance;
+                MoveBetween(npc, new Vector2(tarX, tarY), FlyDistance);
 
                 // npc.direction貌似有点问题，先这么写着
                 npc.spriteDirection = npc.velocity.X > 0 ? -1 : 1;
@@ -656,7 +692,7 @@ namespace HollowKnightItems.Content.NPCs
                         break;
                     case 15:
                         // 俯冲
-                        npc.velocity *= Speed.Swoop;
+                        npc.velocity *= SwoopSpeed;
                         SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
                         // Dust to do
                         break;
@@ -669,7 +705,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 55:
                         n.GetFrame((int)Frame.Swoop3);
                         // 横冲
-                        npc.velocity *= Speed.Swoop;
+                        npc.velocity *= SwoopSpeed;
                         SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
                         // Dust to do
                         break;
@@ -712,7 +748,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 24:
                         n.GetFrame((int)Frame.Sho2);
                         // 横冲
-                        npc.velocity *= Speed.Scratch;
+                        npc.velocity *= ScratchSpeed;
                         SoundEngine.PlaySound(SoundLoader.Dash, npc.position);
                         break;
                     case 36:
@@ -722,7 +758,7 @@ namespace HollowKnightItems.Content.NPCs
                     case 56:
                         n.GetFrame((int)Frame.Sho3);
                         // 升龙拳
-                        npc.velocity = new Vector2(Speed.Sho / 2, Speed.Sho) * -1;
+                        npc.velocity = new Vector2(ShoSpeed / 2, ShoSpeed) * -1;
                         //SoundEngine.PlaySound(SoundLoader.Grimm_Attack, npc.position);
                         break;
                     case 68:
@@ -757,49 +793,7 @@ namespace HollowKnightItems.Content.NPCs
                 n.Timer++;
             }
         }
-    }
 
-    internal static class Utils
-    {
-        public static void SwitchStateToFly(SMNPC n)
-        {
-            NPC npc = n.NPC;
-            // 获取n.Stage的十位
-            int stage = n.Stage / 10;
-            // 在Attack状态中，受到攻击使血量下降到一定程度时，切换至Fly状态
-            // 用n.Stage的十位标记Fly次数
-            if (npc.life < npc.lifeMax * 0.65 && stage == 0 ||
-                npc.life < npc.lifeMax * 0.35 && stage == 1)
-            {
-                n.SetState<FlyState>();
-                n.Stage += 10;
-                n.Timer = 0;
-                npc.netUpdate = true;
-                Rect.ClearRect();
-            }
-        }
-
-        public static void TeleportToFront(NPC npc, Player player, int distance)
-        {
-            float x, y;
-            // 传送至目标玩家面朝的方向
-            x = player.direction > 0 ? player.Center.X + distance : player.Center.X - distance - npc.width;
-            // 让玩家与NPC底部对齐
-            y = player.Bottom.Y - npc.height;
-            npc.position = new Vector2(x, y);
-        }
-
-        /// <summary>
-        /// 用于瞬移时产生Dust和播放音效
-        /// </summary>
-        public static void TeleportEffect(NPC npc)
-        {
-            Vector2 pos = npc.position;
-            for (int i = 0; i < 300; i++)
-            {
-                Dust.NewDust(pos, npc.width, npc.height, DustID.TintableDustLighted, SpeedY: -4, newColor: new Color(255, 0, 0));
-            }
-            SoundEngine.PlaySound(SoundLoader.Grimm_Teleport, pos);
-        }
+        #endregion
     }
 }
