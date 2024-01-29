@@ -439,7 +439,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         new Vector2(1, i),
-                                                        ModContent.ProjectileType<GrimmShoot_Sides>(),
+                                                        ModContent.ProjectileType<GrimmShoot_Sides_Old>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
@@ -454,7 +454,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         new Vector2(-1, i),
-                                                        ModContent.ProjectileType<GrimmShoot_Sides>(),
+                                                        ModContent.ProjectileType<GrimmShoot_Sides_Old>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
@@ -470,7 +470,7 @@ namespace HollowKnightItems.Content.NPCs
                             Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         new Vector2(i, 6),
-                                                        ModContent.ProjectileType<GrimmShoot_Below>(),
+                                                        ModContent.ProjectileType<GrimmShoot_Below_Old>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
@@ -564,7 +564,7 @@ namespace HollowKnightItems.Content.NPCs
                             Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                 npc.Center,
                                                 new Vector2(-npc.spriteDirection * 20, 0),
-                                                ModContent.ProjectileType<GrimmFirebird>(),
+                                                ModContent.ProjectileType<GrimmFirebird_Old>(),
                                                 30,
                                                 0.2f,
                                                 Main.myPlayer);
@@ -582,7 +582,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                     npc.Center,
                                                     new Vector2(-npc.spriteDirection * 20, i * 5),
-                                                    ModContent.ProjectileType<GrimmFirebird>(),
+                                                    ModContent.ProjectileType<GrimmFirebird_Old>(),
                                                     30,
                                                     0.2f,
                                                     Main.myPlayer);
@@ -639,7 +639,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center + new Vector2(i * 120 - 12, -120),
                                                         new Vector2(0, -20),
-                                                        ModContent.ProjectileType<GrimmSpike>(),
+                                                        ModContent.ProjectileType<GrimmThorn_Old>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
@@ -647,7 +647,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center + new Vector2(i * 120 - 12, 0),
                                                         new Vector2(0, 20),
-                                                        ModContent.ProjectileType<GrimmSpike>(),
+                                                        ModContent.ProjectileType<GrimmThorn_Old>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
@@ -772,7 +772,7 @@ namespace HollowKnightItems.Content.NPCs
                                 Projectile.NewProjectile(npc.GetSource_FromAI(),
                                                         npc.Center,
                                                         new Vector2(i * 7, 0),
-                                                        ModContent.ProjectileType<GrimmFireball>(),
+                                                        ModContent.ProjectileType<GrimmFireball_Old>(),
                                                         30,
                                                         0.2f,
                                                         Main.myPlayer);
